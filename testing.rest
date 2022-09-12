@@ -1,0 +1,9 @@
+### register a user
+POST http://localhost:6000/user/register
+Content-Type: application/json
+
+{
+    "username" : "jaafar@admin",
+    "phonNum" : 0908130091,
+    "password" : "12345"
+}
