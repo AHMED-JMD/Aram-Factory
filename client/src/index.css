@@ -1,0 +1,66 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap");
+
+body {
+  margin: 0;
+  font-family: "poppins", "Almarai" !important;
+}
+.wrap{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: url(/images/cool-background.png);
+
+}
+.box{
+  width: 700px;
+  min-height: fit-content;
+  border: 3px solid rgb(139, 130, 130);
+  border-radius: 13px;
+  background-color: aliceblue;
+  box-shadow: 1px 10px 10px lightgray;
+}
+form{
+  text-align: center;
+}
+.textfeild{
+  width: 400px;
+  padding: 8px;
+  border: 2px solid lightgray;
+  border-radius: 11px;
+}
+.btn{
+  margin-top: 1px;
+}
+h1 , h3{
+  margin-top: 20px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 750px) {
+  .box{
+    width: 500px;
+  }
+  .textfeild{
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .box{
+    width: 350px;
+  }
+  .textfeild{
+    width: 280px;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .box{
+    width: 280px;
+  }
+  .textfeild{
+    width: 230px;
+  }
+}
