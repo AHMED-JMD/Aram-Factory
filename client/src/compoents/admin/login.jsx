@@ -16,7 +16,7 @@ const Login = () => {
 
     axios.post('http://localhost:6000/user/auth', data)
      .then(res =>{
-      setIsLoading(false)
+      setIsLoading(false);
       console.log(res.data);
      }).catch(err =>{
       setErr(err.response.data)
