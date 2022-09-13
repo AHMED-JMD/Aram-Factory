@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -7,9 +9,20 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const HandleSubmit = (e) => {
+    setIsLoading(true);
     e.preventDefault();
-    console.log(username, password);
+
+    let data = {username, password}
+
+    axios.post('http://localhost:6000/user/auth', data)
+     .then(res =>{
+      setIsLoading(false)
+      console.log(res.data);
+     }).catch(err =>{
+      setErr(err.response.data)
+     })
   };
+
   return (
     <div className="Login">
       <div className="wrap">
