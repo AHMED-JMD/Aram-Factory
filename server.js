@@ -24,5 +24,9 @@ app.use(cors());
 app.use("/user/register", require("./routes/users/signup"));
 app.use("/user/auth", require("./routes/users/login"));
 
-const Port = process.env.PORT || 6000;
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+const Port = process.env.PORT || 4200;
 app.listen(4000, () => console.log(`server running on port ${Port}`));
