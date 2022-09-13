@@ -1,25 +1,49 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800&display=swap'); */
-@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap"); */
+@font-face {
+  font-family: "din";
+  src: url(./assets/fonts/din.ttf);
+}
+
 
 body {
   margin: 0;
-  font-family: "poppins", "Almarai" !important;
+  height: 100vh;
+  /* background-color: #f7f7f7 !important; */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 100%, #000 0%), url('./assets/images/bg.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
 }
+
+.App{
+  font-family: "din" !important;
+}
+
+.din, .muirtl-14s5rfu-MuiFormLabel-root-MuiInputLabel-root
+/* , .muirtl-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused  */
+ {
+  font-family: "din" !important;
+}
+
 .wrap{
   position: absolute;
   left: 50%;
   top: 50%;
+  max-width: 600px;
+  width: 100%;
   transform: translate(-50%, -50%);
-  background: url(/images/cool-background.png);
-
+  /* background: url(/images/cool-background.png); */
 }
 .box{
-  width: 700px;
-  min-height: fit-content;
-  border: 3px solid rgb(139, 130, 130);
-  border-radius: 13px;
-  background-color: aliceblue;
-  box-shadow: 1px 10px 10px lightgray;
+  padding: 30px 10px;
+  width: 100%;
+  /* min-height: fit-content; */
+  /* border: 3px solid rgb(139, 130, 130); */
+  /* border-radius: 8px; */
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
 }
 form{
   text-align: center;
@@ -38,15 +62,15 @@ h1 , h3{
   text-align: center;
 }
 
-@media only screen and (max-width: 750px) {
+/* @media only screen and (max-width: 750px) {
   .box{
     width: 500px;
   }
   .textfeild{
     width: 350px;
   }
-}
-
+} */
+/* 
 @media only screen and (max-width: 500px) {
   .box{
     width: 350px;
@@ -63,4 +87,4 @@ h1 , h3{
   .textfeild{
     width: 230px;
   }
-}
+} */
