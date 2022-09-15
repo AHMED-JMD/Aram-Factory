@@ -1,5 +1,5 @@
 ### register a user
-POST http://localhost:6000/user/register
+POST http://localhost:40000/user/register
 Content-Type: application/json
 
 {

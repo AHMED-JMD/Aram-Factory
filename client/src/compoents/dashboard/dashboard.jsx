@@ -1,8 +1,15 @@
 import React from "react";
 const Dashboard = () => {
   return (
-    <div className="dashboard">
-      <h1>still under construction !!!!</h1>
+    <div className="D-body">
+      <div className="dashboard">
+        <img
+          src="/images/setting.png"
+          className="D-img"
+          style={{ width: "300px", height: "200px" }}
+        />
+        <h3>still under construction !!!!</h3>
+      </div>
     </div>
   );
 };

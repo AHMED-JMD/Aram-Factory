@@ -18,7 +18,7 @@ mongoose
 // app.use(express.static("client/build"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors());
 
 //setting up routes
 app.use("/user/register", require("./routes/users/signup"));
