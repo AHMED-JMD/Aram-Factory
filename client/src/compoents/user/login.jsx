@@ -40,7 +40,7 @@ const Login = () => {
             my={2}
             component="h1"
           >
-            مصنع ارام للمواد الغذائية
+            مصنع إرم للمواد الغذائية
           </Typography>
           <Typography variant="h6" className="din">
             لوحة التحكم
