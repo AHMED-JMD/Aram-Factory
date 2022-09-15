@@ -24,8 +24,8 @@ app.use(cors());
 app.use("/user/register", require("./routes/users/signup"));
 app.use("/user/auth", require("./routes/users/login"));
 
-app.get("/", (req, res) => {
-  res.send("hello world");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 const Port = process.env.PORT || 40000;
