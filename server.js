@@ -15,10 +15,10 @@ mongoose
   .catch((e) => console.log("db_err = ", e));
 
 //middlewares
-app.use(express.static("client/build"));
+// app.use(express.static("client/build"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000" }));
 
 //setting up routes
 app.use("/user/register", require("./routes/users/signup"));
@@ -28,5 +28,5 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-const Port = process.env.PORT || 4200;
-app.listen(4000, () => console.log(`server running on port ${Port}`));
+const Port = process.env.PORT || 40000;
+app.listen(Port, () => console.log(`server running on port ${Port}`));

@@ -3,9 +3,10 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 
 const Login = () => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [err, setErr] = useState('')
+  const [errMsg, setErrMsg] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const HandleSubmit = (e) => {
@@ -14,12 +15,14 @@ const Login = () => {
 
     let data = {username, password}
 
-    axios.post('http://localhost:6000/user/auth', data)
+    axios.post('http://localhost:40000/user/auth', data)
      .then(res =>{
       setIsLoading(false);
       console.log(res.data);
+      navigate('/dashboard');
      }).catch(err =>{
-      setErr(err.response.data)
+      setIsLoading(false)
+      setErrMsg(err.response.data)
      })
   };
 
@@ -38,9 +41,9 @@ const Login = () => {
              </div>
            </div>
           ) }
-          {err && (
+          {/* {err && (
             <div className="alert alert-danger">{err.msg.msg} </div>
-          )}
+          )} */}
           <br />
           <form onSubmit={(e) => HandleSubmit(e)}>
             <div className="form-group">
