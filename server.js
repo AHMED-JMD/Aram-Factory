@@ -15,7 +15,7 @@ mongoose
   .catch((e) => console.log("db_err = ", e));
 
 //middlewares
-// app.use(express.static("client/build"));
+app.use(express.static("client/build"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
