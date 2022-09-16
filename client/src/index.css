@@ -23,7 +23,7 @@ body {
 }
 .Login{
   height: 100vh;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 100%, #000 0%), url('./assets/images/bg.jpg') !important;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 100%, #000 0%), url('/images/bg.jpg') !important;
   background-size: cover !important;
   /* background-position: center !important;
   background-repeat: no-repeat !important;  */
