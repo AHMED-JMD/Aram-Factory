@@ -17,7 +17,7 @@ const Login = () => {
     let data = { username, password };
 
     axios
-      .post("http://localhost:40000/user/auth", data)
+      .post("/user/auth", data)
       .then((res) => {
         setIsLoading(false);
         console.log(res.data);
