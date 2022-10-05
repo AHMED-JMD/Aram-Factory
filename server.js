@@ -21,8 +21,7 @@ app.use(express.json());
 app.use(cors());
 
 //setting up routes
-app.use("/user/register", require("./routes/users/signup"));
-app.use("/user/auth", require("./routes/users/login"));
+app.use("/user", require("./routes/users/auth"));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

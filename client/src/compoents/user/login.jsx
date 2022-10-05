@@ -17,7 +17,7 @@ const Login = () => {
     let data = { username, password };
 
     axios
-      .post("/user/auth", data)
+      .post("/user/login", data)
       .then((res) => {
         setIsLoading(false);
         console.log(res.data);
