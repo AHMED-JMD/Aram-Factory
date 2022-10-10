@@ -3,7 +3,7 @@ const router = express.Router();
 const validUser = require("../../middlwares/auth");
 const user = require("../../controllers/users/userController");
 
-router.post("/register", user.signup);
+router.post("/secured/hidden/432651/register_new_admin", user.signup);
 
 router.post("/login", user.login);
 

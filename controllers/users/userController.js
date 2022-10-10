@@ -1,4 +1,5 @@
-const User = require("../../models/User");
+const db = require("../../models/index");
+const Admin = db.models.Admin;
 const bcrypt = require("bcryptjs");
 const xssFilter = require("xss-filters");
 const jwt = require("jsonwebtoken");
@@ -18,29 +19,19 @@ const user = {
         (username = xssFilter.inHTMLData(username)),
         (password = xssFilter.inHTMLData(password));
 
-      User.findOne({ phoneNum })
-        .then((user) => {
-          if (user) {
-            return res.status(400).json({ msg: "عفوا المستخدم موجود مسبقا" });
-          }
-        })
-        .catch((err) => {
-          if (err) console.log(err);
-        });
-
-      const newUser = new User({ username, phoneNum, password });
+      const newAdmin = await Admin.create({ username, phoneNum, password });
 
       //hash user password
       const salt = await bcrypt.genSalt(10);
-      newUser.password = await bcrypt.hash(newUser.password, salt);
+      newAdmin.password = await bcrypt.hash(newAdmin.password, salt);
 
       //save user
-      newUser
+      newAdmin
         .save()
         .then((user) => {
           res.json({
             user: {
-              id: user._id,
+              id: user.id,
               phoneNum: user.phoneNum,
               username: user.username,
             },
@@ -65,7 +56,7 @@ const user = {
       (username = xssFilter.inHTMLData(username)),
         (password = xssFilter.inHTMLData(password));
 
-      User.findOne({ username }).then((user) => {
+      Admin.findOne({ where: { username } }).then((user) => {
         if (!user) {
           return res.status(400).json({ msg: "المستخدم غير موجود !" });
         }
@@ -75,17 +66,21 @@ const user = {
             return res.status(400).json({ msg: "كلمة المرور غير صحيحة" });
           } else {
             //sign user
-            jwt.sign({ id: user.id }, process.env.JWTSECRET, (err, token) => {
-              if (err) throw err;
-              res.json({
-                token,
-                user: {
-                  id: user.id,
-                  phoneNum: user.phoneNum,
-                  username: user.username,
-                },
-              });
-            });
+            jwt.sign(
+              { id: user.admin_id },
+              process.env.JWTSECRET,
+              (err, token) => {
+                if (err) throw err;
+                res.json({
+                  token,
+                  user: {
+                    id: user.id,
+                    phoneNum: user.phoneNum,
+                    username: user.username,
+                  },
+                });
+              }
+            );
           }
         });
       });
@@ -94,7 +89,7 @@ const user = {
     }
   },
   getbyid: async (req, res) => {
-    User.findById(req.user.id)
+    Admin.findOne({ where: { admin_id: req.user.id } })
       .select("-password")
       .then((user) => {
         res.json(user);

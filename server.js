@@ -1,18 +1,14 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const db = require("./models/index");
 require("dotenv").config();
 
-//connect to mongodb
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(console.log("connected to MongoDB"))
-  .catch((e) => console.log("db_err = ", e));
+//connect to database
+(async () => {
+  await db.sequelize.sync();
+})();
 
 //middlewares
 app.use(express.static("client/build"));
