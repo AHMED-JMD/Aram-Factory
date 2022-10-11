@@ -9,13 +9,21 @@
 body {
   margin: 0;
   height: 100vh;
-  /* background-color: #f7f7f7 !important; */
+  background-color: #f7f7f7 !important;
 }
 
 .App{
   font-family: "din" !important;
 }
-
+section {
+  padding: 100px 10px;
+  width: 100%;
+  margin: 0 auto !important;
+  overflow-x: hidden;
+}
+.main-color{
+  color: #1976d2 !important;
+}
 .din, .muirtl-14s5rfu-MuiFormLabel-root-MuiInputLabel-root
 /* , .muirtl-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused  */
  {
@@ -65,25 +73,13 @@ h3 {
   margin-top: 20px;
   text-align: center;
 }
-.D-body{
-  height: 100vh;
-  background-color: lightgray;
+
+/* sidebar  */
+.list-link{
+  color: rgb(82, 82, 82);
+  text-decoration: none;
 }
-.dashboard{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-/*animate image */
-.D-img{
-  animation: rotate 19s infinite linear;
-}
-@keyframes rotate {
-  from {
-    transform: rotate(-360deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+a,span, p, div, input, ul, li, input, label, button, td, tr{
+  font-family: "din", "Roboto" !important;
 }

@@ -102,7 +102,7 @@ const Login = () => {
             <br />
             <div>
               {" "}
-              نسيت كلمة السر؟ <a href="/dashboard">اضغط هنا</a>
+              نسيت كلمة السر؟ <a href="/">اضغط هنا</a>
             </div>
             <br />
             <Button
