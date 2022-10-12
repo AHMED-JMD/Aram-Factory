@@ -17,5 +17,6 @@ let db = {};
 db.sequelize = sequelize;
 db.models = {};
 db.models.Admin = require("./admin")(sequelize, Sequelize.DataTypes);
+db.models.Employee = require("./employee")(sequelize, Sequelize.DataTypes);
 
 module.exports = db;
