@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Stack } from "@mui/system";
 import {
   Button,
@@ -8,13 +8,16 @@ import {
   InputLabel,
   OutlinedInput,
   TextareaAutosize,
+  TextField,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import HomeIcon from "@mui/icons-material/Home";
-
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 const AddEmployees = () => {
+  const [value, setValue] = useState(null);
   return (
     <section className="add-employees">
       <form>
@@ -54,11 +57,27 @@ const AddEmployees = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
+                <InputLabel htmlFor="pin">المسمى الوظيفي</InputLabel>
+                <OutlinedInput
+                  label="المسمى الوظيفي"
+                  id="jobTitle-input"
+                  type="text"
+                  require="true"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <HomeIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="pin">الرقم الوطني</InputLabel>
                 <OutlinedInput
                   label="الرقم الوطني"
                   id="nationalid-input"
-                  type="email"
+                  type="text"
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -86,17 +105,17 @@ const AddEmployees = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">البريد الإلكتروني</InputLabel>
-                <OutlinedInput
-                  label="البريد الإلكتروني"
-                  id="email-input"
-                  type="email"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <EmailIcon />
-                    </InputAdornment>
-                  }
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="تاريخ الميلاد"
+                    value={value}
+                    onChange={(newValue) => {
+                      setValue(newValue);
+                    }}
+                    inputFormat="DD/MM/YYYY"
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
               </FormControl>
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
@@ -115,19 +134,9 @@ const AddEmployees = () => {
                 />
               </FormControl>
             </div>
-            <div className="col-12 mb-4">
-              <TextareaAutosize
-                aria-label="minimum height"
-                minRows={2}
-                placeholder="الملاحظات"
-                className="pt-3 px-3"
-                style={{ width: "100%", background: 'transparent', borderRadius: '4px' }}
-              />
-            </div>
-            <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4 pt-4">
               <FormControl style={{ width: "100%" }}>
                 <Input
-                  label="الملاحظات"
                   id="image-input"
                   type="file"
                   variant="standard"
@@ -135,7 +144,20 @@ const AddEmployees = () => {
                 />
               </FormControl>
             </div>
-            <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-12 mb-4">
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={2}
+                placeholder="الملاحظات"
+                className="pt-3 px-3"
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  borderRadius: "4px",
+                }}
+              />
+            </div>
+            <div className="col-12 mb-4">
               <Button
                 variant="contained"
                 color="primary"

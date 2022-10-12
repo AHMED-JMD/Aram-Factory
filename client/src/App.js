@@ -6,6 +6,7 @@ import Employees from "./pages/Employees";
 import { authContext } from "./context/AuthContext";
 import { Header, ProtectedRoute, Sidebar } from "./components";
 import AddEmployees from "./pages/AddEmployees";
+import PresentSchedule from "./pages/PresentSchedule";
 function App() {
   const { isAuthenticated } = useContext(authContext);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,6 +24,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Employees />} />
           <Route path="/add-employees" element={<AddEmployees />} />
+          {/* <Route path="/view-employees/:id" element={<AddEmployees />} /> */}
+          <Route path="/present-schedule" element={<PresentSchedule />} />
         </Routes>
       </Stack>
     </div>
