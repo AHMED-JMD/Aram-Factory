@@ -18,6 +18,7 @@ app.use(cors());
 
 //setting up routes
 app.use("/user", require("./routes/users/auth"));
+app.use("/employees", require("./routes/employees/Employee"));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

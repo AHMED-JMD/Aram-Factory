@@ -2,33 +2,16 @@ module.exports = (sequelize, DataTypes) => {
   const employee = sequelize.define(
     "employees",
     {
-      employee_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
+      emp_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      emp_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       Ssn: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-      },
-      imgLink: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      secondName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      thirdName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
         allowNull: false,
       },
       jobTitle: {
@@ -42,6 +25,29 @@ module.exports = (sequelize, DataTypes) => {
       phoneNum: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      date_birth: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      imgLink: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      attendee_count_M: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      attendee_count_Y: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      absent_date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
       notes: {
         type: DataTypes.STRING,
