@@ -34,13 +34,8 @@ const Sidebar = (props) => {
     {
       text: "دفتر الحضور",
       icon: <BusinessCenterIcon />,
-      to: "/agents",
-    },
-    {
-      text: "Reports",
-      icon: <BarChartIcon />,
-      to: "/reports",
-    },
+      to: "/present-schedule",
+    }
   ];
 
   let activeStyle = {
