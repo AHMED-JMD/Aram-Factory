@@ -36,18 +36,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       attendee_count_M: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         defaultValue: 0,
       },
       attendee_count_Y: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         defaultValue: 0,
       },
       absent_date: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
       notes: {
         type: DataTypes.STRING,

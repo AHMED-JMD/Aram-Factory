@@ -6,7 +6,7 @@ const employees = require("../../controllers/employees/employeeController");
 //setting up multer disk storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/images");
+    cb(null, "client/build/images");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
