@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       emp_id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false,
       },
       emp_name: {
@@ -22,12 +23,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      start_salary: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       phoneNum: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      date_birth: {
+      start_date: {
         type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      address: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       imgLink: {

@@ -13,10 +13,13 @@ const employees = {
         jobTitle,
         salary,
         phoneNum,
-        date_birth,
+        start_date,
+        address,
         notes,
       } = req.body;
+
       const { filename } = req.file;
+
       //make sure all data is provided
       if (
         !(
@@ -26,7 +29,8 @@ const employees = {
           jobTitle &&
           salary &&
           phoneNum &&
-          date_birth &&
+          start_date &&
+          address &&
           filename &&
           notes
         )
@@ -40,9 +44,14 @@ const employees = {
         (Ssn = xssFilter.inHTMLData(Ssn)),
         (jobTitle = xssFilter.inHTMLData(jobTitle)),
         (salary = xssFilter.inHTMLData(salary)),
-        (date_birth = xssFilter.inHTMLData(date_birth)),
+        (start_date = xssFilter.inHTMLData(start_date)),
         (notes = xssFilter.inHTMLData(notes)),
+        (address = xssFilter.inHTMLData(address)),
         (phoneNum = xssFilter.inHTMLData(phoneNum));
+
+      //make sure employee is unique
+      let employee = await Employee.findOne({ where: { emp_id } });
+      if (employee) return res.status(400).json("الرقم التعريفي موجود مسبقا");
 
       //add employee to database
       const newEmployee = await Employee.create({
@@ -51,8 +60,10 @@ const employees = {
         Ssn,
         jobTitle,
         salary,
+        start_salary: salary,
         phoneNum,
-        date_birth,
+        start_date,
+        address,
         imgLink: filename,
         notes,
       });
@@ -97,7 +108,8 @@ const employees = {
         jobTitle,
         salary,
         phoneNum,
-        date_birth,
+        start_date,
+        address,
         notes,
       } = req.body;
 
@@ -110,7 +122,8 @@ const employees = {
           jobTitle &&
           salary &&
           phoneNum &&
-          date_birth &&
+          start_date &&
+          address &&
           notes
         )
       ) {
@@ -123,7 +136,8 @@ const employees = {
         (Ssn = xssFilter.inHTMLData(Ssn)),
         (jobTitle = xssFilter.inHTMLData(jobTitle)),
         (salary = xssFilter.inHTMLData(salary)),
-        (date_birth = xssFilter.inHTMLData(date_birth)),
+        (start_date = xssFilter.inHTMLData(start_date)),
+        (address = xssFilter.inHTMLData(address)),
         (notes = xssFilter.inHTMLData(notes)),
         (phoneNum = xssFilter.inHTMLData(phoneNum));
 
@@ -135,7 +149,8 @@ const employees = {
           jobTitle,
           salary,
           phoneNum,
-          date_birth,
+          start_date,
+          address,
           notes,
         },
         { where: { emp_id } }
