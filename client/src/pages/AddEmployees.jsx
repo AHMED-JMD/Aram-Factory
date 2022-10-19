@@ -21,11 +21,12 @@ const AddEmployees = () => {
   const [value, setValue] = useState(null);
   const [emp_id, setEmp_id] = useState("");
   const [emp_name, setEmp_name] = useState("");
+  const [address, setAddress] = useState("");
   const [Ssn, setSsn] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [salary, setSalary] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
-  const [date_birth, setDate_birth] = useState("");
+  const [start_date, setStart_date] = useState("");
   const [notes, setNotes] = useState("");
   const [file, setFile] = useState("");
 
@@ -46,7 +47,8 @@ const AddEmployees = () => {
     data.append("jobTitle", jobTitle);
     data.append("salary", salary);
     data.append("phoneNum", phoneNum);
-    data.append("date_birth", date_birth);
+    data.append("start_date", start_date);
+    data.append("address", address);
     data.append("notes", notes);
     data.append("file", file);
 
@@ -54,12 +56,13 @@ const AddEmployees = () => {
     addEmployee(data)
       .then((res) => {
         setIsLoading(false);
+        setIsAdded(true);
         console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);
-        setErrMsg(err.data);
-        console.log(err);
+        setIsAdded(false);
+        setErrMsg(err.response.data);
       });
   };
   return (
@@ -141,6 +144,24 @@ const AddEmployees = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
+                <InputLabel htmlFor="pin">السكن</InputLabel>
+                <OutlinedInput
+                  label="السكن"
+                  id="address-input"
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  require="true"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <EmailIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="pin">رقم الجوال</InputLabel>
                 <OutlinedInput
                   label="رقم الجوال"
@@ -161,10 +182,10 @@ const AddEmployees = () => {
               <FormControl style={{ width: "100%" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    label="تاريخ الميلاد"
-                    value={date_birth}
-                    onChange={(date_birth) => {
-                      setDate_birth(date_birth);
+                    label="تاريخ التعيين"
+                    value={start_date}
+                    onChange={(start_date) => {
+                      setStart_date(start_date);
                     }}
                     inputFormat="YYYY/MM/DD"
                     renderInput={(params) => <TextField {...params} />}
@@ -240,13 +261,15 @@ const AddEmployees = () => {
               {errMsg && (
                 <>
                   <br />
+                  <br />
                   <div className="alert alert-danger">{errMsg}</div>
                 </>
               )}
               {isAdded && (
                 <>
                   <br />
-                  <div className="alert alert-danger">
+                  <br />
+                  <div className="alert alert-success">
                     تمت اضافة الموظف بنجاح
                   </div>
                 </>

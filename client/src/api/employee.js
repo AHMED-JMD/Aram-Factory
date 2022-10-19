@@ -3,11 +3,42 @@ import axiosClient from "./axiosClient";
 const addEmployee = async (data) => {
   try {
     let response = await axiosClient.post("/employees/add", data);
-    console.log(response);
     return response;
   } catch (error) {
-    return error.response;
+    throw error;
+  }
+};
+const viewAll = async () => {
+  try {
+    let response = await axiosClient.get("/employees/view");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+const viewOne = async (emp_id) => {
+  try {
+    let response = await axiosClient.post("/employees/viewOne", emp_id);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+const updateEmployee = async (data) => {
+  try {
+    let response = await axiosClient.post("/employees/update", data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+const deleteEmployee = async (emp_ids) => {
+  try {
+    let response = await axiosClient.post("/employees/delete", emp_ids);
+    return response;
+  } catch (error) {
+    throw error;
   }
 };
 
-export { addEmployee };
+export { addEmployee, viewAll, viewOne, updateEmployee, deleteEmployee };
