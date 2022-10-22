@@ -29,7 +29,7 @@ const Sidebar = (props) => {
     {
       text: "كشف المرتبات",
       icon: <AssignmentIcon />,
-      to: "/transactions",
+      to: "/salaries",
     },
     {
       text: "دفتر الحضور",
