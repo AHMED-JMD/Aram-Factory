@@ -57,7 +57,7 @@ const AddEmployees = () => {
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
-        console.log(res);
+        console.log(res.data);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -247,6 +247,8 @@ const AddEmployees = () => {
               >
                 تسجيل
               </Button>
+
+              {/* here is design for the loading and the message */}
               {isLoading && (
                 <div className="text-center">
                   <div

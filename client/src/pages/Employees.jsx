@@ -24,7 +24,7 @@ const Employees = () => {
   }, []);
   return (
     <section className="employees">
-      <EmployeesTable />
+      <EmployeesTable data={employees} />
     </section>
   );
 };

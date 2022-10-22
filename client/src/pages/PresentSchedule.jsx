@@ -15,6 +15,7 @@ const PresentSchedule = () => {
     viewAll()
       .then((res) => {
         setIsLoading(false);
+        //set data
         setEmployees(res.data);
       })
       .catch((err) => {

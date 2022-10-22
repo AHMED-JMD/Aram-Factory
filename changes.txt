@@ -1,0 +1,5 @@
+############AHMED TALAB##############################
+1- added api endpoint with axios in the front Pages(AddEmployee - Employee -PresentSchedule)
+2-added api folder in client
+2- add employee is working back and front !!!!except need to make sure file is provided first
+3- next attendence and salries checkout

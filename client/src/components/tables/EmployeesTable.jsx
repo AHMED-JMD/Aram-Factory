@@ -117,7 +117,13 @@ const headCells = [
     id: "dateofbirth",
     numeric: false,
     disablePadding: false,
-    label: "تاريخ الميلاد",
+    label: "تاريخ التعيين",
+  },
+  {
+    id: "address",
+    numeric: false,
+    disablePadding: false,
+    label: "السكن",
   },
   {
     id: "edit",
@@ -252,8 +258,8 @@ export default function EnhancedTable() {
     {
       id: "1",
       name: "محمد أحمد الطاهر ياسين",
-      title: 'مدير إنتاج',
-      birthDate: '12/23/2000',
+      title: "مدير إنتاج",
+      birthDate: "12/23/2000",
       phone: "249123456789",
       salary: 30000,
       url: "https://picsum.photos/seed/picsum/200/200",
@@ -262,7 +268,7 @@ export default function EnhancedTable() {
       id: "2",
       name: "ياسر عوض الكريم عيسى عبدالله",
       title: "فني",
-      birthDate: '12/23/2000',
+      birthDate: "12/23/2000",
       phone: "249123456789",
       salary: 20000,
       url: "https://picsum.photos/seed/picsum/200/200",
@@ -270,8 +276,8 @@ export default function EnhancedTable() {
     {
       id: "3",
       name: "عاصم فتحي صابر هارون",
-      title: 'مهندس كهرباء',
-      birthDate: '12/23/2000',
+      title: "مهندس كهرباء",
+      birthDate: "12/23/2000",
       phone: "249123456789",
       salary: 45000,
       url: "https://picsum.photos/seed/picsum/200/200",
@@ -426,9 +432,7 @@ export default function EnhancedTable() {
             <SearchIcon />
           </IconButton> */}
           <FormControl sx={{ width: "400px" }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">
-              بحث
-            </InputLabel>
+            <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
               // onChange=""
@@ -456,109 +460,113 @@ export default function EnhancedTable() {
           >
             <DeleteIcon />
           </IconButton>
-          <Button href="/add-employees" variant="contained" startIcon={<PersonAddIcon />}>
+          <Button
+            href="/add-employees"
+            variant="contained"
+            startIcon={<PersonAddIcon />}
+          >
             إضافة موظف جديد
           </Button>
         </div>
       </Stack>
       <Box>
-          <Paper sx={{ mb: 2 }}>
-            {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-            <TableContainer>
-              <Table
-                sx={{ minWidth: 750 }}
-                aria-labelledby="tableTitle"
-                size={dense ? "small" : "medium"}
-              >
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={data.length}
-                />
-                <TableBody>
-                  {/* if you don't need to support IE11, you can replace the `stableSort` call with:
+        <Paper sx={{ mb: 2 }}>
+          {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+          <TableContainer>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={data.length}
+              />
+              <TableBody>
+                {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                  {stableSort(data, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      const isItemSelected = isSelected(row.id);
-                      const labelId = `enhanced-table-checkbox-${index}`;
-                      return (
-                        <TableRow
-                          hover
-                          onClick={(event) => handleClick(event, row)}
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.id}
-                          selected={isItemSelected}
+                {stableSort(data, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              color="primary"
-                              checked={isItemSelected}
-                              inputProps={{
-                                "aria-labelledby": labelId,
-                              }}
+                          <ListItem disablePadding>
+                            <Avatar alt="user" src={row.url} />
+                            <ListItemText
+                              style={{ margin: "10px" }}
+                              primary={row.name}
                             />
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                          >
-                            <ListItem disablePadding>
-                              <Avatar alt="user" src={row.url} />
-                              <ListItemText
-                                style={{ margin: "10px" }}
-                                primary={row.name}
-                              />
-                            </ListItem>
-                          </TableCell>
-                              <TableCell>{row.id}</TableCell>
-                              <TableCell>{row.title}</TableCell>
-                          <TableCell>
-                           <span>{row.salary} جنيه</span>
-                          </TableCell>
-                          <TableCell>{row.phone}</TableCell>
-                          <TableCell>{row.birthDate}</TableCell>
-                          <TableCell>
-                            <Link className="edit-btn" to={`/users/${row.id}`}>
-                              <IconButton>
-                                <VisibilityIcon />
-                              </IconButton>
-                            </Link>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow
-                      style={{
-                        height: (dense ? 33 : 53) * emptyRows,
-                      }}
-                    >
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              style={{ padding: "0", direction: 'ltr', alignItems: 'center' }}
-            />
-          </Paper>
+                          </ListItem>
+                        </TableCell>
+                        <TableCell>{row.id}</TableCell>
+                        <TableCell>{row.title}</TableCell>
+                        <TableCell>
+                          <span>{row.salary} جنيه</span>
+                        </TableCell>
+                        <TableCell>{row.phone}</TableCell>
+                        <TableCell>{row.birthDate}</TableCell>
+                        <TableCell>
+                          <Link className="edit-btn" to={`/users/${row.id}`}>
+                            <IconButton>
+                              <VisibilityIcon />
+                            </IconButton>
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            style={{ padding: "0", direction: "ltr", alignItems: "center" }}
+          />
+        </Paper>
       </Box>
     </>
   );
