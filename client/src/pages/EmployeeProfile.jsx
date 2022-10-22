@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Stack } from "@mui/system";
 import {
+    Avatar,
   Button,
   FormControl,
   Input,
@@ -10,17 +11,17 @@ import {
   TextareaAutosize,
   TextField,
 } from "@mui/material";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PhoneIcon from "@mui/icons-material/Phone";
 import HomeIcon from "@mui/icons-material/Home";
-import PersonIcon from '@mui/icons-material/Person';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import WorkIcon from '@mui/icons-material/Work';
+import PersonIcon from "@mui/icons-material/Person";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import WorkIcon from "@mui/icons-material/Work";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addEmployee } from "../api/employee";
-const AddEmployees = () => {
+const EmployeeProfile = () => {
   const [value, setValue] = useState(null);
   const [emp_id, setEmp_id] = useState("");
   const [emp_name, setEmp_name] = useState("");
@@ -73,6 +74,13 @@ const AddEmployees = () => {
       <form onSubmit={handleSubmit}>
         <div className="container">
           <div className="row">
+            <div className="col-12 d-flex justify-content-center mb-4">
+              <Avatar
+                alt="Remy Sharp"
+                src="https://picsum.photos/seed/picsum/200/200"
+                sx={{ width: 150, height: 150 }}
+              />
+            </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="pin">الإسم</InputLabel>
@@ -285,4 +293,4 @@ const AddEmployees = () => {
   );
 };
 
-export default AddEmployees;
+export default EmployeeProfile;

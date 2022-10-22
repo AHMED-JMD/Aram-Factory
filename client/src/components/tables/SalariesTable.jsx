@@ -19,6 +19,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Link } from "react-router-dom";
@@ -87,43 +89,67 @@ const headCells = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "الإسم رباعي",
-  },
-  {
-    id: "id",
-    numeric: false,
-    disablePadding: false,
-    label: "الرقم التعريفي",
+    label: "الإسم",
   },
   {
     id: "title",
     numeric: false,
-    disablePadding: false,
-    label: "المسمى الوظيفي",
+    disablePadding: true,
+    label: "الوظيفة",
   },
   {
     id: "salary",
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: "الراتب",
   },
   {
-    id: "phone",
+    id: "plus",
     numeric: true,
     disablePadding: false,
-    label: "رقم الجوال",
+    label: "الإضافي",
   },
   {
-    id: "dateofbirth",
-    numeric: false,
+    id: "m17",
+    numeric: true,
     disablePadding: false,
-    label: "تاريخ الميلاد",
+    label: "منحة رئاسية 2017",
   },
   {
-    id: "edit",
-    numeric: false,
+    id: "m19",
+    numeric: true,
     disablePadding: false,
-    label: "عرض/تعديل",
+    label: "منحة خاصة 2019",
+  },
+  {
+    id: "m20",
+    numeric: true,
+    disablePadding: false,
+    label: "منحة العام 2020",
+  },
+  {
+    id: "m22",
+    numeric: true,
+    disablePadding: false,
+    label: "منحة العام 2022",
+  },
+  {
+    id: "mceo",
+    numeric: true,
+    disablePadding: false,
+    label: "منحة المدير العام",
+  },
+  {
+    id: "p",
+    numeric: true,
+    disablePadding: false,
+    label: "خصم التأمين",
+  },
+  {
+    id: "ss",
+    numeric: true,
+    disablePadding: false,
+    label: "صافي المرتب",
   },
 ];
 
@@ -143,7 +169,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox"> */}
           {/* <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -153,12 +179,12 @@ function EnhancedTableHead(props) {
               "aria-label": "select all desserts",
             }}
           /> */}
-        </TableCell>
+        {/* </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             // align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            // padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -251,7 +277,7 @@ export default function EnhancedTable() {
   const data = [
     {
       id: "1",
-      name: "محمد أحمد الطاهر ياسين",
+      name: "الطاهر ياسين",
       title: 'مدير إنتاج',
       birthDate: '12/23/2000',
       phone: "249123456789",
@@ -260,7 +286,7 @@ export default function EnhancedTable() {
     },
     {
       id: "2",
-      name: "ياسر عوض الكريم عيسى عبدالله",
+      name: "عيسى عبدالله",
       title: "فني",
       birthDate: '12/23/2000',
       phone: "249123456789",
@@ -269,7 +295,7 @@ export default function EnhancedTable() {
     },
     {
       id: "3",
-      name: "عاصم فتحي صابر هارون",
+      name: "عاصم هارون",
       title: 'مهندس كهرباء',
       birthDate: '12/23/2000',
       phone: "249123456789",
@@ -448,16 +474,8 @@ export default function EnhancedTable() {
           </FormControl>
         </div>
         <div>
-          <IconButton
-            aria-label="delete"
-            onClick={handleOpen}
-            disabled={selected.length === 0 ? true : false}
-            style={{ margin: "0 10px" }}
-          >
-            <DeleteIcon />
-          </IconButton>
           <Button href="/add-employees" variant="contained" startIcon={<PersonAddIcon />}>
-            إضافة موظف جديد
+            حفظ
           </Button>
         </div>
       </Stack>
@@ -496,7 +514,7 @@ export default function EnhancedTable() {
                           key={row.id}
                           selected={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
+                          {/* <TableCell padding="checkbox">
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
@@ -504,12 +522,12 @@ export default function EnhancedTable() {
                                 "aria-labelledby": labelId,
                               }}
                             />
-                          </TableCell>
-                          <TableCell
+                          </TableCell> */}
+                           <TableCell
                             component="th"
                             id={labelId}
                             scope="row"
-                            padding="none"
+                            // padding="none"
                           >
                             <ListItem disablePadding>
                               <Avatar alt="user" src={row.url} />
@@ -519,20 +537,17 @@ export default function EnhancedTable() {
                               />
                             </ListItem>
                           </TableCell>
-                              <TableCell>{row.id}</TableCell>
-                              <TableCell>{row.title}</TableCell>
-                          <TableCell>
-                           <span>{row.salary} جنيه</span>
-                          </TableCell>
-                          <TableCell>{row.phone}</TableCell>
-                          <TableCell>{row.birthDate}</TableCell>
-                          <TableCell>
-                            <Link className="edit-btn" to={`/employees/${row.id}`}>
-                              <IconButton>
-                                <VisibilityIcon />
-                              </IconButton>
-                            </Link>
-                          </TableCell>
+                        
+                          <TableCell>{row.title}</TableCell>
+                          <TableCell><TextField id="s" variant="standard" /></TableCell>
+                              <TableCell><TextField id="ss" variant="standard" /></TableCell>
+                              <TableCell><TextField id="sws" variant="standard" /></TableCell>
+                              <TableCell><TextField id="ess" variant="standard" /></TableCell>
+                              <TableCell><TextField id="gss" variant="standard" /></TableCell>
+                              <TableCell><TextField id="uss" variant="standard" /></TableCell>
+                              <TableCell><TextField id="sos" variant="standard" /></TableCell>
+                              <TableCell><TextField id="cs" variant="standard" /></TableCell>
+                              <TableCell><TextField id="eis" variant="standard" /></TableCell>
                         </TableRow>
                       );
                     })}
