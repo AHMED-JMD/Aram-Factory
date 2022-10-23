@@ -8,9 +8,14 @@ const addEmployee = async (data) => {
     throw error;
   }
 };
-const viewAll = async () => {
+const viewAll = async (page) => {
   try {
-    let response = await axiosClient.get("/employees/view");
+    console.log(page);
+    let response = await axiosClient.get("/employees/view", {
+      headers: {
+        page: page,
+      },
+    });
     return response;
   } catch (error) {
     throw error;

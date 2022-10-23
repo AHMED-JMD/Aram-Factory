@@ -253,7 +253,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(employeeData) {
   const data = [
     {
       id: "1",
@@ -283,6 +283,8 @@ export default function EnhancedTable() {
       url: "https://picsum.photos/seed/picsum/200/200",
     },
   ];
+
+  console.log(employeeData.length);
   const [open, setOpen] = React.useState(false);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const handleOpen = () => setOpen(true);

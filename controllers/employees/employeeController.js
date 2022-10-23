@@ -77,10 +77,18 @@ const employees = {
   },
   viewAll: async (req, res) => {
     try {
-      const employees = await Employee.findAll();
+      let { page } = req.headers || 0;
+      //set pagination
+      const employees = await Employee.findAll({
+        offset: page * 10,
+        limit: 10,
+      });
 
-      res.json(employees);
+      //count rows number
+      const count = await Employee.count();
+      res.json({ count, employees });
     } catch (error) {
+      if (error) throw error;
       console.log(error);
     }
   },
@@ -96,6 +104,7 @@ const employees = {
 
       res.json(employee);
     } catch (error) {
+      if (error) throw error;
       console.log(error);
     }
   },
@@ -158,6 +167,7 @@ const employees = {
 
       res.json(newEmployee);
     } catch (error) {
+      if (error) throw error;
       console.log(error);
     }
   },
@@ -175,6 +185,7 @@ const employees = {
       });
       res.send("deleted records successfully");
     } catch (error) {
+      if (error) throw error;
       console.log(error);
     }
   },
