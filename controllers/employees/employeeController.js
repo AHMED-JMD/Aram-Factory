@@ -12,6 +12,7 @@ const employees = {
         Ssn,
         jobTitle,
         salary,
+        penalty,
         phoneNum,
         start_date,
         address,
@@ -28,11 +29,11 @@ const employees = {
           Ssn &&
           jobTitle &&
           salary &&
+          penalty &&
           phoneNum &&
           start_date &&
           address &&
-          filename &&
-          notes
+          filename
         )
       ) {
         return res.status(400).json("الرجاء ملء جميع الحقول");
@@ -61,6 +62,7 @@ const employees = {
         jobTitle,
         salary,
         start_salary: salary,
+        penalty,
         phoneNum,
         start_date,
         address,

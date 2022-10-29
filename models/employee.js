@@ -25,7 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       start_salary: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+      },
+      penalty: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       phoneNum: {
         type: DataTypes.INTEGER,
@@ -41,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgLink: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       attendee_count_M: {
         type: DataTypes.INTEGER,
@@ -52,11 +54,13 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
       },
       absent_date: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: [],
       },
       notes: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: "",
       },
     },
     {
