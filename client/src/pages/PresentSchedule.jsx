@@ -12,7 +12,8 @@ const PresentSchedule = () => {
     setIsLoading(true);
 
     //call db for data
-    viewAll()
+    let page = 0
+    viewAll(page)
       .then((res) => {
         setIsLoading(false);
         //set data

@@ -539,7 +539,7 @@ export default function EnhancedTable() {
                           </TableCell>
                         
                           <TableCell>{row.title}</TableCell>
-                          <TableCell><TextField id="s" variant="standard" /></TableCell>
+                          <TableCell>{row.salary}</TableCell>
                               <TableCell><TextField id="ss" variant="standard" /></TableCell>
                               <TableCell><TextField id="sws" variant="standard" /></TableCell>
                               <TableCell><TextField id="ess" variant="standard" /></TableCell>
@@ -547,7 +547,7 @@ export default function EnhancedTable() {
                               <TableCell><TextField id="uss" variant="standard" /></TableCell>
                               <TableCell><TextField id="sos" variant="standard" /></TableCell>
                               <TableCell><TextField id="cs" variant="standard" /></TableCell>
-                              <TableCell><TextField id="eis" variant="standard" /></TableCell>
+                              <TableCell>{row.salary}</TableCell>
                         </TableRow>
                       );
                     })}

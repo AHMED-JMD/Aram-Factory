@@ -6,10 +6,10 @@ const db = require("./models/index");
 require("dotenv").config();
 
 //connect to database
-(async () => {
-  await db.sequelize.sync();
-  console.log("Connected to MySQL");
-})();
+// (async () => {
+//   await db.sequelize.sync();
+//   console.log("Connected to MySQL");
+// })();
 
 //middlewares
 app.use(express.static("client/build"));
