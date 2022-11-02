@@ -16,7 +16,32 @@ const sequelize = new Sequelize(
 let db = {};
 db.sequelize = sequelize;
 db.models = {};
-db.models.Admin = require("./admin")(sequelize, Sequelize.DataTypes);
-db.models.Employee = require("./employee")(sequelize, Sequelize.DataTypes);
+//require the objects
+let Admin = require("./admin")(sequelize, Sequelize.DataTypes);
+let Employee = require("./employee")(sequelize, Sequelize.DataTypes);
+let Deduct = require("./discount")(sequelize, Sequelize.DataTypes);
+let Checkout = require("./salariesCheck")(sequelize, Sequelize.DataTypes);
+let Grants = require("./grants")(sequelize, Sequelize.DataTypes);
+
+//sql relationship here -------------------------------
+//checkout and employee
+Employee.hasMany(Checkout);
+Checkout.belongsTo(Employee);
+
+//deduct & employee
+Employee.hasMany(Deduct);
+Deduct.belongsTo(Employee);
+
+//grant & employee
+Employee.hasOne(Grants);
+Grants.belongsTo(Employee);
+//-----------------------------------------------------
+
+//add to db models
+db.models.Admin = Admin;
+db.models.Employee = Employee;
+db.models.Deduct = Deduct;
+db.models.Checkout = Checkout;
+db.models.Grants = Grants;
 
 module.exports = db;

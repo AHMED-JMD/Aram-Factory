@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { login } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
+import { useContext } from "react";
+import { authContext } from "../context/AuthContext";
 
 const Login = () => {
+  const { auth, setAuth } = useContext(authContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,14 +18,13 @@ const Login = () => {
     setIsLoading(true);
     e.preventDefault();
 
-    let data = { username, password };
-
-    axios
-      .post("/user/login", data)
+    //call database
+    login(username, password)
       .then((res) => {
         setIsLoading(false);
-        console.log(res.data);
-        navigate("/dashboard");
+        setAuth({ isAuthanticated: true, user: res.data.user });
+        console.log(res);
+        navigate("/");
       })
       .catch((err) => {
         setIsLoading(false);

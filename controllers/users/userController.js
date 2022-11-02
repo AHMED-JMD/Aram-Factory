@@ -90,9 +90,11 @@ const user = {
   },
   getbyid: async (req, res) => {
     Admin.findOne({ where: { admin_id: req.user.id } })
-      .select("-password")
       .then((user) => {
-        res.json(user);
+        res.json({
+          username: user.username,
+          phoneNum: user.phoneNum,
+        });
       })
       .catch((err) => console.log(err));
   },

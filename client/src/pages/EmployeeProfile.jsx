@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Stack } from "@mui/system";
 import {
-    Avatar,
+  Avatar,
   Button,
   FormControl,
   Input,
@@ -20,7 +20,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { addEmployee } from "../api/employee";
+import { updateEmployee } from "../api/employee";
 const EmployeeProfile = () => {
   const [value, setValue] = useState(null);
   const [emp_id, setEmp_id] = useState("");
@@ -29,6 +29,7 @@ const EmployeeProfile = () => {
   const [Ssn, setSsn] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [salary, setSalary] = useState("");
+  const [penalty, setPenalty] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [start_date, setStart_date] = useState("");
   const [notes, setNotes] = useState("");
@@ -50,6 +51,7 @@ const EmployeeProfile = () => {
     data.append("Ssn", Ssn);
     data.append("jobTitle", jobTitle);
     data.append("salary", salary);
+    data.append("penalty", penalty);
     data.append("phoneNum", phoneNum);
     data.append("start_date", start_date);
     data.append("address", address);
@@ -57,7 +59,7 @@ const EmployeeProfile = () => {
     data.append("file", file);
 
     //data to server
-    addEmployee(data)
+    updateEmployee(data)
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);

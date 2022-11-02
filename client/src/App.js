@@ -10,16 +10,16 @@ import PresentSchedule from "./pages/PresentSchedule";
 import EmployeeProfile from "./pages/EmployeeProfile";
 import Salaries from "./pages/Salaries";
 function App() {
-  const { isAuthenticated } = useContext(authContext);
+  const { auth } = useContext(authContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
   return (
     <div className="App" dir="rtl">
-      {isAuthenticated && <Header toggleFunc={handleDrawerToggle} />}
+      {auth.isAuthenticated && <Header toggleFunc={handleDrawerToggle} />}
       <Stack direction="row" spacing={1}>
-        {isAuthenticated && (
+        {auth.isAuthenticated && (
           <Sidebar open={mobileOpen} close={handleDrawerToggle} />
         )}
         <Routes>
