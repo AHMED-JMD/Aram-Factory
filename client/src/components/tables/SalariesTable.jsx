@@ -474,7 +474,7 @@ export default function EnhancedTable() {
           </FormControl>
         </div>
         <div>
-          <Button href="/add-employees" variant="contained" startIcon={<PersonAddIcon />}>
+          <Button variant="contained" endIcon={<PersonAddIcon />}>
             حفظ
           </Button>
         </div>
@@ -540,13 +540,13 @@ export default function EnhancedTable() {
                         
                           <TableCell>{row.title}</TableCell>
                           <TableCell>{row.salary}</TableCell>
-                              <TableCell><TextField id="ss" variant="standard" /></TableCell>
-                              <TableCell><TextField id="sws" variant="standard" /></TableCell>
-                              <TableCell><TextField id="ess" variant="standard" /></TableCell>
-                              <TableCell><TextField id="gss" variant="standard" /></TableCell>
-                              <TableCell><TextField id="uss" variant="standard" /></TableCell>
-                              <TableCell><TextField id="sos" variant="standard" /></TableCell>
-                              <TableCell><TextField id="cs" variant="standard" /></TableCell>
+                          <TableCell>489</TableCell>
+                          <TableCell>489</TableCell>
+                          <TableCell>489</TableCell>
+                          <TableCell>489</TableCell>
+                          <TableCell>489</TableCell>
+                          <TableCell>489</TableCell>
+                          <TableCell>489</TableCell>
                               <TableCell>{row.salary}</TableCell>
                         </TableRow>
                       );

@@ -27,11 +27,14 @@ import {
   Button,
   Divider,
   FormControl,
+  Input,
   InputAdornment,
   InputLabel,
   ListItem,
   ListItemText,
+  MenuItem,
   OutlinedInput,
+  Select,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -83,6 +86,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  {
+    id: "check",
+    numeric: false,
+    disablePadding: true,
+    label: "",
+  },
   {
     id: "name",
     numeric: false,
@@ -285,10 +294,13 @@ export default function EnhancedTable(employeeData) {
   ];
 
   console.log(employeeData.length);
-  const [open, setOpen] = React.useState(false);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
 
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
@@ -383,11 +395,11 @@ export default function EnhancedTable(employeeData) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Delete a user
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            حذف موظف
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2, mb: 1 }}>
-            are you sure you want to delete:
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            هل انت متأكد من حذف:
           </Typography>
           {selected.map(({ name }) => (
             <Typography key={name}>- {name}</Typography>
@@ -413,14 +425,66 @@ export default function EnhancedTable(employeeData) {
         </Box>
       </Modal>
 
-      {/* <input
-          key="search"
-          className="form-control"
-          type="text"
-          value={searchTxt}
-          placeholder="Search for content.."
-          onChange={(e) => search(e.target.value)}
-        /> */}
+      <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="add-new-salary-cut"
+        aria-describedby="add-new-salary-cut"
+      >
+        <Box sx={style}>
+          <Typography id="cut-title" variant="h6" component="h1">
+            خصم مرتب
+          </Typography>
+          <Typography id="cut-description" sx={{ mb: 1 }}>
+            قم بإختيار الموظف وقيمة الخصم:
+          </Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">إسم الموظف</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              // value={age}
+              label="إسم الموظف"
+              // onChange={handleChange}
+            >
+              <MenuItem value={10}>1</MenuItem>
+              <MenuItem value={20}>2</MenuItem>
+              <MenuItem value={30}>3</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+          <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
+          <Input
+            id="standard-adornment-amount"
+            // value={values.amount}
+            // onChange={handleChange('amount')}
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+          />
+        </FormControl>
+          {selected.map(({ name }) => (
+            <Typography key={name}>- {name}</Typography>
+          ))}
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              // onClick={() => deleteItem()}
+            >
+              موافق
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              style={{ margin: "0 10px" }}
+              onClick={handleClose}
+            >
+              إلغاء
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
       <Stack
         direction="row"
         alignItems="center"
@@ -428,11 +492,7 @@ export default function EnhancedTable(employeeData) {
         // spacing={5}
         mb={1}
       >
-        <div>
-          {/* <TextField label="Search input" variant="outlined" fullWidth />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton> */}
+        <div className="d-flex align-items-center">
           <FormControl sx={{ width: "400px" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
@@ -452,6 +512,14 @@ export default function EnhancedTable(employeeData) {
               label="search"
             />
           </FormControl>
+          <Button
+            variant="contained"
+            endIcon={<PersonAddIcon />}
+            className="mx-2"
+            onClick={handleOpen2}
+          >
+            إضافة خصم جديد
+          </Button>
         </div>
         <div>
           <IconButton
@@ -465,7 +533,7 @@ export default function EnhancedTable(employeeData) {
           <Button
             href="/add-employees"
             variant="contained"
-            startIcon={<PersonAddIcon />}
+            endIcon={<PersonAddIcon />}
           >
             إضافة موظف جديد
           </Button>
@@ -542,6 +610,7 @@ export default function EnhancedTable(employeeData) {
                         </TableCell>
                         <TableCell>{row.phone}</TableCell>
                         <TableCell>{row.birthDate}</TableCell>
+                        <TableCell>امدرمان</TableCell>
                         <TableCell>
                           <Link
                             className="edit-btn"
