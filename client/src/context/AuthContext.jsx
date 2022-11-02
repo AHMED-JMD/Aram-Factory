@@ -5,7 +5,7 @@ export const authContext = createContext();
 
 const AuthContextProvider = (props) => {
   const [auth, setAuth] = useState({
-    isAuthenticated: true,
+    isAuthenticated: false,
     user: {},
   });
   console.log(auth);

@@ -22,8 +22,8 @@ const Login = () => {
     login(username, password)
       .then((res) => {
         setIsLoading(false);
-        setAuth({ isAuthanticated: true, user: res.data.user });
         console.log(res);
+        setAuth({ isAuthanticated: true, user: res.user });
         navigate("/");
       })
       .catch((err) => {
