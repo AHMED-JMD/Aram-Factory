@@ -6,5 +6,7 @@ const checkout = require("../../controllers/employees/salariesController");
 router.post("/", checkout.add);
 //view checkouts with users
 router.get("/", checkout.view);
+//view users with their grants
+router.get("/get-all", checkout.viewSchedule);
 
 module.exports = router;

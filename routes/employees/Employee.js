@@ -20,8 +20,15 @@ router.post("/add", upload.single("file"), employees.add);
 router.get("/view", employees.viewAll);
 //show one employee
 router.post("/viewOne", employees.viewOne);
+
 //update employees
+//1- update basic info
 router.post("/update", employees.update);
+//2- update grants
+router.post("/update_grants", employees.updateGrants);
+//3- update image
+router.post("/update_image", upload.single("file"), employees.updateImage);
+
 //delete employees
 router.post("/delete", employees.delete);
 //record absent
