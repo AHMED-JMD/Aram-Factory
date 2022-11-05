@@ -430,15 +430,6 @@ export default function EnhancedTable() {
           </div>
         </Box>
       </Modal>
-
-      {/* <input
-          key="search"
-          className="form-control"
-          type="text"
-          value={searchTxt}
-          placeholder="Search for content.."
-          onChange={(e) => search(e.target.value)}
-        /> */}
       <Stack
         direction="row"
         alignItems="center"
@@ -446,11 +437,7 @@ export default function EnhancedTable() {
         // spacing={5}
         mb={1}
       >
-        <div>
-          {/* <TextField label="Search input" variant="outlined" fullWidth />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton> */}
+        <div className="d-flex align-items-center">
           <FormControl sx={{ width: "400px" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               بحث
@@ -472,6 +459,16 @@ export default function EnhancedTable() {
               label="search"
             />
           </FormControl>
+          <Button
+            variant="contained"
+            aria-label="add new present table"
+            endIcon={<PersonAddIcon />}
+            // disabled={selected.length === 0 ? true : false}
+            // onClick={}
+            className="mx-2"
+          >
+            إضافة كشف جديد
+          </Button>
         </div>
         <div>
           <Button variant="contained" endIcon={<PersonAddIcon />}>

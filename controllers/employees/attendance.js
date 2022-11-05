@@ -3,6 +3,8 @@ const xssFilter = require("xss-filters");
 const { Sequelize } = require("sequelize");
 
 const Employee = db.models.Employee;
+const Deduct = db.models.Deduct;
+
 const attend = {
   absent: async (req, res) => {
     try {
@@ -59,10 +61,10 @@ const attend = {
   },
   borrow: async (req, res) => {
     try {
-      let { emp_id, amount } = req.body;
+      let { emp_name, amount } = req.body;
 
       //find and update salary from db
-      let employee = await Employee.findOne({ where: { emp_id } });
+      let employee = await Employee.findOne({ where: { emp_name } });
 
       //if amount is bigger than half the salary reject
       if (amount > employee.salary / 2) {
@@ -71,7 +73,14 @@ const attend = {
       //update employee
       employee.salary = employee.salary - amount;
       await employee.save();
-      res.json(employee);
+
+      //save deduct data
+      const newDeduct = await Deduct.create({
+        amount,
+        employeeEmpId: employee.emp_id,
+      });
+
+      res.json({ employee, newDeduct });
     } catch (error) {
       if (error) throw error;
     }

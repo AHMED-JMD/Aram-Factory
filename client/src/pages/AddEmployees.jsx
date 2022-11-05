@@ -11,12 +11,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PhoneIcon from "@mui/icons-material/Phone";
 import HomeIcon from "@mui/icons-material/Home";
-import PersonIcon from '@mui/icons-material/Person';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import WorkIcon from '@mui/icons-material/Work';
+import PersonIcon from "@mui/icons-material/Person";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import WorkIcon from "@mui/icons-material/Work";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -30,6 +30,7 @@ const AddEmployees = () => {
   const [Ssn, setSsn] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [salary, setSalary] = useState("");
+  const [penalty, setPenalty] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [start_date, setStart_date] = useState("");
   const [notes, setNotes] = useState("");
@@ -51,6 +52,7 @@ const AddEmployees = () => {
     data.append("Ssn", Ssn);
     data.append("jobTitle", jobTitle);
     data.append("salary", salary);
+    data.append("penalty", penalty);
     data.append("phoneNum", phoneNum);
     data.append("start_date", start_date);
     data.append("address", address);
@@ -219,6 +221,24 @@ const AddEmployees = () => {
                 />
               </FormControl>
             </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel htmlFor="pin">الخصم عند الغياب</InputLabel>
+                <OutlinedInput
+                  label="الخصم"
+                  id="penalty-input"
+                  type="number"
+                  value={penalty}
+                  onChange={(e) => setPenalty(e.target.value)}
+                  require="true"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <AttachMoneyIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </div>
             <div className="col-12 mb-4">
               <TextareaAutosize
                 aria-label="minimum height"
@@ -262,7 +282,7 @@ const AddEmployees = () => {
                   // onChange={}
                   require="true"
                 />
-              </FormControl>
+              </FormControl>  
             </div>
           <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>

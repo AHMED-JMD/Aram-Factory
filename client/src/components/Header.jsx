@@ -36,7 +36,7 @@ const Header = ({ toggleFunc }) => {
     },
   ];
 
-  const {isAuthenticated, setIsAuthenticated} = useContext(authContext);
+  const { auth, setAuth } = useContext(authContext);
   const Navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -48,13 +48,13 @@ const Header = ({ toggleFunc }) => {
   };
 
   const HandleLogout = (e) => {
-    setIsAuthenticated(false)
-    Navigate('/login')
-  }
+    setAuth({ isAuthenticated: false });
+    Navigate("/login");
+  };
   return (
     <AppBar
       position="fixed"
-      style={{ zIndex: "1300"}}
+      style={{ zIndex: "1300" }}
       xs={{
         color: "black",
       }}
@@ -87,14 +87,12 @@ const Header = ({ toggleFunc }) => {
           منصة التحكم
         </Typography>
         <Box sx={{ flexGrow: 0 }}>
-          <MenuItem 
-                onClick={()=> HandleLogout()}
-                >
-                  <ListItemIcon>
-                    <ExitToAppIcon />
-                  </ListItemIcon>
-                  تسجيل الخروج
-                </MenuItem>
+          <MenuItem onClick={() => HandleLogout()}>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            تسجيل الخروج
+          </MenuItem>
         </Box>
       </Toolbar>
     </AppBar>
