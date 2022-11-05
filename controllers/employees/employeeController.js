@@ -31,6 +31,7 @@ const employees = {
         start_date,
         address,
         notes,
+        extra,
         grant17,
         grant19,
         grant20,
@@ -51,6 +52,7 @@ const employees = {
           salary &&
           penalty &&
           phoneNum &&
+          extra &&
           grant17 &&
           grant19 &&
           grant20 &&
@@ -74,6 +76,7 @@ const employees = {
         (start_date = xssFilter.inHTMLData(start_date)),
         (notes = xssFilter.inHTMLData(notes)),
         (address = xssFilter.inHTMLData(address)),
+        (extra = xssFilter.inHTMLData(extra)),
         (grant17 = xssFilter.inHTMLData(grant17)),
         (grant19 = xssFilter.inHTMLData(grant19)),
         (grant20 = xssFilter.inHTMLData(grant20)),
@@ -105,6 +108,7 @@ const employees = {
       });
       //add grants to grant db
       let newGrant = await Grants.create({
+        extra,
         grant17,
         grant19,
         grant20,
@@ -122,16 +126,11 @@ const employees = {
   },
   viewAll: async (req, res) => {
     try {
-      let { page } = req.headers || 0;
       //set pagination
-      const employees = await Employee.findAll({
-        offset: page * 10,
-        limit: 10,
-      });
+      const employees = await Employee.findAll({});
 
       //count rows number
-      const count = await Employee.count();
-      res.json({ count, employees });
+      res.json({ employees });
     } catch (error) {
       if (error) throw error;
       console.log(error);
