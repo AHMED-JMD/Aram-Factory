@@ -9,6 +9,7 @@ import {
   OutlinedInput,
   TextareaAutosize,
   TextField,
+  Typography,
 } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -20,6 +21,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addEmployee } from "../api/employee";
+import { Title } from "@mui/icons-material";
 const AddEmployees = () => {
   const [value, setValue] = useState(null);
   const [emp_id, setEmp_id] = useState("");
@@ -74,6 +76,9 @@ const AddEmployees = () => {
     <section className="add-employees">
       <form onSubmit={handleSubmit}>
         <div className="container">
+          <Typography variant="h5" component="h1" mb={2}>
+            البيانات الأساسية
+          </Typography>
           <div className="row">
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
@@ -234,17 +239,6 @@ const AddEmployees = () => {
                 />
               </FormControl>
             </div>
-            <div className="col-lg-6 col-sm-12 mb-4 pt-4">
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  type="file"
-                  id="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  variant="standard"
-                  require="true"
-                />
-              </FormControl>
-            </div>
             <div className="col-12 mb-4">
               <TextareaAutosize
                 aria-label="minimum height"
@@ -259,6 +253,114 @@ const AddEmployees = () => {
                   borderRadius: "4px",
                 }}
               />
+            </div>
+            <Typography variant="h5" component="h1" mb={2}>
+            الصورة الشخصية
+          </Typography>
+          <div className="col-12 mb-4 pt-4">
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  type="file"
+                  id="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  variant="standard"
+                  require="true"
+                />
+              </FormControl>
+            </div>
+            <Typography variant="h5" component="h1" mb={2}>
+            المنح
+          </Typography>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>الإضافي</InputLabel>
+                <OutlinedInput
+                  label="الإضافي"
+                  id="extra-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>  
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة رئاسية 2017</InputLabel>
+                <OutlinedInput
+                  label="منحة رئاسية 2017"
+                  id="2017-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة خاصة 2019</InputLabel>
+                <OutlinedInput
+                  label="منحة خاصة 2019"
+                  id="2019-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة العام 2020</InputLabel>
+                <OutlinedInput
+                  label="منحة العام 2020"
+                  id="2020-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة العام 2022</InputLabel>
+                <OutlinedInput
+                  label="منحة العام 2022"
+                  id="2022-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة المدير العام</InputLabel>
+                <OutlinedInput
+                  label="منحة المدير العام"
+                  id="manager-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>خصم التأمين</InputLabel>
+                <OutlinedInput
+                  label="خصم التأمين"
+                  id="insurance-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
             </div>
             <div className="col-12 mb-4">
               <Button

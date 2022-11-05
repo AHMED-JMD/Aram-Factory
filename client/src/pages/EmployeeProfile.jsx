@@ -10,6 +10,7 @@ import {
   OutlinedInput,
   TextareaAutosize,
   TextField,
+  Typography,
 } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -76,6 +77,9 @@ const EmployeeProfile = () => {
       <form onSubmit={handleSubmit}>
         <div className="container">
           <div className="row">
+          <Typography variant="h5" component="h1" mb={2}>
+            البيانات الأساسية
+          </Typography>
             <div className="col-12 d-flex justify-content-center mb-4">
               <Avatar
                 alt="Remy Sharp"
@@ -224,17 +228,6 @@ const EmployeeProfile = () => {
                 />
               </FormControl>
             </div>
-            <div className="col-lg-6 col-sm-12 mb-4 pt-4">
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  type="file"
-                  id="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  variant="standard"
-                  require="true"
-                />
-              </FormControl>
-            </div>
             <div className="col-12 mb-4">
               <TextareaAutosize
                 aria-label="minimum height"
@@ -258,7 +251,137 @@ const EmployeeProfile = () => {
                 style={{ width: "100%" }}
                 fullWidth
               >
-                تسجيل
+                حفظ
+              </Button>
+            </div>
+            <Typography variant="h5" component="h1" mb={2}>
+            الصورة الشخصية
+          </Typography>
+          <div className="col-12 mb-4 pt-4">
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  type="file"
+                  id="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  variant="standard"
+                  require="true"
+                />
+              </FormControl>
+            </div>
+            <div className="col-12 mb-4">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                style={{ width: "100%" }}
+                fullWidth
+              >
+                حفظ
+              </Button>
+            </div>
+            <Typography variant="h5" component="h1" mb={2}>
+            المنح
+          </Typography>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>الإضافي</InputLabel>
+                <OutlinedInput
+                  label="الإضافي"
+                  id="extra-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>  
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة رئاسية 2017</InputLabel>
+                <OutlinedInput
+                  label="منحة رئاسية 2017"
+                  id="2017-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة خاصة 2019</InputLabel>
+                <OutlinedInput
+                  label="منحة خاصة 2019"
+                  id="2019-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة العام 2020</InputLabel>
+                <OutlinedInput
+                  label="منحة العام 2020"
+                  id="2020-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة العام 2022</InputLabel>
+                <OutlinedInput
+                  label="منحة العام 2022"
+                  id="2022-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>منحة المدير العام</InputLabel>
+                <OutlinedInput
+                  label="منحة المدير العام"
+                  id="manager-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+          <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel>خصم التأمين</InputLabel>
+                <OutlinedInput
+                  label="خصم التأمين"
+                  id="insurance-input"
+                  type="number"
+                  // value={}
+                  // onChange={}
+                  require="true"
+                />
+              </FormControl>
+            </div>
+            <div className="col-12 mb-4">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                style={{ width: "100%" }}
+                fullWidth
+              >
+                حفظ
               </Button>
               {isLoading && (
                 <div className="text-center">

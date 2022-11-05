@@ -12,7 +12,7 @@ const AuthContextProvider = (props) => {
 
   useEffect(() => {
     authenticate().then((user) => {
-      setAuth({ user, isAuthenticated: true });
+      setAuth({ isAuthenticated: true, user });
     });
   }, []);
 

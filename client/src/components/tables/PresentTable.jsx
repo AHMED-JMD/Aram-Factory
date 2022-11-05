@@ -356,7 +356,7 @@ export default function EnhancedTable() {
         // spacing={5}
         mb={1}
       >
-        <div className="d-flex align-items-center">
+        <div>
           {/* <TextField label="Search input" variant="outlined" fullWidth />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
@@ -380,16 +380,6 @@ export default function EnhancedTable() {
               label="search"
             />
           </FormControl>
-          <Button
-            variant="contained"
-            aria-label="add new present table"
-            endIcon={<PersonAddIcon />}
-            // disabled={selected.length === 0 ? true : false}
-            // onClick={}
-            className="mx-2"
-          >
-            إضافة كشف جديد
-          </Button>
         </div>
         <div>
           <Button
