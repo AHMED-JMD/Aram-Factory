@@ -161,13 +161,13 @@ const employees = {
         Ssn,
         jobTitle,
         salary,
+        penalty,
         phoneNum,
         start_date,
         address,
         notes,
       } = req.body;
       console.log(req.body);
-      let { filename } = req.file;
       //make sure all data is provided
       if (
         !(
@@ -176,6 +176,7 @@ const employees = {
           Ssn &&
           jobTitle &&
           salary &&
+          penalty &&
           phoneNum &&
           start_date &&
           address &&
@@ -191,6 +192,7 @@ const employees = {
         (Ssn = xssFilter.inHTMLData(Ssn)),
         (jobTitle = xssFilter.inHTMLData(jobTitle)),
         (salary = xssFilter.inHTMLData(salary)),
+        (penalty = xssFilter.inHTMLData(penalty)),
         (start_date = xssFilter.inHTMLData(start_date)),
         (address = xssFilter.inHTMLData(address)),
         (notes = xssFilter.inHTMLData(notes)),
@@ -203,6 +205,8 @@ const employees = {
           Ssn,
           jobTitle,
           salary,
+          start_salary: salary,
+          penalty,
           phoneNum,
           start_date,
           address,
@@ -211,7 +215,7 @@ const employees = {
         { where: { emp_id } }
       );
 
-      res.json(newEmployee);
+      res.json("updated employee successfullt");
     } catch (error) {
       if (error) throw error;
       console.log(error);
@@ -243,7 +247,7 @@ const employees = {
         { where: { employeeEmpId: emp_id } }
       );
       //send to client
-      res.json(newGrants);
+      res.json("upated grants successfully");
     } catch (error) {
       if (error) throw error;
     }
@@ -257,8 +261,7 @@ const employees = {
       if (!emp_id) return res.status(400).json("add employee id");
 
       //find and update employees
-      let newEmployee = await Employee.findOne({ emp_id });
-      newEmployee.imgLink = filename;
+      let newEmployee = await Employee.findOne({ where: { emp_id } });
 
       //delete from fs system
       fs.unlink(
@@ -272,6 +275,7 @@ const employees = {
         }
       );
       //save changes
+      newEmployee.imgLink = filename;
       await newEmployee.save();
       res.json(newEmployee);
     } catch (error) {
@@ -280,6 +284,7 @@ const employees = {
   },
   delete: async (req, res) => {
     try {
+      //get req body and make sure it is complete
       const { emp_id } = req.body;
       console.log(emp_id);
       if (!emp_id) {
@@ -300,7 +305,8 @@ const employees = {
             }
           }
         );
-        //delete from database
+        //delete from database both employee and his grants
+        Grants.destroy({ where: { employeeEmpId: id } });
         Employee.destroy({ where: { emp_id: id } });
       });
       res.send("deleted records successfully");
