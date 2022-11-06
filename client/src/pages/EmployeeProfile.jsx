@@ -21,46 +21,66 @@ import WorkIcon from "@mui/icons-material/Work";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { updateEmployee } from "../api/employee";
+import {
+  updateEmployee,
+  updateGrant,
+  updateImage,
+  viewOne,
+} from "../api/employee";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+
 const EmployeeProfile = () => {
-  const [value, setValue] = useState(null);
-  const [emp_id, setEmp_id] = useState("");
-  const [emp_name, setEmp_name] = useState("");
-  const [address, setAddress] = useState("");
-  const [Ssn, setSsn] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
-  const [salary, setSalary] = useState("");
-  const [penalty, setPenalty] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
-  const [start_date, setStart_date] = useState("");
-  const [notes, setNotes] = useState("");
+  const params = useParams();
+
+  //employees state
+  const [empData, setEmpData] = useState({});
+  //grant state
+  const [grantData, setGrantData] = useState({});
+  //file state
   const [file, setFile] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  //use effect function to get employee data
+  useEffect(() => {
+    setIsLoading(true);
+
+    //call db and get data
+    viewOne(params.id)
+      .then((res) => {
+        setEmpData(res.data.employee);
+        setGrantData(res.data.grant);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  //handle change for employee basic info
+  const handleChange = (e) => {
+    const new_value = e.target.value;
+    setEmpData({ ...empData, [e.target.name]: new_value });
+  };
+
+  //handle change for grant data
+  const handlChange2 = (e) => {
+    const newVal = e.target.value;
+    setGrantData({ ...grantData, [e.target.name]: newVal });
+  };
+
+  //on submit basic data
   const handleSubmit = (e) => {
     setIsLoading(true);
 
     e.preventDefault();
 
-    //form data for server
-    const data = new FormData();
-    data.append("emp_id", emp_id);
-    data.append("emp_name", emp_name);
-    data.append("Ssn", Ssn);
-    data.append("jobTitle", jobTitle);
-    data.append("salary", salary);
-    data.append("penalty", penalty);
-    data.append("phoneNum", phoneNum);
-    data.append("start_date", start_date);
-    data.append("address", address);
-    data.append("notes", notes);
-    data.append("file", file);
-
     //data to server
-    updateEmployee(data)
+    updateEmployee(empData)
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
@@ -72,14 +92,56 @@ const EmployeeProfile = () => {
         setErrMsg(err.response.data);
       });
   };
+
+  //on submit image
+  const handleSubmitPhoto = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    let data = new FormData();
+    data.append("emp_id", params.id);
+    data.append("file", file);
+    //send to database
+    updateImage(data)
+      .then((res) => {
+        setIsLoading(false);
+        setIsAdded(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setErrMsg(err.response.data);
+        setIsLoading(false);
+      });
+  };
+
+  //on submit image
+  const handleSubmitGrant = (e) => {
+    e.preventDefault();
+    //prepare data
+    let emp_id = params.id;
+    let data = { grantData, emp_id };
+
+    //send to database
+    updateGrant(data)
+      .then((res) => {
+        setIsLoading(false);
+        setIsAdded(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setErrMsg(err.response.data);
+        setIsLoading(false);
+      });
+  };
+
   return (
     <section className="add-employees">
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="container">
           <div className="row">
-          <Typography variant="h5" component="h1" mb={2}>
-            البيانات الأساسية
-          </Typography>
+            <Typography variant="h5" component="h1" mb={2}>
+              البيانات الأساسية
+            </Typography>
             <div className="col-12 d-flex justify-content-center mb-4">
               <Avatar
                 alt="Remy Sharp"
@@ -92,10 +154,10 @@ const EmployeeProfile = () => {
                 <InputLabel htmlFor="pin">الإسم</InputLabel>
                 <OutlinedInput
                   label="الإسم"
-                  id="name-input"
+                  name="emp_name"
                   type="text"
-                  value={emp_name}
-                  onChange={(e) => setEmp_name(e.target.value)}
+                  value={empData.emp_name}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -109,11 +171,11 @@ const EmployeeProfile = () => {
               <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="pin">الرقم التعريفي</InputLabel>
                 <OutlinedInput
-                  label="الرقم التعريفي"
-                  id="id-input"
+                  disabled
+                  name="emp_id"
                   type="text"
-                  value={emp_id}
-                  onChange={(e) => setEmp_id(e.target.value)}
+                  value={empData.emp_id}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -128,10 +190,10 @@ const EmployeeProfile = () => {
                 <InputLabel htmlFor="pin">المسمى الوظيفي</InputLabel>
                 <OutlinedInput
                   label="المسمى الوظيفي"
-                  id="jobTitle-input"
+                  name="jobTitle"
                   type="text"
-                  value={jobTitle}
-                  onChange={(e) => setJobTitle(e.target.value)}
+                  value={empData.jobTitle}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -146,10 +208,10 @@ const EmployeeProfile = () => {
                 <InputLabel htmlFor="pin">الرقم الوطني</InputLabel>
                 <OutlinedInput
                   label="الرقم الوطني"
-                  id="nationalid-input"
+                  name="Ssn"
                   type="text"
-                  value={Ssn}
-                  onChange={(e) => setSsn(e.target.value)}
+                  value={empData.Ssn}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -164,10 +226,10 @@ const EmployeeProfile = () => {
                 <InputLabel htmlFor="pin">السكن</InputLabel>
                 <OutlinedInput
                   label="السكن"
-                  id="address-input"
+                  name="address"
                   type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={empData.address}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -182,10 +244,10 @@ const EmployeeProfile = () => {
                 <InputLabel htmlFor="pin">رقم الجوال</InputLabel>
                 <OutlinedInput
                   label="رقم الجوال"
-                  id="phone-input"
+                  name="phoneNum"
                   type="phone"
-                  value={phoneNum}
-                  onChange={(e) => setPhoneNum(e.target.value)}
+                  value={empData.phoneNum}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -200,10 +262,9 @@ const EmployeeProfile = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="تاريخ التعيين"
-                    value={start_date}
-                    onChange={(start_date) => {
-                      setStart_date(start_date);
-                    }}
+                    name="start_date"
+                    value={empData.start_date}
+                    onChange={handleChange}
                     inputFormat="YYYY/MM/DD"
                     renderInput={(params) => <TextField {...params} />}
                   />
@@ -215,10 +276,10 @@ const EmployeeProfile = () => {
                 <InputLabel htmlFor="pin">الراتب</InputLabel>
                 <OutlinedInput
                   label="الراتب"
-                  id="salary-input"
+                  name="salary"
                   type="number"
-                  value={salary}
-                  onChange={(e) => setSalary(e.target.value)}
+                  value={empData.salary}
+                  onChange={handleChange}
                   require="true"
                   endAdornment={
                     <InputAdornment position="end">
@@ -232,9 +293,10 @@ const EmployeeProfile = () => {
               <TextareaAutosize
                 aria-label="minimum height"
                 minRows={2}
+                name="notes"
                 placeholder="الملاحظات"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
+                value={empData.notes}
+                onChange={handleChange}
                 className="pt-3 px-3"
                 style={{
                   width: "100%",
@@ -248,6 +310,7 @@ const EmployeeProfile = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                onClick={handleSubmit}
                 style={{ width: "100%" }}
                 fullWidth
               >
@@ -255,9 +318,9 @@ const EmployeeProfile = () => {
               </Button>
             </div>
             <Typography variant="h5" component="h1" mb={2}>
-            الصورة الشخصية
-          </Typography>
-          <div className="col-12 mb-4 pt-4">
+              الصورة الشخصية
+            </Typography>
+            <div className="col-12 mb-4 pt-4">
               <FormControl style={{ width: "100%" }}>
                 <Input
                   type="file"
@@ -273,6 +336,7 @@ const EmployeeProfile = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                onClick={handleSubmitPhoto}
                 style={{ width: "100%" }}
                 fullWidth
               >
@@ -280,95 +344,95 @@ const EmployeeProfile = () => {
               </Button>
             </div>
             <Typography variant="h5" component="h1" mb={2}>
-            المنح
-          </Typography>
-          <div className="col-lg-6 col-sm-12 mb-4">
+              المنح
+            </Typography>
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>الإضافي</InputLabel>
                 <OutlinedInput
                   label="الإضافي"
-                  id="extra-input"
+                  name="extra"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.extra}
+                  onChange={handlChange2}
                   require="true"
                 />
-              </FormControl>  
+              </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة رئاسية 2017</InputLabel>
                 <OutlinedInput
                   label="منحة رئاسية 2017"
-                  id="2017-input"
+                  name="grant17"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.grant17}
+                  onChange={handlChange2}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة خاصة 2019</InputLabel>
                 <OutlinedInput
                   label="منحة خاصة 2019"
-                  id="2019-input"
+                  name="grant19"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.grant19}
+                  onChange={handlChange2}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة العام 2020</InputLabel>
                 <OutlinedInput
                   label="منحة العام 2020"
-                  id="2020-input"
+                  name="grant20"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.grant20}
+                  onChange={handlChange2}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة العام 2022</InputLabel>
                 <OutlinedInput
                   label="منحة العام 2022"
-                  id="2022-input"
+                  name="grant22"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.grant22}
+                  onChange={handlChange2}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة المدير العام</InputLabel>
                 <OutlinedInput
                   label="منحة المدير العام"
-                  id="manager-input"
+                  name="grantGM"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.grantGM}
+                  onChange={handlChange2}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>خصم التأمين</InputLabel>
                 <OutlinedInput
-                  label="خصم التأمين"
+                  name="insurance"
                   id="insurance-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantData.insurance}
+                  onChange={handlChange2}
                   require="true"
                 />
               </FormControl>
@@ -378,6 +442,7 @@ const EmployeeProfile = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                onClick={handleSubmitGrant}
                 style={{ width: "100%" }}
                 fullWidth
               >

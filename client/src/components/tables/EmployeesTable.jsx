@@ -293,7 +293,6 @@ export default function EnhancedTable(employeeData) {
     },
   ];
 
-  console.log(employeeData.length);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -453,14 +452,16 @@ export default function EnhancedTable(employeeData) {
             </Select>
           </FormControl>
           <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-          <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
-          <Input
-            id="standard-adornment-amount"
-            // value={values.amount}
-            // onChange={handleChange('amount')}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
-        </FormControl>
+            <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
+            <Input
+              id="standard-adornment-amount"
+              // value={values.amount}
+              // onChange={handleChange('amount')}
+              startAdornment={
+                <InputAdornment position="start">$</InputAdornment>
+              }
+            />
+          </FormControl>
           {selected.map(({ name }) => (
             <Typography key={name}>- {name}</Typography>
           ))}
@@ -614,7 +615,7 @@ export default function EnhancedTable(employeeData) {
                         <TableCell>
                           <Link
                             className="edit-btn"
-                            to={`/employees/${row.id}`}
+                            to={`/employees/${344321}`}
                           >
                             <IconButton>
                               <VisibilityIcon />

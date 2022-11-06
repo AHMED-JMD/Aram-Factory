@@ -144,9 +144,12 @@ const employees = {
         return res.status(400).json("no employee id is given");
       }
 
+      //find employee
       const employee = await Employee.findOne({ where: { emp_id } });
+      //find employee grant
+      const grant = await Grants.findOne({ where: { employeeEmpId: emp_id } });
 
-      res.json(employee);
+      res.json({ employee, grant });
     } catch (error) {
       if (error) throw error;
       console.log(error);
@@ -222,18 +225,18 @@ const employees = {
   },
   updateGrants: async (req, res) => {
     try {
-      const { grant17, grant19, grant20, grant22, grantGM, insurance, emp_id } =
-        req.body;
+      const { grantData, emp_id } = req.body;
 
       //check request is full
       if (
         !(
-          grant17 &&
-          grant19 &&
-          grant20 &&
-          grant22 &&
-          grantGM &&
-          insurance &&
+          grantData.extra &&
+          grantData.grant17 &&
+          grantData.grant19 &&
+          grantData.grant20 &&
+          grantData.grant22 &&
+          grantData.grantGM &&
+          grantData.insurance &&
           emp_id
         )
       ) {
@@ -242,9 +245,18 @@ const employees = {
 
       //update grants from database
       let newGrants = await Grants.update(
-        { grant17, grant19, grant20, grant22, grantGM, insurance },
+        {
+          extra: grantData.extra,
+          grant17: grantData.grant17,
+          grant19: grantData.grant19,
+          grant20: grantData.grant20,
+          grant22: grantData.grant22,
+          grantGM: grantData.grantGM,
+          insurance: grantData.insurance,
+        },
         { where: { employeeEmpId: emp_id } }
       );
+      console.log(newGrants);
       //send to client
       res.json("upated grants successfully");
     } catch (error) {
