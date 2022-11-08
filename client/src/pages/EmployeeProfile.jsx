@@ -151,7 +151,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">الإسم</InputLabel>
                 <OutlinedInput
                   label="الإسم"
                   name="emp_name"
@@ -169,7 +168,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">الرقم التعريفي</InputLabel>
                 <OutlinedInput
                   disabled
                   name="emp_id"
@@ -187,7 +185,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">المسمى الوظيفي</InputLabel>
                 <OutlinedInput
                   label="المسمى الوظيفي"
                   name="jobTitle"
@@ -205,7 +202,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">الرقم الوطني</InputLabel>
                 <OutlinedInput
                   label="الرقم الوطني"
                   name="Ssn"
@@ -223,7 +219,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">السكن</InputLabel>
                 <OutlinedInput
                   label="السكن"
                   name="address"
@@ -241,7 +236,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">رقم الجوال</InputLabel>
                 <OutlinedInput
                   label="رقم الجوال"
                   name="phoneNum"
@@ -273,7 +267,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="pin">الراتب</InputLabel>
                 <OutlinedInput
                   label="الراتب"
                   name="salary"
@@ -348,7 +341,6 @@ const EmployeeProfile = () => {
             </Typography>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>الإضافي</InputLabel>
                 <OutlinedInput
                   label="الإضافي"
                   name="extra"
@@ -361,7 +353,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>منحة رئاسية 2017</InputLabel>
                 <OutlinedInput
                   label="منحة رئاسية 2017"
                   name="grant17"
@@ -374,7 +365,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>منحة خاصة 2019</InputLabel>
                 <OutlinedInput
                   label="منحة خاصة 2019"
                   name="grant19"
@@ -387,7 +377,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>منحة العام 2020</InputLabel>
                 <OutlinedInput
                   label="منحة العام 2020"
                   name="grant20"
@@ -400,7 +389,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>منحة العام 2022</InputLabel>
                 <OutlinedInput
                   label="منحة العام 2022"
                   name="grant22"
@@ -413,7 +401,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>منحة المدير العام</InputLabel>
                 <OutlinedInput
                   label="منحة المدير العام"
                   name="grantGM"
@@ -426,7 +413,6 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <InputLabel>خصم التأمين</InputLabel>
                 <OutlinedInput
                   name="insurance"
                   id="insurance-input"

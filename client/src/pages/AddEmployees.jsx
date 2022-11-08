@@ -34,6 +34,7 @@ const AddEmployees = () => {
   const [penalty, setPenalty] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [start_date, setStart_date] = useState("");
+  const [app_date, setApp_date] = useState("");
   const [notes, setNotes] = useState("");
   const [file, setFile] = useState("");
 
@@ -67,6 +68,7 @@ const AddEmployees = () => {
     data.append("penalty", penalty);
     data.append("phoneNum", phoneNum);
     data.append("start_date", start_date);
+    data.append("app_date", app_date);
     data.append("address", address);
     data.append("notes", notes);
     //append grants info
@@ -217,6 +219,21 @@ const AddEmployees = () => {
                     value={start_date}
                     onChange={(start_date) => {
                       setStart_date(start_date);
+                    }}
+                    inputFormat="YYYY/MM/DD"
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+            </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="تاريخ بداية الخدمة"
+                    value={app_date}
+                    onChange={(app_date) => {
+                      setApp_date(app_date);
                     }}
                     inputFormat="YYYY/MM/DD"
                     renderInput={(params) => <TextField {...params} />}

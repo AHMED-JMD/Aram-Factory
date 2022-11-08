@@ -5,12 +5,16 @@ import { viewAll } from "../api/employee";
 const PresentSchedule = () => {
   const [employees, setEmployees] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [newOne, setNewOne] = useState(false);
-  console.log(employees);
+
+  const [newOne, setNewOne] = useState(localStorage.getItem("Val"));
+  console.log(newOne);
 
   useEffect(() => {
     //set loading to true
     setIsLoading(true);
+
+    //set schedule variable
+    setNewOne(localStorage.getItem("Val"));
 
     //call db for data
     let page = 0;
@@ -28,7 +32,7 @@ const PresentSchedule = () => {
 
   return (
     <section className="employees">
-      {newOne ? (
+      {newOne === true ? (
         <>
           {" "}
           <PresentTable />
@@ -37,7 +41,10 @@ const PresentSchedule = () => {
             {" "}
             <button
               className="btn btn-danger btn-lg"
-              onClick={() => setNewOne(false)}
+              onClick={() => {
+                setNewOne(false);
+                localStorage.setItem("Val", false);
+              }}
             >
               نهاية اليوم
             </button>
@@ -48,7 +55,10 @@ const PresentSchedule = () => {
           حساب حضور جديد <br />
           <button
             className="btn btn-primary btn-lg"
-            onClick={() => setNewOne(true)}
+            onClick={() => {
+              setNewOne(true);
+              localStorage.setItem("Val", true);
+            }}
           >
             جدول جديد
           </button>

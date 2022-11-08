@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const employees = require("../../controllers/employees/employeeController");
 const attend = require("../../controllers/employees/attendance");
+const archive = require("../../controllers/employees/archiveController");
 //setting up multer disk storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -31,11 +32,17 @@ router.post("/update_image", upload.single("file"), employees.updateImage);
 
 //delete employees
 router.post("/delete", employees.delete);
+
 //record absent
 router.post("/absence", attend.absent);
 //start new month
 router.get("/new-month", attend.nwMonth);
 //borrow from salary
 router.post("/borrow", attend.borrow);
+
+//add to archive
+router.post("/archive", archive.add);
+//view archive
+router.get("/archive", archive.view);
 
 module.exports = router;

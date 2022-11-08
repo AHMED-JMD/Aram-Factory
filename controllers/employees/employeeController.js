@@ -29,6 +29,7 @@ const employees = {
         penalty,
         phoneNum,
         start_date,
+        app_date,
         address,
         notes,
         extra,
@@ -60,12 +61,16 @@ const employees = {
           grantGM &&
           insurance &&
           start_date &&
+          app_date &&
           address &&
           filename
         )
       ) {
         return res.status(400).json("الرجاء ملء جميع الحقول");
       }
+
+      //if no notes is provided
+      if (!notes) notes = "";
 
       //filter inputs make sure no code is provided
       (emp_id = xssFilter.inHTMLData(emp_id)),
@@ -74,6 +79,7 @@ const employees = {
         (jobTitle = xssFilter.inHTMLData(jobTitle)),
         (salary = xssFilter.inHTMLData(salary)),
         (start_date = xssFilter.inHTMLData(start_date)),
+        (app_date = xssFilter.inHTMLData(app_date)),
         (notes = xssFilter.inHTMLData(notes)),
         (address = xssFilter.inHTMLData(address)),
         (extra = xssFilter.inHTMLData(extra)),
@@ -90,8 +96,7 @@ const employees = {
       if (employee) return res.status(400).json("الرقم التعريفي موجود مسبقا");
 
       //add employee to database
-      //if no notes is provided
-      if (!notes) notes = "";
+
       const newEmployee = await Employee.create({
         emp_id,
         emp_name,
@@ -102,6 +107,7 @@ const employees = {
         penalty,
         phoneNum,
         start_date,
+        app_date,
         address,
         imgLink: filename,
         notes,

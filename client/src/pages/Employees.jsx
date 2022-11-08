@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { viewAll } from "../api/employee";
 import { EmployeesTable } from "../components";
+import { authContext } from "../context/AuthContext";
 
 const Employees = () => {
+  let { auth } = useContext(authContext);
   const [employees, setEmployees] = useState([]);
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +26,7 @@ const Employees = () => {
         setIsLoading(false);
         console.log(err);
       });
-  }, []);
+  }, [auth.isAuthenticated]);
   return (
     <section className="employees">
       <EmployeesTable employeeData={employees} />
