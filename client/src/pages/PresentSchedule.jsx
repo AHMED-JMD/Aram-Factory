@@ -31,7 +31,7 @@ const PresentSchedule = () => {
       {newOne ? (
         <>
           {" "}
-          <PresentTable />
+          <PresentTable data={employees} />
           <br /> <br />
           <div className="text-center">
             {" "}

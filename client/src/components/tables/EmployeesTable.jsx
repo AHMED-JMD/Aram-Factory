@@ -262,38 +262,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable(employeeData) {
-  const data = [
-    {
-      id: "1",
-      name: "محمد أحمد الطاهر ياسين",
-      title: "مدير إنتاج",
-      birthDate: "12/23/2000",
-      phone: "249123456789",
-      salary: 30000,
-      url: "https://picsum.photos/seed/picsum/200/200",
-    },
-    {
-      id: "2",
-      name: "ياسر عوض الكريم عيسى عبدالله",
-      title: "فني",
-      birthDate: "12/23/2000",
-      phone: "249123456789",
-      salary: 20000,
-      url: "https://picsum.photos/seed/picsum/200/200",
-    },
-    {
-      id: "3",
-      name: "عاصم فتحي صابر هارون",
-      title: "مهندس كهرباء",
-      birthDate: "12/23/2000",
-      phone: "249123456789",
-      salary: 45000,
-      url: "https://picsum.photos/seed/picsum/200/200",
-    },
-  ];
+export default function EnhancedTable({employeeData : data}) {
 
-  console.log(employeeData.length);
+  // console.log(employeeData.length);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -596,21 +567,21 @@ export default function EnhancedTable(employeeData) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={row.url} />
+                            <Avatar alt="user" src={row.imgLink} />
                             <ListItemText
                               style={{ margin: "10px" }}
-                              primary={row.name}
+                              primary={row.emp_name}
                             />
                           </ListItem>
                         </TableCell>
-                        <TableCell>{row.id}</TableCell>
-                        <TableCell>{row.title}</TableCell>
+                        <TableCell>{row.emp_id}</TableCell>
+                        <TableCell>{row.jobTitle}</TableCell>
                         <TableCell>
                           <span>{row.salary} جنيه</span>
                         </TableCell>
-                        <TableCell>{row.phone}</TableCell>
-                        <TableCell>{row.birthDate}</TableCell>
-                        <TableCell>امدرمان</TableCell>
+                        <TableCell>{row.phoneNum}</TableCell>
+                        <TableCell>{row.start_date}</TableCell>
+                        <TableCell>{row.address}</TableCell>
                         <TableCell>
                           <Link
                             className="edit-btn"
