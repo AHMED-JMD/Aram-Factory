@@ -49,7 +49,7 @@ const attend = {
             attendee_count_Y: 0,
             absent_date: [],
           },
-          { wher: { emp_id: employee.emp_id } }
+          { where: { emp_id: employee.emp_id } }
         );
       });
 

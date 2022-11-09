@@ -22,7 +22,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { authContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({ toggleFunc }) => {
   const menu = [
@@ -84,7 +84,9 @@ const Header = ({ toggleFunc }) => {
           fontWeight="fontWeightMedium"
           mx={1}
         >
+          <Link style={{color: '#fff', textDecoration: 'none'}} to="/">
           منصة التحكم
+          </Link>
         </Typography>
         <Box sx={{ flexGrow: 0 }}>
           <MenuItem onClick={() => HandleLogout()}>

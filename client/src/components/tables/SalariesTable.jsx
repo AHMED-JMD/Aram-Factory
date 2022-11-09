@@ -431,14 +431,13 @@ export default function EnhancedTable() {
         </Box>
       </Modal>
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "start", md: "center" }}
         justifyContent="space-between"
-        // spacing={5}
+        spacing={1}
         mb={1}
       >
-        <div className="d-flex align-items-center">
-          <FormControl sx={{ width: "400px" }} variant="outlined">
+          <FormControl sx={{ width: "300px" }} variant="outlined" className="mx-2">
             <InputLabel htmlFor="outlined-adornment-password">
               بحث
             </InputLabel>
@@ -459,19 +458,18 @@ export default function EnhancedTable() {
               label="search"
             />
           </FormControl>
-          <Button
+        <div>
+        <Button
             variant="contained"
             aria-label="add new present table"
-            endIcon={<PersonAddIcon />}
             // disabled={selected.length === 0 ? true : false}
             // onClick={}
             className="mx-2"
+            size="small"
           >
             إضافة كشف جديد
           </Button>
-        </div>
-        <div>
-          <Button variant="contained" endIcon={<PersonAddIcon />}>
+          <Button variant="contained" size="small">
             حفظ
           </Button>
         </div>

@@ -9,6 +9,7 @@ import AddEmployees from "./pages/AddEmployees";
 import PresentSchedule from "./pages/PresentSchedule";
 import EmployeeProfile from "./pages/EmployeeProfile";
 import Salaries from "./pages/Salaries";
+import SalariesRecords from "./pages/SalariesRecords";
 function App() {
   const { auth } = useContext(authContext);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/employees/:id" element={<EmployeeProfile />} />
           <Route path="/present-schedule" element={<PresentSchedule />} />
           <Route path="/salaries" element={<Salaries />} />
+          <Route path="/salaries/records" element={<SalariesRecords />} />
         </Routes>
       </Stack>
     </div>

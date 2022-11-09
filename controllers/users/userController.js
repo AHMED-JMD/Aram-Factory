@@ -19,6 +19,10 @@ const user = {
         (username = xssFilter.inHTMLData(username)),
         (password = xssFilter.inHTMLData(password));
 
+      //make sure no admin is replicated
+      let admin = await Admin.findOne({ where: { username } });
+      if (admin) return res.status(400).json("admin already exist");
+
       const newAdmin = await Admin.create({ username, phoneNum, password });
 
       //hash user password

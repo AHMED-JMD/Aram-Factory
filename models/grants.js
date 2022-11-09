@@ -2,6 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   let Grants = sequelize.define(
     "grants",
     {
+      extra: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       grant17: {
         type: DataTypes.INTEGER,
         allowNull: false,

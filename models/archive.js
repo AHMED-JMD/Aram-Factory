@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const employee = sequelize.define(
-    "employees",
+  let Archive = sequelize.define(
+    "archive",
     {
       emp_id: {
         type: DataTypes.INTEGER,
@@ -46,35 +46,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      imgLink: {
-        type: DataTypes.STRING,
-      },
       warnings: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      attendee_count_M: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      attendee_count_Y: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      absent_date: {
-        type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: [],
-      },
-      notes: {
-        type: DataTypes.STRING,
-        defaultValue: "",
-      },
     },
-    {
-      freezTableName: true,
-    }
+    { freezeTableName: true }
   );
 
-  return employee;
+  return Archive;
 };

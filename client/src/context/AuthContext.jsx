@@ -14,7 +14,7 @@ const AuthContextProvider = (props) => {
     authenticate().then((user) => {
       setAuth({ isAuthenticated: true, user });
     });
-  }, []);
+  }, [auth.isAuthenticated]);
 
   return (
     <authContext.Provider value={{ auth, setAuth }}>

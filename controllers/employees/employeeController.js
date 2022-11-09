@@ -29,8 +29,10 @@ const employees = {
         penalty,
         phoneNum,
         start_date,
+        app_date,
         address,
         notes,
+        extra,
         grant17,
         grant19,
         grant20,
@@ -51,6 +53,7 @@ const employees = {
           salary &&
           penalty &&
           phoneNum &&
+          extra &&
           grant17 &&
           grant19 &&
           grant20 &&
@@ -58,12 +61,16 @@ const employees = {
           grantGM &&
           insurance &&
           start_date &&
+          app_date &&
           address &&
           filename
         )
       ) {
         return res.status(400).json("الرجاء ملء جميع الحقول");
       }
+
+      //if no notes is provided
+      if (!notes) notes = "";
 
       //filter inputs make sure no code is provided
       (emp_id = xssFilter.inHTMLData(emp_id)),
@@ -72,8 +79,10 @@ const employees = {
         (jobTitle = xssFilter.inHTMLData(jobTitle)),
         (salary = xssFilter.inHTMLData(salary)),
         (start_date = xssFilter.inHTMLData(start_date)),
+        (app_date = xssFilter.inHTMLData(app_date)),
         (notes = xssFilter.inHTMLData(notes)),
         (address = xssFilter.inHTMLData(address)),
+        (extra = xssFilter.inHTMLData(extra)),
         (grant17 = xssFilter.inHTMLData(grant17)),
         (grant19 = xssFilter.inHTMLData(grant19)),
         (grant20 = xssFilter.inHTMLData(grant20)),
@@ -87,8 +96,7 @@ const employees = {
       if (employee) return res.status(400).json("الرقم التعريفي موجود مسبقا");
 
       //add employee to database
-      //if no notes is provided
-      if (!notes) notes = "";
+
       const newEmployee = await Employee.create({
         emp_id,
         emp_name,
@@ -99,12 +107,14 @@ const employees = {
         penalty,
         phoneNum,
         start_date,
+        app_date,
         address,
         imgLink: filename,
         notes,
       });
       //add grants to grant db
       let newGrant = await Grants.create({
+        extra,
         grant17,
         grant19,
         grant20,
@@ -122,16 +132,11 @@ const employees = {
   },
   viewAll: async (req, res) => {
     try {
-      let { page } = req.headers || 0;
       //set pagination
-      const employees = await Employee.findAll({
-        offset: page * 10,
-        limit: 10,
-      });
+      const employees = await Employee.findAll({});
 
       //count rows number
-      const count = await Employee.count();
-      res.json({ count, employees });
+      res.json({ employees });
     } catch (error) {
       if (error) throw error;
       console.log(error);
@@ -145,9 +150,12 @@ const employees = {
         return res.status(400).json("no employee id is given");
       }
 
+      //find employee
       const employee = await Employee.findOne({ where: { emp_id } });
+      //find employee grant
+      const grant = await Grants.findOne({ where: { employeeEmpId: emp_id } });
 
-      res.json(employee);
+      res.json({ employee, grant });
     } catch (error) {
       if (error) throw error;
       console.log(error);
@@ -223,18 +231,18 @@ const employees = {
   },
   updateGrants: async (req, res) => {
     try {
-      const { grant17, grant19, grant20, grant22, grantGM, insurance, emp_id } =
-        req.body;
+      const { grantData, emp_id } = req.body;
 
       //check request is full
       if (
         !(
-          grant17 &&
-          grant19 &&
-          grant20 &&
-          grant22 &&
-          grantGM &&
-          insurance &&
+          grantData.extra &&
+          grantData.grant17 &&
+          grantData.grant19 &&
+          grantData.grant20 &&
+          grantData.grant22 &&
+          grantData.grantGM &&
+          grantData.insurance &&
           emp_id
         )
       ) {
@@ -243,9 +251,18 @@ const employees = {
 
       //update grants from database
       let newGrants = await Grants.update(
-        { grant17, grant19, grant20, grant22, grantGM, insurance },
+        {
+          extra: grantData.extra,
+          grant17: grantData.grant17,
+          grant19: grantData.grant19,
+          grant20: grantData.grant20,
+          grant22: grantData.grant22,
+          grantGM: grantData.grantGM,
+          insurance: grantData.insurance,
+        },
         { where: { employeeEmpId: emp_id } }
       );
+      console.log(newGrants);
       //send to client
       res.json("upated grants successfully");
     } catch (error) {

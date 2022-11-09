@@ -23,6 +23,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addEmployee } from "../api/employee";
 import { Title } from "@mui/icons-material";
 const AddEmployees = () => {
+  //basic info states
   const [value, setValue] = useState(null);
   const [emp_id, setEmp_id] = useState("");
   const [emp_name, setEmp_name] = useState("");
@@ -33,9 +34,20 @@ const AddEmployees = () => {
   const [penalty, setPenalty] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [start_date, setStart_date] = useState("");
+  const [app_date, setApp_date] = useState("");
   const [notes, setNotes] = useState("");
   const [file, setFile] = useState("");
 
+  //grants states
+  const [extra, setExtra] = useState("");
+  const [grant17, setGrant17] = useState("");
+  const [grant19, setGrant19] = useState("");
+  const [grant20, setGrant20] = useState("");
+  const [grant22, setGrant22] = useState("");
+  const [grantGM, setGrantGM] = useState("");
+  const [insurance, setInsurance] = useState("");
+
+  //database related states
   const [errMsg, setErrMsg] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +59,7 @@ const AddEmployees = () => {
 
     //form data for server
     const data = new FormData();
+    //append basic info
     data.append("emp_id", emp_id);
     data.append("emp_name", emp_name);
     data.append("Ssn", Ssn);
@@ -55,8 +68,18 @@ const AddEmployees = () => {
     data.append("penalty", penalty);
     data.append("phoneNum", phoneNum);
     data.append("start_date", start_date);
+    data.append("app_date", app_date);
     data.append("address", address);
     data.append("notes", notes);
+    //append grants info
+    data.append("extra", extra);
+    data.append("grant17", grant17);
+    data.append("grant19", grant19);
+    data.append("grant20", grant20);
+    data.append("grant22", grant22);
+    data.append("grantGM", grantGM);
+    data.append("insurance", insurance);
+    //append file
     data.append("file", file);
 
     //data to server
@@ -205,6 +228,21 @@ const AddEmployees = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="تاريخ بداية الخدمة"
+                    value={app_date}
+                    onChange={(app_date) => {
+                      setApp_date(app_date);
+                    }}
+                    inputFormat="YYYY/MM/DD"
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+            </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="pin">الراتب</InputLabel>
                 <OutlinedInput
                   label="الراتب"
@@ -255,9 +293,9 @@ const AddEmployees = () => {
               />
             </div>
             <Typography variant="h5" component="h1" mb={2}>
-            الصورة الشخصية
-          </Typography>
-          <div className="col-12 mb-4 pt-4">
+              الصورة الشخصية
+            </Typography>
+            <div className="col-12 mb-4 pt-4">
               <FormControl style={{ width: "100%" }}>
                 <Input
                   type="file"
@@ -269,95 +307,95 @@ const AddEmployees = () => {
               </FormControl>
             </div>
             <Typography variant="h5" component="h1" mb={2}>
-            المنح
-          </Typography>
-          <div className="col-lg-6 col-sm-12 mb-4">
+              المنح
+            </Typography>
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>الإضافي</InputLabel>
                 <OutlinedInput
                   label="الإضافي"
                   id="extra-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={extra}
+                  onChange={(e) => setExtra(e.target.value)}
                   require="true"
                 />
-              </FormControl>  
+              </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة رئاسية 2017</InputLabel>
                 <OutlinedInput
                   label="منحة رئاسية 2017"
                   id="2017-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grant17}
+                  onChange={(e) => setGrant17(e.target.value)}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة خاصة 2019</InputLabel>
                 <OutlinedInput
                   label="منحة خاصة 2019"
                   id="2019-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grant19}
+                  onChange={(e) => setGrant19(e.target.value)}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة العام 2020</InputLabel>
                 <OutlinedInput
                   label="منحة العام 2020"
                   id="2020-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grant20}
+                  onChange={(e) => setGrant20(e.target.value)}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة العام 2022</InputLabel>
                 <OutlinedInput
                   label="منحة العام 2022"
                   id="2022-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grant22}
+                  onChange={(e) => setGrant22(e.target.value)}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>منحة المدير العام</InputLabel>
                 <OutlinedInput
                   label="منحة المدير العام"
                   id="manager-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={grantGM}
+                  onChange={(e) => setGrantGM(e.target.value)}
                   require="true"
                 />
               </FormControl>
             </div>
-          <div className="col-lg-6 col-sm-12 mb-4">
+            <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <InputLabel>خصم التأمين</InputLabel>
                 <OutlinedInput
                   label="خصم التأمين"
                   id="insurance-input"
                   type="number"
-                  // value={}
-                  // onChange={}
+                  value={insurance}
+                  onChange={(e) => setInsurance(e.target.value)}
                   require="true"
                 />
               </FormControl>

@@ -19,6 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Link } from "react-router-dom";
@@ -262,9 +263,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({employeeData : data}) {
-
-  // console.log(employeeData.length);
+export default function EnhancedTable({ employeeData: data }) {
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -424,14 +423,16 @@ export default function EnhancedTable({employeeData : data}) {
             </Select>
           </FormControl>
           <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-          <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
-          <Input
-            id="standard-adornment-amount"
-            // value={values.amount}
-            // onChange={handleChange('amount')}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
-        </FormControl>
+            <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
+            <Input
+              id="standard-adornment-amount"
+              // value={values.amount}
+              // onChange={handleChange('amount')}
+              startAdornment={
+                <InputAdornment position="start">$</InputAdornment>
+              }
+            />
+          </FormControl>
           {selected.map(({ name }) => (
             <Typography key={name}>- {name}</Typography>
           ))}
@@ -457,14 +458,14 @@ export default function EnhancedTable({employeeData : data}) {
       </Modal>
 
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "start", md: "center" }}
         justifyContent="space-between"
-        // spacing={5}
+        spacing={1}
         mb={1}
       >
         <div className="d-flex align-items-center">
-          <FormControl sx={{ width: "400px" }} variant="outlined">
+          <FormControl sx={{ width: "300px" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
@@ -483,30 +484,29 @@ export default function EnhancedTable({employeeData : data}) {
               label="search"
             />
           </FormControl>
-          <Button
-            variant="contained"
-            endIcon={<PersonAddIcon />}
-            className="mx-2"
-            onClick={handleOpen2}
-          >
-            إضافة خصم جديد
-          </Button>
         </div>
         <div>
           <IconButton
             aria-label="delete"
             onClick={handleOpen}
             disabled={selected.length === 0 ? true : false}
-            style={{ margin: "0 10px" }}
+            className="mx-1"
           >
             <DeleteIcon />
           </IconButton>
-          <Button
-            href="/add-employees"
-            variant="contained"
-            endIcon={<PersonAddIcon />}
+          <IconButton
+            aria-label="delete"
+            onClick={handleOpen}
+            disabled={selected.length === 0 ? true : false}
+            className="mx-1"
           >
-            إضافة موظف جديد
+            <ArchiveIcon />
+          </IconButton>
+          <Button variant="contained" size="small" className="mx-1" onClick={handleOpen2}>
+            + خصم جديد
+          </Button>
+          <Button href="/add-employees" size="small" variant="contained">
+            + موظف جديد
           </Button>
         </div>
       </Stack>
@@ -533,7 +533,7 @@ export default function EnhancedTable({employeeData : data}) {
                 {stableSort(data, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
+                    const isItemSelected = isSelected(row.emp_id);
                     const labelId = `enhanced-table-checkbox-${index}`;
                     return (
                       <TableRow
@@ -542,7 +542,7 @@ export default function EnhancedTable({employeeData : data}) {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.id}
+                        key={row.emp_id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -585,7 +585,7 @@ export default function EnhancedTable({employeeData : data}) {
                         <TableCell>
                           <Link
                             className="edit-btn"
-                            to={`/employees/${row.id}`}
+                            to={`/employees/${2533402}`}
                           >
                             <IconButton>
                               <VisibilityIcon />
