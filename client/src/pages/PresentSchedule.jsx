@@ -7,7 +7,6 @@ const PresentSchedule = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [newOne, setNewOne] = useState(localStorage.getItem("Val"));
-  console.log(newOne);
 
   useEffect(() => {
     //set loading to true
@@ -32,7 +31,7 @@ const PresentSchedule = () => {
 
   return (
     <section className="employees">
-      {newOne === true ? (
+      {newOne ? (
         <>
           {" "}
           <PresentTable />
