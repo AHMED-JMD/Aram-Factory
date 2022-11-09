@@ -33,11 +33,9 @@ const PresentSchedule = () => {
     <section className="employees">
       {newOne ? (
         <>
-          {" "}
-          <PresentTable />
+          <PresentTable data={employees} />
           <br /> <br />
           <div className="text-center">
-            {" "}
             <button
               className="btn btn-danger btn-lg"
               onClick={() => {

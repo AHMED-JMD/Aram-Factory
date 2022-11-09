@@ -231,36 +231,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
-  const data = [
-    {
-      id: "1",
-      name: "محمد أحمد الطاهر ياسين",
-      title: "مدير إنتاج",
-      birthDate: "12/23/2000",
-      phone: "249123456789",
-      salary: 30000,
-      url: "https://picsum.photos/seed/picsum/200/200",
-    },
-    {
-      id: "2",
-      name: "ياسر عوض الكريم عيسى عبدالله",
-      title: "فني",
-      birthDate: "12/23/2000",
-      phone: "249123456789",
-      salary: 20000,
-      url: "https://picsum.photos/seed/picsum/200/200",
-    },
-    {
-      id: "3",
-      name: "عاصم فتحي صابر هارون",
-      title: "مهندس كهرباء",
-      birthDate: "12/23/2000",
-      phone: "249123456789",
-      salary: 45000,
-      url: "https://picsum.photos/seed/picsum/200/200",
-    },
-  ];
+export default function EnhancedTable({ data: { employees: data } }) {
+  console.log(data);
+
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   const [searchTxt, setSearchTxt] = React.useState("");
@@ -350,18 +323,18 @@ export default function EnhancedTable() {
   return (
     <>
       <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        // spacing={5}
-        mb={1}
+       direction={{ xs: "column", md: "row" }}
+       alignItems={{ xs: "start", md: "center" }}
+       justifyContent="space-between"
+       spacing={1}
+       mb={1}
       >
         <div>
           {/* <TextField label="Search input" variant="outlined" fullWidth />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
           </IconButton> */}
-          <FormControl sx={{ width: "400px" }} variant="outlined">
+          <FormControl sx={{ width: "300px" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
@@ -382,10 +355,7 @@ export default function EnhancedTable() {
           </FormControl>
         </div>
         <div>
-          <Button
-            variant="contained"
-            endIcon={<PersonAddIcon />}
-          >
+          <Button variant="contained" size="small">
             حفظ
           </Button>
         </div>
@@ -432,15 +402,15 @@ export default function EnhancedTable() {
                           // padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={row.url} />
+                            <Avatar alt="user" src={row.imgLink} />
                             <ListItemText
                               style={{ margin: "10px" }}
-                              primary={row.name}
+                              primary={row.emp_name}
                             />
                           </ListItem>
                         </TableCell>
 
-                        <TableCell>{row.title}</TableCell>
+                        <TableCell>{row.jobTitle}</TableCell>
                         <TableCell>
                           <span>{row.salary} جنيه</span>
                         </TableCell>
