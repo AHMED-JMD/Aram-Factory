@@ -317,6 +317,7 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -462,12 +463,21 @@ export default function EnhancedTable() {
         <Button
             variant="contained"
             aria-label="add new present table"
+            size="small"
+            href="/salaries/past-salaries"
+            style={{color: '#fff'}}
+          >
+           الكشوفات السابقة
+          </Button>
+        <Button
+            variant="contained"
+            aria-label="add new present table"
             // disabled={selected.length === 0 ? true : false}
             // onClick={}
             className="mx-2"
             size="small"
           >
-            إضافة كشف جديد
+            + كشف جديد
           </Button>
           <Button variant="contained" size="small">
             حفظ
@@ -569,6 +579,7 @@ export default function EnhancedTable() {
               style={{ padding: "0", direction: 'ltr', alignItems: 'center' }}
             />
           </Paper>
+          <h5 className="text-center">المجموع: <span>390293</span> جنيه</h5>
       </Box>
     </>
   );

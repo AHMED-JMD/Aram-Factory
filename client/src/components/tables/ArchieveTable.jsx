@@ -19,7 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ArchiveIcon from "@mui/icons-material/Archive";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Link } from "react-router-dom";
@@ -276,9 +276,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const handleOpen3 = () => setOpen3(true);
   const handleClose3 = () => setOpen3(false);
 
-  const [filteredData, setfilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
-  const [amount, setAmount] = React.useState(0);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -288,12 +286,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  console.log(data);
-  
-  React.useEffect(() => {
-    const dataFilter = data.filter((employee) => employee.emp_name.includes(searchTxt));
-    setfilteredData(dataFilter);
-}, [data, searchTxt]);
+  console.log(idSelected);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -303,7 +296,7 @@ export default function EnhancedTable({ employeeData: data }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = filteredData.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
@@ -370,7 +363,7 @@ export default function EnhancedTable({ employeeData: data }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.users.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
@@ -395,7 +388,6 @@ export default function EnhancedTable({ employeeData: data }) {
   const archive = () => {
 
   }
-  console.log(searchTxt)
   return (
     <>
       <Modal
@@ -418,6 +410,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
+              color="error"
               // onClick={() => deleteItem()}
             >
               Yes
@@ -425,7 +418,6 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
-              color="error"
               style={{ margin: "0 10px" }}
               onClick={handleClose}
             >
@@ -445,23 +437,42 @@ export default function EnhancedTable({ employeeData: data }) {
           <Typography id="cut-title" variant="h6" component="h1">
             خصم مرتب
           </Typography>
-          {selected.map(({ emp_name, emp_id }) => (
-            <Typography key={emp_id}>- {emp_name}</Typography>
-          ))}
+          <Typography id="cut-description" sx={{ mb: 1 }}>
+            قم بإختيار الموظف وقيمة الخصم:
+          </Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">إسم الموظف</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              // value={age}
+              label="إسم الموظف"
+              // onChange={handleChange}
+            >
+              <MenuItem value={10}>1</MenuItem>
+              <MenuItem value={20}>2</MenuItem>
+              <MenuItem value={30}>3</MenuItem>
+            </Select>
+          </FormControl>
           <FormControl fullWidth sx={{ m: 1 }} variant="standard">
             <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
             <Input
               id="standard-adornment-amount"
-              onChange={e => setAmount(e.target.value)}
+              // value={values.amount}
+              // onChange={handleChange('amount')}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
             />
           </FormControl>
+          {selected.map(({ name }) => (
+            <Typography key={name}>- {name}</Typography>
+          ))}
           <div className="mt-2" style={{ marginTop: "10px" }}>
             <Button
               variant="contained"
               disableElevation
+              color="error"
               // onClick={() => deleteItem()}
             >
               موافق
@@ -469,7 +480,6 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
-              color="error"
               style={{ margin: "0 10px" }}
               onClick={handleClose2}
             >
@@ -507,8 +517,19 @@ export default function EnhancedTable({ employeeData: data }) {
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              onChange={e => search(e.target.value)}
-              label="بحث"
+              // onChange=""
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="search"
+                    // onClick=""
+                    edge="end"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="search"
             />
           </FormControl>
         </div>
@@ -527,33 +548,15 @@ export default function EnhancedTable({ employeeData: data }) {
             disabled={selected.length === 0 ? true : false}
             className="mx-1"
           >
-            <ArchiveIcon />
+            <UnarchiveIcon />
           </IconButton>
           <Button
             variant="contained"
             size="small"
             className="mx-1"
             onClick={handleOpen2}
-            disabled={selected.length === 0 ? true : false}
           >
             + خصم جديد
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-1"
-            href="/archieve"
-            style={{ color: "#fff" }}
-          >
-            الأرشيف
-          </Button>
-          <Button
-            href="/add-employees"
-            size="small"
-            variant="contained"
-            style={{ color: "#fff" }}
-          >
-            + موظف جديد
           </Button>
         </div>
       </Stack>
@@ -572,12 +575,12 @@ export default function EnhancedTable({ employeeData: data }) {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={filteredData.length}
+                rowCount={data.length}
               />
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(filteredData, getComparator(order, orderBy))
+                {stableSort(data, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.emp_id);
@@ -657,7 +660,7 @@ export default function EnhancedTable({ employeeData: data }) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={filteredData.length}
+            count={data.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { viewAll } from "../api/employee";
-import { EmployeesTable } from "../components";
+import { ArchieveTable } from "../components";
 import { authContext } from "../context/AuthContext";
 
-const Employees = () => {
+const Archieve = () => {
   let { auth } = useContext(authContext);
   const [employees, setEmployees] = useState([]);
   const [count, setCount] = useState(0);
@@ -29,9 +29,9 @@ const Employees = () => {
   }, [auth.isAuthenticated]);
   return (
     <section className="employees">
-      <EmployeesTable employeeData={employees} />
+      <ArchieveTable employeeData={employees} />
     </section>
   );
 };
 
-export default Employees;
+export default Archieve;

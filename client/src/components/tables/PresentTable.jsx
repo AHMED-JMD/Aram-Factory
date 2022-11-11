@@ -40,6 +40,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
+import Loader from "../Loader";
+import moment from "moment";
 // import Loader from "../Loader";
 
 const style = {
@@ -231,11 +233,11 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ data: { employees: data } }) {
-  console.log(data);
+export default function EnhancedTable({ data: { employees: data }, isLoading }) {
 
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
+  const [filteredData, setFilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -245,6 +247,12 @@ export default function EnhancedTable({ data: { employees: data } }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  React.useEffect(() => {
+    const dataFilter = data.filter((employee) => employee.emp_name.includes(searchTxt));
+    setFilteredData(dataFilter);
+}, [data, searchTxt]);
+
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -253,15 +261,15 @@ export default function EnhancedTable({ data: { employees: data } }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.name);
+      const newSelecteds = filteredData.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
   };
 
-  const handleClick = (event, { name, id }) => {
-    const entry = { name, id };
-    const selectedIndex = selected.findIndex((item) => item.id === entry.id);
+  const handleClick = (event, { emp_name, emp_id }) => {
+    const entry = { emp_name, emp_id };
+    const selectedIndex = selected.findIndex((item) => item.emp_id === entry.emp_id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
@@ -293,12 +301,12 @@ export default function EnhancedTable({ data: { employees: data } }) {
   //   setDense(event.target.checked);
   // };
 
-  const isSelected = (id) =>
-    selected.findIndex((item) => item.id === id) !== -1;
+  const isSelected = (emp_id) =>
+    selected.findIndex((item) => item.emp_id === emp_id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
@@ -319,7 +327,11 @@ export default function EnhancedTable({ data: { employees: data } }) {
   //     handleClose();
   //     setSelected([])
   //   };
+  let date = moment(new Date()).format('DD/MM/YYYY');
 
+if(isLoading){
+  return <Loader />;
+}
   return (
     <>
       <Stack
@@ -338,23 +350,15 @@ export default function EnhancedTable({ data: { employees: data } }) {
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              // onChange=""
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="search"
-                    // onClick=""
-                    edge="end"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="search"
+              onChange={e => search(e.target.value)}
+              label="بحث"
             />
           </FormControl>
         </div>
         <div>
+          <Button variant="contained" size="small" className="mx-2">
+            شهر جديد
+          </Button>
           <Button variant="contained" size="small">
             حفظ
           </Button>
@@ -375,15 +379,15 @@ export default function EnhancedTable({ data: { employees: data } }) {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={data.length}
+                rowCount={filteredData.length}
               />
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(data, getComparator(order, orderBy))
+                {stableSort(filteredData, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
+                    const isItemSelected = isSelected(row.emp_id);
                     const labelId = `enhanced-table-checkbox-${index}`;
                     return (
                       <TableRow
@@ -392,7 +396,7 @@ export default function EnhancedTable({ data: { employees: data } }) {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.id}
+                        key={row.emp_id}
                         selected={isItemSelected}
                       >
                         <TableCell
@@ -441,14 +445,16 @@ export default function EnhancedTable({ data: { employees: data } }) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={data.length}
+            count={filteredData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
+
         </Paper>
+          <h5 className="text-center">التاريخ: {date}</h5>
       </Box>
     </>
   );

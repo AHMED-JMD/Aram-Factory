@@ -10,6 +10,8 @@ import PresentSchedule from "./pages/PresentSchedule";
 import EmployeeProfile from "./pages/EmployeeProfile";
 import Salaries from "./pages/Salaries";
 import SalariesRecords from "./pages/SalariesRecords";
+import Archieve from "./pages/Archieve";
+import PastSalaries from "./pages/PastSalaries";
 function App() {
   const { auth } = useContext(authContext);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -25,12 +27,16 @@ function App() {
         )}
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route element={<ProtectedRoute isAuthenticated={auth.isAuthenticated} />}>
           <Route path="/" element={<Employees />} />
+          <Route path="/archieve" element={<Archieve />} />
           <Route path="/add-employees" element={<AddEmployees />} />
           <Route path="/employees/:id" element={<EmployeeProfile />} />
           <Route path="/present-schedule" element={<PresentSchedule />} />
           <Route path="/salaries" element={<Salaries />} />
+          <Route path="/salaries/past-salaries" element={<PastSalaries />} />
           <Route path="/salaries/records" element={<SalariesRecords />} />
+          </Route>
         </Routes>
       </Stack>
     </div>

@@ -34,11 +34,10 @@ const PresentSchedule = () => {
     <section className="employees">
       {newOne === true ? (
         <>
-          <PresentTable data={employees} />
-          <br /> <br />
+          <PresentTable data={employees} isLoading={isLoading} />
           <div className="text-center">
             <button
-              className="btn btn-danger btn-lg"
+              className="btn btn-danger"
               onClick={() => {
                 setNewOne(false);
                 localStorage.setItem("Val", false);
@@ -49,16 +48,16 @@ const PresentSchedule = () => {
           </div>
         </>
       ) : (
-        <div className="text-center display-4">
-          حساب حضور جديد <br />
+        <div className="text-center">
+          <h4 className="mb-3">إنشاء جدول حضور جديد</h4>
           <button
-            className="btn btn-primary btn-lg"
+            className="btn btn-primary "
             onClick={() => {
               setNewOne(true);
               localStorage.setItem("Val", true);
             }}
           >
-            جدول جديد
+            إضافة جدول
           </button>
         </div>
       )}

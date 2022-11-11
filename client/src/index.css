@@ -29,6 +29,34 @@ section {
  {
   font-family: "din" !important;
 }
+
+/* Loader */
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loader-container{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3; /* Light grey */
+  border-top: 3px solid #313131; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
+
 .Login{
   height: 100vh;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 100%, #000 0%), url('/images/bg.jpg') !important;
@@ -82,4 +110,21 @@ h3 {
 
 a,span, p, div, input, ul, li, input, label, button, td, tr, h1,h2,h3,h4,h5,h6{
   font-family: "din", "Roboto" !important;
+}
+
+
+/* salaries */
+.salaries-record{
+  background-color: #fff;
+  padding: 40px 0;
+  border-radius: 20px;
+  border: 3px solid #f7f7f7;
+  outline: 3px solid #fff;
+}
+.salaries-record:hover{
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+}
+.past-salaries a{
+  color: rgb(48, 48, 48);
+  text-decoration: none;
 }

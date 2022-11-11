@@ -48,7 +48,9 @@ const Header = ({ toggleFunc }) => {
   };
 
   const HandleLogout = (e) => {
-    setAuth({ isAuthenticated: false });
+    setAuth({ isAuthenticated: false,
+    user: {} });
+    localStorage.removeItem("token");
     Navigate("/login");
   };
   return (
