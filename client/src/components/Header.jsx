@@ -48,7 +48,8 @@ const Header = ({ toggleFunc }) => {
   };
 
   const HandleLogout = (e) => {
-    setAuth({ isAuthenticated: false });
+    setAuth({ isAuthenticated: false, user: {} });
+    localStorage.removeItem("token");
     Navigate("/login");
   };
   return (
@@ -84,8 +85,8 @@ const Header = ({ toggleFunc }) => {
           fontWeight="fontWeightMedium"
           mx={1}
         >
-          <Link style={{color: '#fff', textDecoration: 'none'}} to="/">
-          منصة التحكم
+          <Link style={{ color: "#fff", textDecoration: "none" }} to="/">
+            منصة التحكم
           </Link>
         </Typography>
         <Box sx={{ flexGrow: 0 }}>

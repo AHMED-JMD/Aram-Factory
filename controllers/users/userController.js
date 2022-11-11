@@ -3,47 +3,48 @@ const Admin = db.models.Admin;
 const bcrypt = require("bcryptjs");
 const xssFilter = require("xss-filters");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const user = {
   signup: async (req, res) => {
     try {
-      let { username, phoneNum, password } = req.body;
-      console.log(username, phoneNum, password);
+      let { username, phoneNum, email, password } = req.body;
       //check req.body
-      if (!(username && phoneNum && password)) {
+      if (!(username && phoneNum && email && password)) {
         return res.status(400).json({ msg: "قم بادخال جميع الحقول" });
       }
 
       //filter input
       (phoneNum = xssFilter.inHTMLData(phoneNum)),
         (username = xssFilter.inHTMLData(username)),
+        (email = xssFilter.inHTMLData(email)),
         (password = xssFilter.inHTMLData(password));
 
       //make sure no admin is replicated
       let admin = await Admin.findOne({ where: { username } });
       if (admin) return res.status(400).json("admin already exist");
 
-      const newAdmin = await Admin.create({ username, phoneNum, password });
-
       //hash user password
       const salt = await bcrypt.genSalt(10);
-      newAdmin.password = await bcrypt.hash(newAdmin.password, salt);
+      hashedPassword = await bcrypt.hash(password, salt);
 
-      //save user
-      newAdmin
-        .save()
-        .then((user) => {
-          res.json({
-            user: {
-              id: user.id,
-              phoneNum: user.phoneNum,
-              username: user.username,
-            },
-          });
-        })
-        .catch((err) => {
-          if (err) console.log("register_err:", err);
-        });
+      //save to database
+      const newAdmin = await Admin.create({
+        username,
+        phoneNum,
+        email,
+        password: hashedPassword,
+      });
+
+      //send to client
+      res.json({
+        user: {
+          id: newAdmin.id,
+          phoneNum: newAdmin.phoneNum,
+          email: newAdmin.email,
+          username: newAdmin.username,
+        },
+      });
     } catch (error) {
       console.log(error);
     }
@@ -101,6 +102,17 @@ const user = {
         });
       })
       .catch((err) => console.log(err));
+  },
+  delete: async (req, res) => {
+    try {
+      let { username } = req.body;
+
+      await Admin.destroy({ where: { username } });
+      res.json("deleted successfully");
+    } catch (error) {
+      if (error) throw error;
+      console.log(error);
+    }
   },
 };
 

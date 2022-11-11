@@ -121,7 +121,7 @@ const headCells = [
     id: "phone",
     numeric: true,
     disablePadding: false,
-    label: "رقم الجوال",
+    label: "الانذارات",
   },
   {
     id: "dateofbirth",
@@ -133,7 +133,7 @@ const headCells = [
     id: "address",
     numeric: false,
     disablePadding: false,
-    label: "السكن",
+    label: "الغياب في الشهر",
   },
   {
     id: "edit",
@@ -502,7 +502,12 @@ export default function EnhancedTable({ employeeData: data }) {
           >
             <ArchiveIcon />
           </IconButton>
-          <Button variant="contained" size="small" className="mx-1" onClick={handleOpen2}>
+          <Button
+            variant="contained"
+            size="small"
+            className="mx-1"
+            onClick={handleOpen2}
+          >
             + خصم جديد
           </Button>
           <Button href="/add-employees" size="small" variant="contained">
@@ -579,9 +584,9 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>
                           <span>{row.salary} جنيه</span>
                         </TableCell>
-                        <TableCell>{row.phoneNum}</TableCell>
+                        <TableCell>{row.warnings}</TableCell>
                         <TableCell>{row.start_date}</TableCell>
-                        <TableCell>{row.address}</TableCell>
+                        <TableCell>{row.attendee_count_M}</TableCell>
                         <TableCell>
                           <Link
                             className="edit-btn"

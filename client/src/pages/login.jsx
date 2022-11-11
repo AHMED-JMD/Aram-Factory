@@ -68,12 +68,6 @@ const Login = () => {
           <br />
           <form onSubmit={(e) => HandleSubmit(e)}>
             <div className="form-group">
-              {/* <label htmlFor="name">الاسم</label> <br /> */}
-              {/* <input
-                type="text"
-                className="textfeild"
-                placeholder="ادخل الاسم"
-              /> */}
               <TextField
                 id="outlined-basic"
                 className="din"
@@ -86,12 +80,6 @@ const Login = () => {
             </div>
 
             <div className="form-group">
-              {/* <label htmlFor="name">كلمة السر</label> <br />
-              <input
-                type="password"
-                className="textfeild"
-                placeholder="ادخل كلمة السر"
-              /> */}
               <TextField
                 id="outlined-basic"
                 className="din"
