@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { viewSchedule } from "../api/salaries";
 import { SalariesTable } from "../components";
 
 const Salaries = () => {
-    const [newOne, setNewOne] = useState(localStorage.getItem("Sal"));
-    return ( 
-        <section className="salaries">
-            {newOne === true ? (
+  const [newOne, setNewOne] = useState(false);
+  const [employee, setEmployee] = useState({});
+  console.log(employee);
+  const [isloading, setIsloading] = useState(false);
+  const [ErrMsg, setErrMsg] = useState("");
+
+  useEffect(() => {
+    setIsloading(true);
+
+    //set variable for the schedule
+    setNewOne(localStorage.getItem("Sal"));
+    //call db data
+    viewSchedule()
+      .then((res) => {
+        setIsloading(false);
+        setEmployee(res);
+      })
+      .catch((err) => {
+        setIsloading(false);
+        setErrMsg(err.response.data);
+        console.log(err);
+      });
+  }, []);
+
+  return (
+    <section className="salaries">
+      {newOne && newOne !== "false" ? (
         <>
           <SalariesTable />
         </>
@@ -23,8 +47,8 @@ const Salaries = () => {
           </button>
         </div>
       )}
-        </section>
-     );
-}
- 
+    </section>
+  );
+};
+
 export default Salaries;

@@ -1,9 +1,8 @@
 const db = require("../../models/index");
 const Admin = db.models.Admin;
 const bcrypt = require("bcryptjs");
-const xssFilter = require("xss-filters");
 const jwt = require("jsonwebtoken");
-const { where } = require("sequelize");
+const SendMail = require("../../middlwares/mail");
 require("dotenv").config();
 
 let newPassword = {
@@ -25,6 +24,12 @@ let newPassword = {
       //create link and mail it to admin
       let link = `http://localhost:40000/reset-password/${newAdmin.admin_id}/${newToken}`;
       console.log(link);
+      //send link
+      try {
+        SendMail(newAdmin.email, link);
+      } catch (error) {
+        console.log(error);
+      }
 
       res.json("ok");
     } catch (error) {

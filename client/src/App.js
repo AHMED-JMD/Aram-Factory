@@ -27,7 +27,7 @@ function App() {
         )}
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route element={<ProtectedRoute isAuthenticated={auth.isAuthenticated} />}>
+          {/* <Route element={<ProtectedRoute isAuthenticated={auth.isAuthenticated} />}> */}
           <Route path="/" element={<Employees />} />
           <Route path="/archieve" element={<Archieve />} />
           <Route path="/add-employees" element={<AddEmployees />} />
@@ -36,7 +36,7 @@ function App() {
           <Route path="/salaries" element={<Salaries />} />
           <Route path="/salaries/past-salaries" element={<PastSalaries />} />
           <Route path="/salaries/records" element={<SalariesRecords />} />
-          </Route>
+          {/* </Route> */}
         </Routes>
       </Stack>
     </div>
