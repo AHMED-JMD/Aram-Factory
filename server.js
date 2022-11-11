@@ -19,6 +19,7 @@ app.use(cors());
 
 //setting up routes
 app.use("/user", require("./routes/users/auth"));
+app.use("/user/utilities", require("./routes/users/resetPassword"));
 app.use("/employees", require("./routes/employees/Employee"));
 app.use("/salaries", require("./routes/employees/salaries"));
 

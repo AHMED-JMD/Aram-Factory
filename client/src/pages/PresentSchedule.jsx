@@ -6,7 +6,7 @@ const PresentSchedule = () => {
   const [employees, setEmployees] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const [newOne, setNewOne] = useState(localStorage.getItem("Val"));
+  const [newOne, setNewOne] = useState(false);
   console.log(newOne);
 
   useEffect(() => {
@@ -17,8 +17,7 @@ const PresentSchedule = () => {
     setNewOne(localStorage.getItem("Val"));
 
     //call db for data
-    let page = 0;
-    viewAll(page)
+    viewAll()
       .then((res) => {
         setIsLoading(false);
         //set data
@@ -32,7 +31,7 @@ const PresentSchedule = () => {
 
   return (
     <section className="employees">
-      {newOne === true ? (
+      {newOne && newOne !== "false" ? (
         <>
           <PresentTable data={employees} isLoading={isLoading} />
           <div className="text-center">

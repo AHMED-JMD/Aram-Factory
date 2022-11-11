@@ -307,7 +307,7 @@ const AddEmployees = () => {
               </FormControl>
             </div>
             <Typography variant="h5" component="h1" mb={2}>
-              المنح
+              المنح والتأمين
             </Typography>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
