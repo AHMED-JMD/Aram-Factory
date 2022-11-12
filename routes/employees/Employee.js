@@ -7,7 +7,7 @@ const archive = require("../../controllers/employees/archiveController");
 //setting up multer disk storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "client/build/images");
+    cb(null, "client/public/images");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -39,9 +39,13 @@ router.post("/absence", attend.absent);
 router.get("/new-month", attend.nwMonth);
 //borrow from salary
 router.post("/borrow", attend.borrow);
+//warn employes
+router.post("/warnings", attend.warn);
 
 //add to archive
 router.post("/archive", archive.add);
+//return from archive
+router.post("/archive/return", archive.return);
 //view archive
 router.get("/archive", archive.view);
 

@@ -61,6 +61,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
+      isArchieved: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       absent_date: {
         type: DataTypes.JSON,
         allowNull: false,

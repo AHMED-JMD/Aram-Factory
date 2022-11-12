@@ -43,6 +43,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import { Archive } from "@mui/icons-material";
+import { returnArchive } from "../../api/archive";
 // import Loader from "../Loader";
 
 const style = {
@@ -285,6 +286,9 @@ export default function EnhancedTable({ employeeData: data }) {
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [archeived, setArcheived] = React.useState(false);
+  const [errMsg, setErrMsg] = React.useState("");
 
   console.log(idSelected);
 
@@ -342,7 +346,6 @@ export default function EnhancedTable({ employeeData: data }) {
       );
     }
     setIdSelected(newIdSelected);
-
   };
 
   const handleChangePage = (event, newPage) => {
@@ -385,9 +388,23 @@ export default function EnhancedTable({ employeeData: data }) {
   //     setSelected([])
   //   };
 
-  const archive = () => {
+  const UnArcheive = () => {
+    console.log(idSelected);
+    setIsLoading(true);
 
-  }
+    //call to database
+    returnArchive(idSelected)
+      .then((res) => {
+        setIsLoading(false);
+        setArcheived(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setArcheived(false);
+        setErrMsg(err.response.data);
+      });
+  };
   return (
     <>
       <Modal
@@ -499,9 +516,7 @@ export default function EnhancedTable({ employeeData: data }) {
           <Typography id="cut-title" variant="h6" component="h1">
             تمت أرشفة الموظف بنجاح
           </Typography>
-          <div className="mt-2" style={{ marginTop: "10px" }}>
- 
-          </div>
+          <div className="mt-2" style={{ marginTop: "10px" }}></div>
         </Box>
       </Modal>
 
@@ -544,7 +559,7 @@ export default function EnhancedTable({ employeeData: data }) {
           </IconButton>
           <IconButton
             aria-label="archive"
-            onClick={Archive}
+            onClick={UnArcheive}
             disabled={selected.length === 0 ? true : false}
             className="mx-1"
           >

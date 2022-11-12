@@ -1,40 +1,35 @@
 const db = require("../../models/index");
 
-let Archive = db.models.Archive;
+let Employee = db.models.Employee;
 
 const archive = {
   add: async (req, res) => {
     try {
-      let {
-        emp_id,
-        emp_name,
-        Ssn,
-        jobTitle,
-        salary,
-        penalty,
-        phoneNum,
-        app_date,
-        start_date,
-        address,
-        warnings,
-      } = req.body;
-      //add to db
-      let newArchive = await Archive.create({
-        emp_id,
-        emp_name,
-        Ssn,
-        jobTitle,
-        salary,
-        start_salary: salary,
-        penalty,
-        phoneNum,
-        app_date,
-        start_date,
-        address,
-        warnings,
-      });
-      //send to back
-      res.json(newArchive);
+      let { emp_ids } = req.body;
+      console.log(emp_ids);
+      //update all
+
+      let newUser = await Employee.update(
+        { isArchieved: true },
+        { where: { emp_id: emp_ids } }
+      );
+      res.json(newUser);
+    } catch (error) {
+      if (error) throw error;
+      console.log(error);
+    }
+  },
+  return: async (req, res) => {
+    try {
+      let { emp_ids } = req.body;
+      console.log(emp_ids);
+      //update all
+
+      let newUser = await Employee.update(
+        { isArchieved: false },
+        { where: { emp_id: emp_ids } }
+      );
+      res.json(newUser);
     } catch (error) {
       if (error) throw error;
       console.log(error);
@@ -43,7 +38,9 @@ const archive = {
   view: async (req, res) => {
     try {
       //find all Archived employees from db
-      let allArchived = await Archive.findAll({});
+      let allArchived = await Employee.findAll({
+        where: { isArchieved: true },
+      });
       //send to back end
       res.json(allArchived);
     } catch (error) {

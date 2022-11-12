@@ -45,6 +45,7 @@ const attend = {
         employee.update(
           {
             salary: employee.start_salary,
+            warnings: 0,
             attendee_count_M: 0,
             attendee_count_Y: 0,
             absent_date: [],
@@ -61,28 +62,73 @@ const attend = {
   },
   borrow: async (req, res) => {
     try {
-      let { emp_name, amount } = req.body;
+      let { emp_id, amount } = req.body;
 
       //find and update salary from db
-      let employee = await Employee.findOne({ where: { emp_name } });
+      Promise.all(
+        emp_id.map(async (id) => {
+          let employee = await Employee.findOne({ where: { emp_id: id } });
 
-      //if amount is bigger than half the salary reject
-      if (amount > employee.salary / 2) {
-        return res.status(400).json("عذرا تم تجاوز الحد المسموح به");
-      }
-      //update employee
-      employee.salary = employee.salary - amount;
-      await employee.save();
+          //if amount is bigger than half the salary reject
+          if (amount > employee.salary / 2) {
+            return res.status(400).json("تم تجاوز الحد المسموح به");
+          } else {
+            //update employee
+            employee.salary = employee.salary - amount;
+            await employee.save();
 
-      //save deduct data
-      const newDeduct = await Deduct.create({
-        amount,
-        employeeEmpId: employee.emp_id,
-      });
-
-      res.json({ employee, newDeduct });
+            //save deduct data
+            let newDeduct = await Deduct.create({
+              amount,
+              employeeEmpId: employee.emp_id,
+            });
+            return newDeduct;
+          }
+        })
+      )
+        .then((response) => {
+          console.log(response);
+          res.send(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
       if (error) throw error;
+    }
+  },
+  warn: async (req, res) => {
+    try {
+      let { emp_ids } = req.body;
+
+      //map and find from database
+      Promise.all(
+        emp_ids.map(async (emp_id) => {
+          //find and see how many warning he has
+          let newEmp = await Employee.findOne({ where: emp_id });
+          console.log(newEmp.warnings);
+          if (newEmp.warnings > 3) {
+            return res.status(400).json("تم تجاوز الحد المسموح من الانذارت");
+          }
+
+          //update
+          await newEmp.update(
+            {
+              warnings: Sequelize.literal("warnings + 1"),
+            },
+            { where: { emp_id } }
+          );
+          return newEmp;
+        })
+      )
+        .then((data) => res.send(data))
+        .catch((err) => {
+          if (err) throw err;
+          console.log(err);
+        });
+    } catch (error) {
+      if (error) throw error;
+      console.log(error);
     }
   },
 };

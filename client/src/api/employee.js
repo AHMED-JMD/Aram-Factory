@@ -48,9 +48,9 @@ const updateImage = async (data) => {
     throw error;
   }
 };
-const deleteEmployee = async (emp_ids) => {
+const deleteEmployee = async (emp_id) => {
   try {
-    let response = await axiosClient.post("/employees/delete", emp_ids);
+    let response = await axiosClient.post("/employees/delete", { emp_id });
     return response;
   } catch (error) {
     throw error;

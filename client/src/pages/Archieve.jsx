@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { view } from "../api/archive";
 import { viewAll } from "../api/employee";
 import { ArchieveTable } from "../components";
 import { authContext } from "../context/AuthContext";
@@ -6,21 +7,18 @@ import { authContext } from "../context/AuthContext";
 const Archieve = () => {
   let { auth } = useContext(authContext);
   const [employees, setEmployees] = useState([]);
-  const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  // console.log(employees);
+  console.log(employees);
 
   useEffect(() => {
     //set loading to true
     setIsLoading(true);
 
     //call db for data
-    let page = 0;
-    viewAll(page)
+    view()
       .then((res) => {
         setIsLoading(false);
-        setEmployees(res.data.employees);
-        setCount(res.data.count);
+        setEmployees(res.data);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -30,6 +28,7 @@ const Archieve = () => {
   return (
     <section className="employees">
       <ArchieveTable employeeData={employees} />
+      <div>hello</div>
     </section>
   );
 };
