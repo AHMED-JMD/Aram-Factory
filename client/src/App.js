@@ -12,6 +12,9 @@ import Salaries from "./pages/Salaries";
 import SalariesRecords from "./pages/SalariesRecords";
 import Archieve from "./pages/Archieve";
 import PastSalaries from "./pages/PastSalaries";
+import ConfirmEmail from "./pages/confirmEmail";
+import ResetPassword from "./pages/resetPassword";
+
 function App() {
   const { auth } = useContext(authContext);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -27,6 +30,12 @@ function App() {
         )}
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/forget-password" element={<ConfirmEmail />} />
+          <Route
+            path="/reset-password/:id/:token"
+            element={<ResetPassword />}
+          />
+
           {/* <Route element={<ProtectedRoute isAuthenticated={auth.isAuthenticated} />}> */}
           <Route path="/" element={<Employees />} />
           <Route path="/archieve" element={<Archieve />} />

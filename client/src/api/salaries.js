@@ -15,7 +15,7 @@ const add = async (date, total) => {
 const view = async () => {
   try {
     let response = await axiosClient.get("/salaries/");
-    return response.data;
+    return response;
   } catch (error) {
     if (error) throw error;
   }
@@ -24,7 +24,7 @@ const view = async () => {
 const viewSchedule = async () => {
   try {
     let response = await axiosClient.get("/salaries/get-all");
-    return response.data;
+    return response;
   } catch (error) {
     if (error) throw error;
   }

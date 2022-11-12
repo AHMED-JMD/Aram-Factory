@@ -57,7 +57,7 @@ let newPassword = {
   reset: async (req, res) => {
     try {
       let { newPassword, id } = req.body;
-
+      console.log(req.body);
       //hash user password
       const salt = await bcrypt.genSalt(10);
       hashedPassword = await bcrypt.hash(newPassword, salt);
