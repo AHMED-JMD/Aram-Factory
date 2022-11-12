@@ -36,7 +36,7 @@ function App() {
             element={<ResetPassword />}
           />
 
-          {/* <Route element={<ProtectedRoute isAuthenticated={auth.isAuthenticated} />}> */}
+          <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Employees />} exact />
           <Route path="/archieve" element={<Archieve />} />
           <Route path="/add-employees" element={<AddEmployees />} />
@@ -45,7 +45,7 @@ function App() {
           <Route path="/salaries" element={<Salaries />} />
           <Route path="/salaries/past-salaries" element={<PastSalaries />} />
           <Route path="/salaries/records/:id" element={<SalariesRecords />} />
-          {/* </Route> */}
+          </Route>
         </Routes>
       </Stack>
     </div>

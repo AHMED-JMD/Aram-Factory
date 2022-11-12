@@ -27,7 +27,7 @@ const Salaries = () => {
   }, []);
 
   if(isLoading){
-    return <Loader />
+    return <Loader />;
   }
   return (
     <section className="salaries">
