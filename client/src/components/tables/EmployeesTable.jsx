@@ -471,6 +471,9 @@ export default function EnhancedTable({ employeeData: data }) {
       });
   };
   console.log(searchTxt);
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <>
       <Modal
@@ -677,6 +680,9 @@ export default function EnhancedTable({ employeeData: data }) {
         </div>
       </Stack>
       <Box>
+        {archeived && (
+          <div className="alert alert-success">تمت الارشفة بنجاح</div>
+        )}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -693,6 +699,7 @@ export default function EnhancedTable({ employeeData: data }) {
                 onRequestSort={handleRequestSort}
                 rowCount={filteredData.length}
               />
+
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}

@@ -44,6 +44,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import { Archive } from "@mui/icons-material";
 import { returnArchive } from "../../api/archive";
+import Loader from "../Loader";
 // import Loader from "../Loader";
 
 const style = {
@@ -405,6 +406,9 @@ export default function EnhancedTable({ employeeData: data }) {
         setErrMsg(err.response.data);
       });
   };
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <>
       <Modal
@@ -576,6 +580,9 @@ export default function EnhancedTable({ employeeData: data }) {
         </div>
       </Stack>
       <Box>
+        {archeived && (
+          <div className="alert alert-success">تمت الحذف من الارشيف بنجاح </div>
+        )}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
