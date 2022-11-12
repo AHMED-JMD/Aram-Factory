@@ -39,6 +39,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import moment from "moment";
+import Loader from "../Loader";
 
 const style = {
   position: "absolute",
@@ -271,7 +272,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ employeeData: data, isLoading }) {
+export default function EnhancedTable({ employeeData: {data} }) {
   console.log(data);
 
   const [open, setOpen] = React.useState(false);

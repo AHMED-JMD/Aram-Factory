@@ -500,7 +500,7 @@ export default function EnhancedTable({ employeeData: data }) {
               disableElevation
               onClick={() => deleteItem()}
             >
-              Yes
+              نعم
             </Button>
             <Button
               variant="contained"
@@ -509,7 +509,7 @@ export default function EnhancedTable({ employeeData: data }) {
               style={{ margin: "0 10px" }}
               onClick={handleClose}
             >
-              No
+              لا
             </Button>
           </div>
         </Box>
