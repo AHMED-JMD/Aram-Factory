@@ -43,7 +43,7 @@ const checkout = {
   view: async (req, res) => {
     try {
       //find all users and their related checkouts
-      let result = await Grants.findAll();
+      let result = await Checkout.findAll();
       res.json(result);
     } catch (error) {
       if (error) throw error;
