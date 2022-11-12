@@ -112,6 +112,10 @@ a,span, p, div, input, ul, li, input, label, button, td, tr, h1,h2,h3,h4,h5,h6{
   font-family: "din", "Roboto" !important;
 }
 
+.muirtl-10hburv-MuiTypography-root {
+  font-weight: 100 !important;
+  font-size: 0.9rem !important;
+}
 
 /* salaries */
 .salaries-record{

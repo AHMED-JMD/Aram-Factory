@@ -233,8 +233,10 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ data: { employees: data }, isLoading }) {
-
+export default function EnhancedTable({
+  data: { employees: data },
+  isLoading,
+}) {
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   const [filteredData, setFilteredData] = React.useState([]);
@@ -242,16 +244,20 @@ export default function EnhancedTable({ data: { employees: data }, isLoading }) 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
+  const [idSelected, setIdSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  let date = moment(new Date()).format("DD/MM/YYYY");
 
+  console.log(idSelected);
   React.useEffect(() => {
-    const dataFilter = data.filter((employee) => employee.emp_name.includes(searchTxt));
+    const dataFilter = data.filter((employee) =>
+      employee.emp_name.includes(searchTxt)
+    );
     setFilteredData(dataFilter);
-}, [data, searchTxt]);
-
+  }, [data, searchTxt]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -269,7 +275,9 @@ export default function EnhancedTable({ data: { employees: data }, isLoading }) 
 
   const handleClick = (event, { emp_name, emp_id }) => {
     const entry = { emp_name, emp_id };
-    const selectedIndex = selected.findIndex((item) => item.emp_id === entry.emp_id);
+    const selectedIndex = selected.findIndex(
+      (item) => item.emp_id === entry.emp_id
+    );
     let newSelected = [];
 
     if (selectedIndex === -1) {
@@ -286,6 +294,26 @@ export default function EnhancedTable({ data: { employees: data }, isLoading }) 
     }
 
     setSelected(newSelected);
+    // id selected
+    const idSelectedIndex = selected.findIndex(
+      (item) => item.emp_id === emp_id
+    );
+
+    let newIdSelected = [];
+
+    if (idSelectedIndex === -1) {
+      newIdSelected = newIdSelected.concat(idSelected, emp_id);
+    } else if (idSelectedIndex === 0) {
+      newIdSelected = newIdSelected.concat(idSelected.slice(1));
+    } else if (idSelectedIndex === selected.length - 1) {
+      newIdSelected = newIdSelected.concat(idSelected.slice(0, -1));
+    } else if (idSelectedIndex > 0) {
+      newIdSelected = newIdSelected.concat(
+        idSelected.slice(0, emp_id),
+        idSelected.slice(emp_id + 1)
+      );
+    }
+    setIdSelected(newIdSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -306,7 +334,7 @@ export default function EnhancedTable({ data: { employees: data }, isLoading }) 
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
@@ -327,11 +355,10 @@ export default function EnhancedTable({ data: { employees: data }, isLoading }) 
   //     handleClose();
   //     setSelected([])
   //   };
-  let date = moment(new Date()).format('DD/MM/YYYY');
 
-if(isLoading){
-  return <Loader />;
-}
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <>
       <Stack
@@ -350,7 +377,7 @@ if(isLoading){
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              onChange={e => search(e.target.value)}
+              onChange={(e) => search(e.target.value)}
               label="بحث"
             />
           </FormControl>
@@ -452,9 +479,8 @@ if(isLoading){
             onRowsPerPageChange={handleChangeRowsPerPage}
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
-
         </Paper>
-          <h5 className="text-center">التاريخ: {date}</h5>
+        <h6 className="">التاريخ: {date}</h6>
       </Box>
     </>
   );

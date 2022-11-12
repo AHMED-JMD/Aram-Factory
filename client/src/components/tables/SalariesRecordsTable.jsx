@@ -19,6 +19,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Link } from "react-router-dom";
@@ -38,7 +40,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
-import moment from "moment";
 
 const style = {
   position: "absolute",
@@ -288,8 +289,7 @@ export default function EnhancedTable({ employeeData: data, isLoading }) {
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  let date = moment(new Date()).format("DD/MM/YYYY");
-  let total = [];
+  let total = 0;
 
   React.useEffect(() => {
     const dataFilter = data.filter((employee) =>
@@ -357,46 +357,8 @@ export default function EnhancedTable({ employeeData: data, isLoading }) {
     setSearchTxt(text);
   };
 
-  let rowTotal = 0;
-  console.log(total)
   return (
     <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Delete a user
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2, mb: 1 }}>
-            are you sure you want to delete:
-          </Typography>
-          {selected.map(({ name }) => (
-            <Typography key={name}>- {name}</Typography>
-          ))}
-          <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              color="error"
-              // onClick={() => deleteItem()}
-            >
-              Yes
-            </Button>
-            <Button
-              variant="contained"
-              disableElevation
-              style={{ margin: "0 10px" }}
-              onClick={handleClose}
-            >
-              No
-            </Button>
-          </div>
-        </Box>
-      </Modal>
       <Stack
         direction={{ xs: "column", md: "row" }}
         alignItems={{ xs: "start", md: "center" }}
@@ -412,30 +374,6 @@ export default function EnhancedTable({ employeeData: data, isLoading }) {
             label="بحث"
           />
         </FormControl>
-        <div>
-          <Button
-            variant="contained"
-            aria-label="add new present table"
-            size="small"
-            href="/salaries/past-salaries"
-            style={{ color: "#fff" }}
-          >
-            الكشوفات السابقة
-          </Button>
-          <Button
-            variant="contained"
-            aria-label="add new present table"
-            // disabled={selected.length === 0 ? true : false}
-            // onClick={}
-            className="mx-2"
-            size="small"
-          >
-            + كشف جديد
-          </Button>
-          <Button variant="contained" size="small">
-            حفظ
-          </Button>
-        </div>
       </Stack>
       <Box>
         <Paper sx={{ mb: 2 }}>
@@ -462,7 +400,7 @@ export default function EnhancedTable({ employeeData: data, isLoading }) {
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.emp_id);
                     const labelId = `enhanced-table-checkbox-${index}`;
-                    rowTotal =
+                    let rowTotal =
                       row.salary +
                       row.grant.extra +
                       row.grant.grant17 +
@@ -471,7 +409,7 @@ export default function EnhancedTable({ employeeData: data, isLoading }) {
                       row.grant.grant22 +
                       row.grant.grantGM -
                       row.grant.insurance;
-                      total.push(rowTotal);
+                    total += rowTotal;
                     return (
                       <TableRow
                         hover
@@ -542,14 +480,9 @@ export default function EnhancedTable({ employeeData: data, isLoading }) {
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
         </Paper>
-       <div className="d-flex flex-wrap justify-content-between">
-       <h6 className="text-center">
-          المجموع: <span>{rowTotal}</span> جنيه
-        </h6>
-       <h6 className="text-center">
-          التاريخ: <span>{date}</span>
-        </h6>
-       </div>
+        <h5 className="text-center">
+          المجموع: <span>{total}</span> جنيه
+        </h5>
       </Box>
     </>
   );

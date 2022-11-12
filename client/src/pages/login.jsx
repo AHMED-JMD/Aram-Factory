@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { login } from "../api/auth";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useContext } from "react";
 import { authContext } from "../context/AuthContext";
 
@@ -10,6 +12,7 @@ const Login = () => {
   const { auth, setAuth } = useContext(authContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -92,15 +95,33 @@ const Login = () => {
                 className="textfeild"
                 placeholder="ادخل كلمة السر"
               /> */}
-              <TextField
-                id="outlined-basic"
-                className="din"
-                style={{ width: "320px" }}
-                label="كلمة المرور"
+              <FormControl
+                style={{ marginBottom: "20px", width: "320px" }}
                 variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  كلمة المرور
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword(!showPassword)}
+                        // onMouseDown={e => e.preventDefault()}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
             </div>
             <br />
             <div>

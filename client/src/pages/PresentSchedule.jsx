@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PresentTable } from "../components";
+import { Loader, PresentTable } from "../components";
 import { viewAll } from "../api/employee";
 
 const PresentSchedule = () => {
@@ -28,6 +28,10 @@ const PresentSchedule = () => {
         console.log(err);
       });
   }, []);
+
+  if(isLoading){
+    return <Loader />
+  }
 
   return (
     <section className="employees">

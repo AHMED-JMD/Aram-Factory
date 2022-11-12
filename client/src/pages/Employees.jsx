@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { viewAll } from "../api/employee";
-import { EmployeesTable } from "../components";
+import { EmployeesTable, Loader } from "../components";
 import { authContext } from "../context/AuthContext";
 
 const Employees = () => {
@@ -27,6 +27,10 @@ const Employees = () => {
         // console.log(err);
       });
   }, [auth.isAuthenticated]);
+
+  if(isLoading){
+    return <Loader />
+  }
   return (
     <section className="employees">
       <EmployeesTable employeeData={employees} />
