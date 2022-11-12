@@ -43,7 +43,7 @@ function App() {
           <Route path="/employees/:id" element={<EmployeeProfile />} />
           <Route path="/present-schedule" element={<PresentSchedule />} />
           <Route path="/salaries" element={<Salaries />} />
-          <Route path="/salaries/past-salaries" element={<PastSalaries />} />
+          <Route path="/salaries/records" element={<PastSalaries />} />
           <Route path="/salaries/records/:id" element={<SalariesRecords />} />
           </Route>
         </Routes>

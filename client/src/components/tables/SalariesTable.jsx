@@ -440,7 +440,7 @@ export default function EnhancedTable({ employeeData: { data } }) {
             variant="contained"
             aria-label="add new present table"
             size="small"
-            href="/salaries/past-salaries"
+            href="/salaries/records"
             style={{ color: "#fff" }}
           >
             الكشوفات السابقة
