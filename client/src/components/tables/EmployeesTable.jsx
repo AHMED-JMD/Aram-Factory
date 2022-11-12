@@ -19,6 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import ArchiveIcon from "@mui/icons-material/Archive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
@@ -43,7 +44,6 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import { Archive } from "@mui/icons-material";
-// import Loader from "../Loader";
 
 const style = {
   position: "absolute",
@@ -370,7 +370,7 @@ export default function EnhancedTable({ employeeData: data }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
@@ -486,11 +486,32 @@ export default function EnhancedTable({ employeeData: data }) {
         aria-describedby="archive"
       >
         <Box sx={style}>
-          <Typography id="cut-title" variant="h6" component="h1">
-            تمت أرشفة الموظف بنجاح
+        <Typography id="modal-modal-title" variant="h6" component="h1">
+            إنذار موظف
           </Typography>
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            هل انت متأكد من إنذار:
+          </Typography>
+          {selected.map(({ emp_name, emp_id }) => (
+            <Typography key={emp_id}>- {emp_name}</Typography>
+          ))}
           <div className="mt-2" style={{ marginTop: "10px" }}>
- 
+            <Button
+              variant="contained"
+              disableElevation
+              // onClick={() => deleteItem()}
+            >
+              موافق
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              style={{ margin: "0 10px" }}
+              onClick={handleClose3}
+            >
+              إلغاء
+            </Button>
           </div>
         </Box>
       </Modal>
@@ -528,6 +549,14 @@ export default function EnhancedTable({ employeeData: data }) {
             className="mx-1"
           >
             <ArchiveIcon />
+          </IconButton>
+          <IconButton
+            aria-label="archive"
+            onClick={handleOpen3}
+            disabled={selected.length === 0 ? true : false}
+            className="mx-1"
+          >
+            <DoDisturbOnIcon />
           </IconButton>
           <Button
             variant="contained"
@@ -614,7 +643,7 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={row.imgLink} />
+                            <Avatar alt="user" src={`../../../build/images/${row.imgLink}`} />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}

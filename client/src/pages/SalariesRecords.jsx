@@ -1,9 +1,9 @@
 import React from "react";
-import { SalariesTable } from "../components";
+import { SalariesRecordsTable, SalariesTable } from "../components";
 const SalariesRecords = () => {
     return ( 
         <section className="salaries-records">
-             <SalariesTable />
+             <SalariesRecordsTable />
         </section>
      );
 }

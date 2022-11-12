@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box, Stack } from "@mui/system";
 import {
   Avatar,
   Button,
@@ -7,7 +6,6 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
   TextareaAutosize,
   TextField,
   Typography,
@@ -138,7 +136,7 @@ const EmployeeProfile = () => {
     <section className="add-employees">
       <form>
         <div className="container">
-          <div className="row">
+          <div className="row mr-auto text-right">
             <Typography variant="h5" component="h1" mb={2}>
               البيانات الأساسية
             </Typography>
@@ -151,27 +149,29 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="الإسم"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="emp_name"
                   type="text"
                   value={empData.emp_name}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <PersonIcon />
-                    </InputAdornment>
-                  }
                 />
               </FormControl>
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
+                 label="الرقم التعريفي"
+                 InputLabelProps={{
+                   shrink: true,
+                 }}
                   disabled
                   name="emp_id"
-                  type="text"
+                  type="number"
                   value={empData.emp_id}
                   onChange={handleChange}
                   require="true"
@@ -185,8 +185,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="المسمى الوظيفي"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="jobTitle"
                   type="text"
                   value={empData.jobTitle}
@@ -202,10 +205,13 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="الرقم الوطني"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="Ssn"
-                  type="text"
+                  type="number"
                   value={empData.Ssn}
                   onChange={handleChange}
                   require="true"
@@ -219,8 +225,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="السكن"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="address"
                   type="text"
                   value={empData.address}
@@ -236,8 +245,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="رقم الجوال"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="phoneNum"
                   type="phone"
                   value={empData.phoneNum}
@@ -267,8 +279,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="الراتب"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="salary"
                   type="number"
                   value={empData.salary}
@@ -288,6 +303,7 @@ const EmployeeProfile = () => {
                 minRows={2}
                 name="notes"
                 placeholder="الملاحظات"
+                label="الملاحظات"
                 value={empData.notes}
                 onChange={handleChange}
                 className="pt-3 px-3"
@@ -341,8 +357,11 @@ const EmployeeProfile = () => {
             </Typography>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="الإضافي"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="extra"
                   type="number"
                   value={grantData.extra}
@@ -353,8 +372,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="منحة رئاسية 2017"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="grant17"
                   type="number"
                   value={grantData.grant17}
@@ -365,8 +387,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="منحة خاصة 2019"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="grant19"
                   type="number"
                   value={grantData.grant19}
@@ -377,8 +402,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="منحة العام 2020"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="grant20"
                   type="number"
                   value={grantData.grant20}
@@ -389,8 +417,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="منحة العام 2022"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="grant22"
                   type="number"
                   value={grantData.grant22}
@@ -401,8 +432,11 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   label="منحة المدير العام"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="grantGM"
                   type="number"
                   value={grantData.grantGM}
@@ -413,8 +447,12 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
-                <OutlinedInput
+                <TextField
                   name="insurance"
+                  label="التأمين"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   id="insurance-input"
                   type="number"
                   value={grantData.insurance}
