@@ -1,9 +1,19 @@
 import axiosClient from "./axiosClient";
 
-const add = async (data) => {
+const add = async (emp_ids) => {
   try {
-    let response = await axiosClient.post("/employees/archive/", data);
-    return response.data;
+    let response = await axiosClient.post("/employees/archive/", { emp_ids });
+    return response;
+  } catch (error) {
+    if (error) throw error;
+  }
+};
+const returnArchive = async (emp_ids) => {
+  try {
+    let response = await axiosClient.post("/employees/archive/return", {
+      emp_ids,
+    });
+    return response;
   } catch (error) {
     if (error) throw error;
   }
@@ -12,10 +22,10 @@ const add = async (data) => {
 const view = async () => {
   try {
     let response = await axiosClient.get("/employees/archive");
-    return response.data;
+    return response;
   } catch (error) {
     if (error) throw error;
   }
 };
 
-export { add, view };
+export { add, view, returnArchive };

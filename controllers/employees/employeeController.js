@@ -133,7 +133,9 @@ const employees = {
   viewAll: async (req, res) => {
     try {
       //set pagination
-      const employees = await Employee.findAll({});
+      const employees = await Employee.findAll({
+        where: { isArchieved: false },
+      });
 
       //count rows number
       res.json({ employees });
@@ -284,7 +286,7 @@ const employees = {
       fs.unlink(
         path.join(
           __dirname,
-          `../../client/build/images/${newEmployee.imgLink}`
+          `../../client/public/images/${newEmployee.imgLink}`
         ),
         (err) => {
           if (err) console.log(err);
@@ -314,7 +316,10 @@ const employees = {
         let employee = await Employee.findOne({ where: { emp_id: id } });
         //find and delete from server
         fs.unlink(
-          path.join(__dirname, `../../client/build/images/${employee.imgLink}`),
+          path.join(
+            __dirname,
+            `../../client/public/images/${employee.imgLink}`
+          ),
           (err) => {
             if (err) console.log(err);
             else {

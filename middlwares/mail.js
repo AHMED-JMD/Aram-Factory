@@ -14,7 +14,7 @@ const SendMail = (email, link) => {
     from: process.env.EMAIL_USER,
     to: "ahmedjmd0@gmail.com",
     subject: "Password Reset",
-    text: link,
+    text: `note the link will expire in 10 minutes \n ${link}`,
   };
 
   return transporter.sendMail(mailOptions, function (error, info) {

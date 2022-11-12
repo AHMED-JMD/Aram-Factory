@@ -42,6 +42,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import Loader from "../Loader";
 import moment from "moment";
+import { absent, nwMonth } from "../../api/attendance";
 // import Loader from "../Loader";
 
 const style = {
@@ -249,7 +250,12 @@ export default function EnhancedTable({
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  let date = moment(new Date()).format("DD/MM/YYYY");
+  const [loaded, setLoaded] = React.useState(false);
+  const [absence, setAbsence] = React.useState(false);
+  const [newM, setNewM] = React.useState(false);
+  const [errMsg, setErrMsg] = React.useState("");
+
+  let date = moment(new Date()).format("YYYY/MM/DD");
 
   console.log(idSelected);
   React.useEffect(() => {
@@ -356,7 +362,41 @@ export default function EnhancedTable({
   //     setSelected([])
   //   };
 
-  if (isLoading) {
+  //backend functions----------------------------
+  const handlAbsent = () => {
+    setLoaded(true);
+
+    //call backend
+    absent(idSelected, date)
+      .then((res) => {
+        setLoaded(false);
+        setAbsence(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setLoaded(false);
+        setAbsence(false);
+        setErrMsg(err.response.data);
+      });
+  };
+  const handleNwMonth = () => {
+    setLoaded(true);
+
+    //call db
+    nwMonth()
+      .then((res) => {
+        setLoaded(false);
+        setNewM(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setLoaded(false);
+        setNewM(false);
+        setErrMsg(err.response.data);
+      });
+  };
+
+  if (isLoading || loaded) {
     return <Loader />;
   }
   return (
@@ -383,15 +423,26 @@ export default function EnhancedTable({
           </FormControl>
         </div>
         <div>
-          <Button variant="contained" size="small" className="mx-2">
+          <Button
+            variant="contained"
+            size="small"
+            className="mx-2"
+            onClick={handleNwMonth}
+          >
             شهر جديد
           </Button>
-          <Button variant="contained" size="small">
+          <Button variant="contained" size="small" onClick={handlAbsent}>
             حفظ
           </Button>
         </div>
       </Stack>
       <Box>
+        {absence && (
+          <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
+        )}
+        {newM && (
+          <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
+        )}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>

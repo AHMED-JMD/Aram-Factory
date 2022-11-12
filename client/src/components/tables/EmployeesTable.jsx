@@ -19,7 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
+import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
@@ -44,6 +44,10 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import { Archive } from "@mui/icons-material";
+import { deleteEmployee } from "../../api/employee";
+import Loader from "../Loader";
+import { borrow, warning } from "../../api/attendance";
+import { add } from "../../api/archive";
 
 const style = {
   position: "absolute",
@@ -265,7 +269,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ employeeData: data }) {
-  const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -288,12 +291,21 @@ export default function EnhancedTable({ employeeData: data }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(false);
+  const [deducted, setDeducted] = React.useState(false);
+  const [warned, setWarned] = React.useState(false);
+  const [archeived, setArcheived] = React.useState(false);
+  const [errMsg, setErrMsg] = React.useState("");
+
   console.log(data);
-  
+
   React.useEffect(() => {
-    const dataFilter = data.filter((employee) => employee.emp_name.includes(searchTxt));
+    const dataFilter = data.filter((employee) =>
+      employee.emp_name.includes(searchTxt)
+    );
     setfilteredData(dataFilter);
-}, [data, searchTxt]);
+  }, [data, searchTxt]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -349,7 +361,6 @@ export default function EnhancedTable({ employeeData: data }) {
       );
     }
     setIdSelected(newIdSelected);
-
   };
 
   const handleChangePage = (event, newPage) => {
@@ -392,10 +403,74 @@ export default function EnhancedTable({ employeeData: data }) {
   //     setSelected([])
   //   };
 
-  const archive = () => {
+  //backend functions---------------------------------------
+  const Archive = () => {
+    setIsLoading(true);
 
-  }
-  console.log(searchTxt)
+    //call to db
+    add(idSelected)
+      .then((res) => {
+        setIsLoading(false);
+        setArcheived(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setArcheived(false);
+        setErrMsg(err.response.data);
+      });
+  };
+  const deleteItem = () => {
+    setIsLoading(true);
+    //call db
+    deleteEmployee(idSelected)
+      .then((res) => {
+        setIsLoading(false);
+        setDeleted(true);
+        setErrMsg("");
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setDeleted(false);
+        setErrMsg(err.response.data);
+      });
+  };
+  const DeductItem = () => {
+    setIsLoading(true);
+
+    //call db
+    borrow(idSelected, amount)
+      .then((res) => {
+        setIsLoading(false);
+        setDeducted(true);
+        setErrMsg("");
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setDeducted(false);
+        setErrMsg(err.response.data);
+      });
+  };
+  const WarnItem = () => {
+    setIsLoading(true);
+
+    //call db
+    warning(idSelected)
+      .then((res) => {
+        setIsLoading(false);
+        setWarned(true);
+        setErrMsg("");
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setWarned(false);
+        setErrMsg(err.response.data);
+      });
+  };
+  console.log(searchTxt);
   return (
     <>
       <Modal
@@ -408,6 +483,11 @@ export default function EnhancedTable({ employeeData: data }) {
           <Typography id="modal-modal-title" variant="h6" component="h1">
             حذف موظف
           </Typography>
+          {isLoading && <Loader />}
+          {deleted && (
+            <div className="alert alert-success">تم حذف الموظف بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
             هل انت متأكد من حذف:
           </Typography>
@@ -418,7 +498,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
-              // onClick={() => deleteItem()}
+              onClick={() => deleteItem()}
             >
               نعم
             </Button>
@@ -445,6 +525,11 @@ export default function EnhancedTable({ employeeData: data }) {
           <Typography id="cut-title" variant="h6" component="h1">
             خصم مرتب
           </Typography>
+          {isLoading && <Loader />}
+          {deducted && (
+            <div className="alert alert-success">تم خصم القيمة بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           {selected.map(({ emp_name, emp_id }) => (
             <Typography key={emp_id}>- {emp_name}</Typography>
           ))}
@@ -452,7 +537,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
             <Input
               id="standard-adornment-amount"
-              onChange={e => setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -462,7 +547,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
-              // onClick={() => deleteItem()}
+              onClick={() => DeductItem()}
             >
               موافق
             </Button>
@@ -486,9 +571,14 @@ export default function EnhancedTable({ employeeData: data }) {
         aria-describedby="archive"
       >
         <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h1">
+          <Typography id="modal-modal-title" variant="h6" component="h1">
             إنذار موظف
           </Typography>
+          {isLoading && <Loader />}
+          {warned && (
+            <div className="alert alert-success">تم انذار الموظف بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
             هل انت متأكد من إنذار:
           </Typography>
@@ -499,7 +589,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
-              // onClick={() => deleteItem()}
+              onClick={() => WarnItem()}
             >
               موافق
             </Button>
@@ -528,7 +618,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              onChange={e => search(e.target.value)}
+              onChange={(e) => search(e.target.value)}
               label="بحث"
             />
           </FormControl>
@@ -643,7 +733,10 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={`../../../build/images/${row.imgLink}`} />
+                            <Avatar
+                              alt="user"
+                              src={`../../../build/images/${row.imgLink}`}
+                            />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}
@@ -661,7 +754,7 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>
                           <Link
                             className="edit-btn"
-                            to={`/employees/${2533402}`}
+                            to={`/employees/${row.emp_id}`}
                           >
                             <IconButton>
                               <VisibilityIcon />

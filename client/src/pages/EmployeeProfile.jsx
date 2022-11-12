@@ -165,17 +165,17 @@ const EmployeeProfile = () => {
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <TextField
-                 label="الرقم التعريفي"
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
+                  label="الرقم التعريفي"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   disabled
                   name="emp_id"
                   type="number"
                   value={empData.emp_id}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
+                  endadornment={
                     <InputAdornment position="end">
                       <AssignmentIndIcon />
                     </InputAdornment>
@@ -195,7 +195,7 @@ const EmployeeProfile = () => {
                   value={empData.jobTitle}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
+                  endadornment={
                     <InputAdornment position="end">
                       <WorkIcon />
                     </InputAdornment>
@@ -215,7 +215,7 @@ const EmployeeProfile = () => {
                   value={empData.Ssn}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
+                  endadornment={
                     <InputAdornment position="end">
                       <AssignmentIndIcon />
                     </InputAdornment>
@@ -235,7 +235,7 @@ const EmployeeProfile = () => {
                   value={empData.address}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
+                  endadornment={
                     <InputAdornment position="end">
                       <HomeIcon />
                     </InputAdornment>
@@ -255,7 +255,7 @@ const EmployeeProfile = () => {
                   value={empData.phoneNum}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
+                  endadornment={
                     <InputAdornment position="end">
                       <PhoneIcon />
                     </InputAdornment>
@@ -279,6 +279,20 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="تاريخ بداية الخدمة"
+                    name="app_date"
+                    value={empData.app_date}
+                    onChange={handleChange}
+                    inputFormat="YYYY/MM/DD"
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+            </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
                 <TextField
                   label="الراتب"
                   InputLabelProps={{
@@ -289,7 +303,27 @@ const EmployeeProfile = () => {
                   value={empData.salary}
                   onChange={handleChange}
                   require="true"
-                  endAdornment={
+                  endadornment={
+                    <InputAdornment position="end">
+                      <AttachMoneyIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </div>
+            <div className="col-lg-6 col-sm-12 mb-4">
+              <FormControl style={{ width: "100%" }}>
+                <TextField
+                  label="الخصم عند الغياب"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  name="penalty"
+                  type="number"
+                  value={empData.penalty}
+                  onChange={handleChange}
+                  require="true"
+                  endadornment={
                     <InputAdornment position="end">
                       <AttachMoneyIcon />
                     </InputAdornment>
