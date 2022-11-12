@@ -45,6 +45,7 @@ import { Stack } from "@mui/system";
 import { Archive } from "@mui/icons-material";
 import { returnArchive } from "../../api/archive";
 import Loader from "../Loader";
+import { deleteEmployee } from "../../api/employee";
 // import Loader from "../Loader";
 
 const style = {
@@ -288,6 +289,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(false);
   const [archeived, setArcheived] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
@@ -406,6 +408,23 @@ export default function EnhancedTable({ employeeData: data }) {
         setErrMsg(err.response.data);
       });
   };
+  const deleteItem = () => {
+    setIsLoading(true);
+    //call db
+
+    deleteEmployee(idSelected)
+      .then((res) => {
+        setIsLoading(false);
+        setDeleted(true);
+        setErrMsg("");
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setDeleted(false);
+        setErrMsg(err.response.data);
+      });
+  };
   if (isLoading) {
     return <Loader />;
   }
@@ -421,6 +440,11 @@ export default function EnhancedTable({ employeeData: data }) {
           <Typography id="modal-modal-title" variant="h6" component="h1">
             حذف موظف
           </Typography>
+          {isLoading && <Loader />}
+          {deleted && (
+            <div className="alert alert-success">تم حذف الموظف بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
             هل انت متأكد من حذف:
           </Typography>
@@ -432,7 +456,7 @@ export default function EnhancedTable({ employeeData: data }) {
               variant="contained"
               disableElevation
               color="error"
-              // onClick={() => deleteItem()}
+              onClick={() => deleteItem()}
             >
               Yes
             </Button>
@@ -443,68 +467,6 @@ export default function EnhancedTable({ employeeData: data }) {
               onClick={handleClose}
             >
               No
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={open2}
-        onClose={handleClose2}
-        aria-labelledby="add-new-salary-cut"
-        aria-describedby="add-new-salary-cut"
-      >
-        <Box sx={style}>
-          <Typography id="cut-title" variant="h6" component="h1">
-            خصم مرتب
-          </Typography>
-          <Typography id="cut-description" sx={{ mb: 1 }}>
-            قم بإختيار الموظف وقيمة الخصم:
-          </Typography>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">إسم الموظف</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="إسم الموظف"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>1</MenuItem>
-              <MenuItem value={20}>2</MenuItem>
-              <MenuItem value={30}>3</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
-            <Input
-              id="standard-adornment-amount"
-              // value={values.amount}
-              // onChange={handleChange('amount')}
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
-            />
-          </FormControl>
-          {selected.map(({ name }) => (
-            <Typography key={name}>- {name}</Typography>
-          ))}
-          <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              color="error"
-              // onClick={() => deleteItem()}
-            >
-              موافق
-            </Button>
-            <Button
-              variant="contained"
-              disableElevation
-              style={{ margin: "0 10px" }}
-              onClick={handleClose2}
-            >
-              إلغاء
             </Button>
           </div>
         </Box>
@@ -569,14 +531,6 @@ export default function EnhancedTable({ employeeData: data }) {
           >
             <UnarchiveIcon />
           </IconButton>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-1"
-            onClick={handleOpen2}
-          >
-            + خصم جديد
-          </Button>
         </div>
       </Stack>
       <Box>

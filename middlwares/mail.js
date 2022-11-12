@@ -12,7 +12,7 @@ const SendMail = (email, link) => {
 
   var mailOptions = {
     from: process.env.EMAIL_USER,
-    to: "mele.me200@gmail.com",
+    to: "ahmedjmd0@gmail.com",
     subject: "Password Reset",
     text: `note the link will expire in 10 minutes \n ${link}`,
   };

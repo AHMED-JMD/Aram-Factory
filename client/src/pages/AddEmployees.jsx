@@ -87,6 +87,8 @@ const AddEmployees = () => {
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
+        setErrMsg("");
+
         console.log(res.data);
       })
       .catch((err) => {

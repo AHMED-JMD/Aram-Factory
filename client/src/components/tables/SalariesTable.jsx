@@ -40,6 +40,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import moment from "moment";
 import Loader from "../Loader";
+import { add } from "../../api/salaries";
 
 const style = {
   position: "absolute",
@@ -272,7 +273,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ employeeData: {data} }) {
+export default function EnhancedTable({ employeeData: { data } }) {
   console.log(data);
 
   const [open, setOpen] = React.useState(false);
@@ -289,8 +290,12 @@ export default function EnhancedTable({ employeeData: {data} }) {
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [loading, setLoading] = React.useState(false);
+  const [added, setAdded] = React.useState(false);
+
+  const [errMsg, setErrMsg] = React.useState("");
+
   let date = moment(new Date()).format("DD/MM/YYYY");
-  let total = [];
 
   React.useEffect(() => {
     const dataFilter = data.filter((employee) =>
@@ -358,8 +363,25 @@ export default function EnhancedTable({ employeeData: {data} }) {
     setSearchTxt(text);
   };
 
+  //backend function herer-------------------
+  const handleSubmit = () => {
+    setLoading(true);
+
+    //call db
+    add(date)
+      .then((res) => {
+        setLoading(false);
+        setErrMsg("");
+        setAdded(true);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setErrMsg(err.response.data);
+      });
+  };
   let rowTotal = 0;
-  console.log(total)
+
   return (
     <>
       <Modal
@@ -433,12 +455,16 @@ export default function EnhancedTable({ employeeData: {data} }) {
           >
             + كشف جديد
           </Button>
-          <Button variant="contained" size="small">
+          <Button variant="contained" size="small" onClick={handleSubmit}>
             حفظ
           </Button>
         </div>
       </Stack>
       <Box>
+        {loading && <Loader />}
+        {added && (
+          <div className="alert alert-success">تم اضافة كشف جديد بنجاح</div>
+        )}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -472,7 +498,6 @@ export default function EnhancedTable({ employeeData: {data} }) {
                       row.grant.grant22 +
                       row.grant.grantGM -
                       row.grant.insurance;
-                      total.push(rowTotal);
                     return (
                       <TableRow
                         hover
@@ -543,14 +568,14 @@ export default function EnhancedTable({ employeeData: {data} }) {
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
         </Paper>
-       <div className="d-flex flex-wrap justify-content-between">
-       <h6 className="text-center">
-          المجموع: <span>{rowTotal}</span> جنيه
-        </h6>
-       <h6 className="text-center">
-          التاريخ: <span>{date}</span>
-        </h6>
-       </div>
+        <div className="d-flex flex-wrap justify-content-between">
+          <h6 className="text-center">
+            المجموع: <span>{rowTotal}</span> جنيه
+          </h6>
+          <h6 className="text-center">
+            التاريخ: <span>{date}</span>
+          </h6>
+        </div>
       </Box>
     </>
   );

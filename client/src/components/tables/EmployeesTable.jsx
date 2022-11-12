@@ -292,6 +292,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [deleted, setDeleted] = React.useState(false);
   const [deducted, setDeducted] = React.useState(false);
   const [warned, setWarned] = React.useState(false);
@@ -405,17 +406,17 @@ export default function EnhancedTable({ employeeData: data }) {
 
   //backend functions---------------------------------------
   const Archive = () => {
-    setIsLoading(true);
+    setLoading(true);
 
     //call to db
     add(idSelected)
       .then((res) => {
-        setIsLoading(false);
+        setLoading(false);
         setArcheived(true);
         console.log(res.data);
       })
       .catch((err) => {
-        setIsLoading(false);
+        setLoading(false);
         setArcheived(false);
         setErrMsg(err.response.data);
       });
@@ -471,7 +472,7 @@ export default function EnhancedTable({ employeeData: data }) {
       });
   };
   console.log(searchTxt);
-  if (isLoading) {
+  if (loading) {
     return <Loader />;
   }
   return (

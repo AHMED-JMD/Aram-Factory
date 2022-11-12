@@ -87,7 +87,7 @@ const attend = {
         })
       )
         .then((response) => {
-          console.log(response);
+          console.log(response.status);
           res.send(response);
         })
         .catch((err) => {
