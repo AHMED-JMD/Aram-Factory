@@ -534,6 +534,26 @@ const EmployeeProfile = () => {
                 </>
               )}
             </div>
+            <div className="col-12 mb-4">
+            <Typography variant="h5" component="h1" mb={2}>
+              أيام الغياب
+            </Typography>
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={2}
+                name="absent_dates"
+                placeholder="لا يوجد أيام غياب"
+                label="أيام الغياب"
+                value={empData.absent_date}
+                disabled
+                className="pt-3 px-3"
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  borderRadius: "4px",
+                }}
+              />
+            </div>
           </div>
         </div>
       </form>
