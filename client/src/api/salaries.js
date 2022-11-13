@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const add = async (date) => {
+const add = async (date, total) => {
   try {
     let response = await axiosClient.post("/salaries/", {
       date,
