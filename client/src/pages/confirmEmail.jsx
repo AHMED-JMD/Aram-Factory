@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { login } from "../api/auth";
-import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
-import { useContext } from "react";
-import { authContext } from "../context/AuthContext";
 import { forgetPassword } from "../api/userUtilities";
 
 const ConfirmEmail = () => {
@@ -22,7 +17,6 @@ const ConfirmEmail = () => {
       .then((res) => {
         setIsAdded(true);
         setIsLoading(false);
-        console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);

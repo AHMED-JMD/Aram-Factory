@@ -17,7 +17,6 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -26,23 +25,16 @@ import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
-  Divider,
   FormControl,
-  Input,
   InputAdornment,
   InputLabel,
   ListItem,
   ListItemText,
-  MenuItem,
   OutlinedInput,
-  Select,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
-import { Archive } from "@mui/icons-material";
 import { returnArchive } from "../../api/archive";
 import Loader from "../Loader";
 import { deleteEmployee } from "../../api/employee";
@@ -269,7 +261,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ employeeData: data }) {
-  const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -294,7 +285,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [archeived, setArcheived] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
-  console.log(idSelected);
+  React.useEffect(() => {}, [data]);
 
   useEffect(() => {
     console.log("hello there");
@@ -380,24 +371,7 @@ export default function EnhancedTable({ employeeData: data }) {
     setSearchTxt(text);
   };
 
-  //   const deleteItem = async () => {
-  //     setDeleteLoading(true);
-  //     await Promise.all(
-  //       selected.map(async ({ id }) => {
-  //         await userDelete({
-  //           variables: {
-  //             userDeleteId: id,
-  //           },
-  //         });
-  //       })
-  //     );
-  //     setDeleteLoading(false);
-  //     handleClose();
-  //     setSelected([])
-  //   };
-
   const UnArcheive = () => {
-    console.log(idSelected);
     setIsLoading(true);
 
     //call to database
@@ -405,7 +379,6 @@ export default function EnhancedTable({ employeeData: data }) {
       .then((res) => {
         setIsLoading(false);
         setArcheived(true);
-        console.log(res.data);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -422,7 +395,6 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setDeleted(true);
         setErrMsg("");
-        console.log(res.data);
       })
       .catch((err) => {
         setIsLoading(false);

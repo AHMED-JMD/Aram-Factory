@@ -2,10 +2,10 @@
   "name": "hr-system",
   "version": "1.0.0",
   "description": "new simple HR system for managing employees",
-  "main": "server.js",
+  "main": "server2.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node server2.js",
+    "server": "nodemon server2.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Ahmed",

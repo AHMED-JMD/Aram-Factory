@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box, Stack } from "@mui/system";
 import {
   Button,
   FormControl,
@@ -21,10 +20,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addEmployee } from "../api/employee";
-import { Title } from "@mui/icons-material";
 const AddEmployees = () => {
   //basic info states
-  const [value, setValue] = useState(null);
   const [emp_id, setEmp_id] = useState("");
   const [emp_name, setEmp_name] = useState("");
   const [address, setAddress] = useState("");
@@ -89,7 +86,6 @@ const AddEmployees = () => {
         setIsAdded(true);
         setErrMsg("");
 
-        console.log(res.data);
       })
       .catch((err) => {
         setIsLoading(false);
