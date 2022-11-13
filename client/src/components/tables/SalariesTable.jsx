@@ -298,7 +298,7 @@ export default function EnhancedTable({
 
   const [errMsg, setErrMsg] = React.useState("");
 
-  let date = moment(new Date()).format("DD/MM/YYYY");
+  let date = moment(new Date()).format("YYYY-MM-DD");
 
   React.useEffect(() => {
     const dataFilter = newEmployee.filter((employee) =>

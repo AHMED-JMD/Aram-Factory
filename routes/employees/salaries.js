@@ -4,6 +4,8 @@ const checkout = require("../../controllers/employees/salariesController");
 
 //add new checkout data
 router.post("/", checkout.add);
+//get one checkout
+router.post("/get-one", checkout.viewOne);
 //view checkouts with users
 router.get("/", checkout.view);
 //view users with their grants
