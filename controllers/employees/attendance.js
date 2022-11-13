@@ -47,7 +47,6 @@ const attend = {
             salary: employee.start_salary,
             warnings: 0,
             attendee_count_M: 0,
-            attendee_count_Y: 0,
             absent_date: [],
           },
           { where: { emp_id: employee.emp_id } }
@@ -65,13 +64,14 @@ const attend = {
       let { emp_id, amount } = req.body;
 
       //find and update salary from db
+      let status;
       Promise.all(
         emp_id.map(async (id) => {
           let employee = await Employee.findOne({ where: { emp_id: id } });
 
           //if amount is bigger than half the salary reject
           if (amount > employee.salary / 2) {
-            return res.status(400).json("تم تجاوز الحد المسموح به");
+            return (status = 400);
           } else {
             //update employee
             employee.salary = employee.salary - amount;
@@ -82,13 +82,17 @@ const attend = {
               amount,
               employeeEmpId: employee.emp_id,
             });
-            return newDeduct;
+            return (status = 200);
           }
         })
       )
         .then((response) => {
-          console.log(response.status);
-          res.send(response);
+          console.log(response);
+          if (response === [200]) {
+            res.json("Ok");
+          } else {
+            res.status(response[0]).json("عفوا تم تجاوز الحد المسموح به");
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -102,26 +106,33 @@ const attend = {
       let { emp_ids } = req.body;
 
       //map and find from database
+      let status;
       Promise.all(
         emp_ids.map(async (emp_id) => {
           //find and see how many warning he has
           let newEmp = await Employee.findOne({ where: emp_id });
-          console.log(newEmp.warnings);
-          if (newEmp.warnings > 3) {
-            return res.status(400).json("تم تجاوز الحد المسموح من الانذارت");
+          if (newEmp.warnings >= 3) {
+            return (status = 400);
+          } else {
+            //update
+            await newEmp.update(
+              {
+                warnings: Sequelize.literal("warnings + 1"),
+              },
+              { where: { emp_id } }
+            );
+            return (status = 200);
           }
-
-          //update
-          await newEmp.update(
-            {
-              warnings: Sequelize.literal("warnings + 1"),
-            },
-            { where: { emp_id } }
-          );
-          return newEmp;
         })
       )
-        .then((data) => res.send(data))
+        .then((response) => {
+          console.log(response);
+          if (response === [200]) {
+            res.json("Ok");
+          } else {
+            res.status(response[0]).json("الموظف لديه ثلاثة انذارات");
+          }
+        })
         .catch((err) => {
           if (err) throw err;
           console.log(err);

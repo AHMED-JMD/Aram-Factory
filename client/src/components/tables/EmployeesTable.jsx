@@ -132,13 +132,13 @@ const headCells = [
     id: "dateofbirth",
     numeric: false,
     disablePadding: false,
-    label: "تاريخ التعيين",
+    label: "الغياب في الشهر",
   },
   {
     id: "address",
     numeric: false,
     disablePadding: false,
-    label: "الغياب في الشهر",
+    label: "الغياب في السنة",
   },
   {
     id: "edit",
@@ -471,7 +471,7 @@ export default function EnhancedTable({ employeeData: data }) {
         setErrMsg(err.response.data);
       });
   };
-  console.log(searchTxt);
+
   if (loading) {
     return <Loader />;
   }
@@ -741,10 +741,7 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar
-                              alt="user"
-                              src={`../../../build/images/${row.imgLink}`}
-                            />
+                            <Avatar alt="user" src={`/images/${row.imgLink}`} />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}
@@ -757,8 +754,8 @@ export default function EnhancedTable({ employeeData: data }) {
                           <span>{row.salary} جنيه</span>
                         </TableCell>
                         <TableCell>{row.warnings}</TableCell>
-                        <TableCell>{row.start_date}</TableCell>
                         <TableCell>{row.attendee_count_M}</TableCell>
+                        <TableCell>{row.attendee_count_Y}</TableCell>
                         <TableCell>
                           <Link
                             className="edit-btn"

@@ -8,7 +8,6 @@ const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  // console.log(employees);
 
   useEffect(() => {
     //set loading to true
@@ -28,8 +27,8 @@ const Employees = () => {
       });
   }, [auth.isAuthenticated]);
 
-  if(isLoading){
-    return <Loader />
+  if (isLoading) {
+    return <Loader />;
   }
   return (
     <section className="employees">

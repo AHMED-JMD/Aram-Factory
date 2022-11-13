@@ -49,6 +49,7 @@ const checkout = {
       if (error) throw error;
     }
   },
+  viewOne: async (req, res) => {},
   viewSchedule: async (req, res) => {
     try {
       let newEmployee = await Employee.findAll({ include: Grants });
