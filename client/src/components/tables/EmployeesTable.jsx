@@ -611,8 +611,8 @@ export default function EnhancedTable({ employeeData: data }) {
       </Modal>
 
       <Stack
-        direction={{ xs: "column", md: "row" }}
-        alignItems={{ xs: "start", md: "center" }}
+        direction={{ xs: "column", sm: "row" }}
+        alignItems={{ xs: "start", sm: "center" }}
         justifyContent="space-between"
         spacing={1}
         mb={1}
