@@ -443,6 +443,8 @@ export default function EnhancedTable({
         {newM && (
           <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
         )}
+        <br />
+         <h5 className="">التاريخ: {date}</h5>
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -484,7 +486,7 @@ export default function EnhancedTable({
                           // padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={row.imgLink} />
+                            <Avatar alt="user" src={`/images/${row.imgLink}`} />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}
@@ -531,7 +533,6 @@ export default function EnhancedTable({
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
         </Paper>
-        <h6 className="">التاريخ: {date}</h6>
       </Box>
     </>
   );

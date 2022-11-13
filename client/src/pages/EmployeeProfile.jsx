@@ -373,6 +373,7 @@ const EmployeeProfile = () => {
                   require="true"
                 />
               </FormControl>
+              <span className="my-2" style={{fontSize: '14px', fontWeight: '100'}}>*يفضل أن تكون الصورة بمقاسات مربعة</span>
             </div>
             <div className="col-12 mb-4">
               <Button

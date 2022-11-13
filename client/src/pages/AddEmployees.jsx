@@ -306,6 +306,7 @@ const AddEmployees = () => {
                   variant="standard"
                   require="true"
                 />
+                <span className="my-2" style={{fontSize: '14px', fontWeight: '100'}}>*يفضل أن تكون الصورة بمقاسات مربعة</span>
               </FormControl>
             </div>
             <Typography variant="h5" component="h1" mb={2}>

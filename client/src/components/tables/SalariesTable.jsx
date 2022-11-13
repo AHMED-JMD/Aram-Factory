@@ -537,7 +537,7 @@ export default function EnhancedTable({
                           // padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={row.url} />
+                            <Avatar alt="user" src={`/images/${row.imgLink}`} />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}
