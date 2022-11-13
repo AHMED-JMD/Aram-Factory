@@ -8,7 +8,6 @@ const Archieve = () => {
   let { auth } = useContext(authContext);
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(employees);
 
   useEffect(() => {
     //set loading to true

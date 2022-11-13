@@ -273,8 +273,11 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ employeeData: { data } }) {
-  console.log(data);
+export default function EnhancedTable({
+  employeeData: { newEmployee },
+  employeeData: { total },
+}) {
+  console.log(total);
 
   const [open, setOpen] = React.useState(false);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
@@ -298,11 +301,11 @@ export default function EnhancedTable({ employeeData: { data } }) {
   let date = moment(new Date()).format("DD/MM/YYYY");
 
   React.useEffect(() => {
-    const dataFilter = data.filter((employee) =>
+    const dataFilter = newEmployee.filter((employee) =>
       employee.emp_name.includes(searchTxt)
     );
     setfilteredData(dataFilter);
-  }, [data, searchTxt]);
+  }, [newEmployee, searchTxt]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -312,7 +315,7 @@ export default function EnhancedTable({ employeeData: { data } }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.name);
+      const newSelecteds = newEmployee.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
@@ -368,7 +371,7 @@ export default function EnhancedTable({ employeeData: { data } }) {
     setLoading(true);
 
     //call db
-    add(date)
+    add(date, total)
       .then((res) => {
         setLoading(false);
         setErrMsg("");
@@ -440,12 +443,13 @@ export default function EnhancedTable({ employeeData: { data } }) {
             variant="contained"
             aria-label="add new present table"
             size="small"
+            className="mx-2"
             href="/salaries/records"
             style={{ color: "#fff" }}
           >
             الكشوفات السابقة
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             aria-label="add new present table"
             // disabled={selected.length === 0 ? true : false}
@@ -454,7 +458,7 @@ export default function EnhancedTable({ employeeData: { data } }) {
             size="small"
           >
             + كشف جديد
-          </Button>
+          </Button> */}
           <Button variant="contained" size="small" onClick={handleSubmit}>
             حفظ
           </Button>
@@ -465,6 +469,15 @@ export default function EnhancedTable({ employeeData: { data } }) {
         {added && (
           <div className="alert alert-success">تم اضافة كشف جديد بنجاح</div>
         )}
+        <br />
+        <div className="d-flex flex-wrap justify-content-between">
+          <h5 className="text-center">
+            المجموع: <span>{total}</span> جنيه
+          </h5>
+          <h5 className="text-center">
+            التاريخ: <span>{date}</span>
+          </h5>
+        </div>
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -568,14 +581,6 @@ export default function EnhancedTable({ employeeData: { data } }) {
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
         </Paper>
-        <div className="d-flex flex-wrap justify-content-between">
-          <h6 className="text-center">
-            المجموع: <span>{rowTotal}</span> جنيه
-          </h6>
-          <h6 className="text-center">
-            التاريخ: <span>{date}</span>
-          </h6>
-        </div>
       </Box>
     </>
   );

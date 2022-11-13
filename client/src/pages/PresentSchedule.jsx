@@ -7,7 +7,6 @@ const PresentSchedule = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [newOne, setNewOne] = useState(false);
-  console.log(newOne);
 
   useEffect(() => {
     //set loading to true
@@ -29,8 +28,8 @@ const PresentSchedule = () => {
       });
   }, []);
 
-  if(isLoading){
-    return <Loader />
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (

@@ -7,6 +7,8 @@ const Salaries = () => {
   const [employee, setEmployee] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [ErrMsg, setErrMsg] = useState("");
+  const [total, setTotal] = useState(0);
+  console.log(total);
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,7 +19,8 @@ const Salaries = () => {
     viewSchedule()
       .then((res) => {
         setIsLoading(false);
-        setEmployee(res);
+        setEmployee(res.data);
+        setTotal(res.data.total);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -26,7 +29,7 @@ const Salaries = () => {
       });
   }, []);
 
-  if(isLoading){
+  if (isLoading) {
     return <Loader />;
   }
   return (

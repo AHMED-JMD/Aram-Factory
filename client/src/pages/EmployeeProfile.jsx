@@ -143,7 +143,7 @@ const EmployeeProfile = () => {
             <div className="col-12 d-flex justify-content-center mb-4">
               <Avatar
                 alt="Remy Sharp"
-                src="https://picsum.photos/seed/picsum/200/200"
+                src={`/images/${empData.imgLink}`}
                 sx={{ width: 150, height: 150 }}
               />
             </div>
