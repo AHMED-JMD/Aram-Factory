@@ -444,7 +444,7 @@ export default function EnhancedTable({
           <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
         )}
         <br />
-         <h5 className="">التاريخ: {date}</h5>
+        <h5 className="">التاريخ: {date}</h5>
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>

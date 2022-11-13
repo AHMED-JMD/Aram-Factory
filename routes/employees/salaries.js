@@ -10,5 +10,7 @@ router.post("/get-one", checkout.viewOne);
 router.get("/", checkout.view);
 //view users with their grants
 router.get("/get-all", checkout.viewSchedule);
+//delete checkout
+router.post("/delete", checkout.delete);
 
 module.exports = router;

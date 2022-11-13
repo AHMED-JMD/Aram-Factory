@@ -46,6 +46,7 @@ import { Archive } from "@mui/icons-material";
 import { returnArchive } from "../../api/archive";
 import Loader from "../Loader";
 import { deleteEmployee } from "../../api/employee";
+import { useEffect } from "react";
 // import Loader from "../Loader";
 
 const style = {
@@ -294,6 +295,10 @@ export default function EnhancedTable({ employeeData: data }) {
   const [errMsg, setErrMsg] = React.useState("");
 
   console.log(idSelected);
+
+  useEffect(() => {
+    console.log("hello there");
+  }, [deleted, archeived]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

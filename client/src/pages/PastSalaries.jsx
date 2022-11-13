@@ -4,6 +4,7 @@ import { view } from "../api/salaries";
 import { Loader } from "../components";
 const PastSalaries = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(false);
   const [data, setData] = React.useState([]);
   const [errMsg, setErrMsg] = React.useState("");
 

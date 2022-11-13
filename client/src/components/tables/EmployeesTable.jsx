@@ -306,7 +306,7 @@ export default function EnhancedTable({ employeeData: data }) {
       employee.emp_name.includes(searchTxt)
     );
     setfilteredData(dataFilter);
-  }, [data, searchTxt]);
+  }, [data, searchTxt, deleted, archeived]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

@@ -94,6 +94,21 @@ const checkout = {
       if (error) throw error;
     }
   },
+  delete: async (req, res) => {
+    try {
+      let { id } = req.body;
+
+      if (!id) return res.status(400).json("provide all ids");
+
+      //delete from db
+      let nwCheck = await Checkout.destroy({ where: { _id: id } });
+
+      res.json(nwCheck);
+    } catch (error) {
+      console.log(error);
+      if (error) throw error;
+    }
+  },
 };
 
 module.exports = checkout;

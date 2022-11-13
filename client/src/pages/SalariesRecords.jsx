@@ -40,7 +40,6 @@ const SalariesRecords = () => {
           التاريخ: <span>{data.date}</span>
         </h5>
       </div>
-      {/* <div>{data.emp_names}</div> */}
       <ul>
         {data ? (
           data.emp_names ? (

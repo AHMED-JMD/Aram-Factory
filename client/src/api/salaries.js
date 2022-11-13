@@ -21,6 +21,16 @@ const viewCheckout = async (id) => {
     if (error) throw error;
   }
 };
+const deleteCheck = async (id) => {
+  try {
+    let response = await axiosClient.post("/salaries/delete", {
+      id,
+    });
+    return response;
+  } catch (error) {
+    if (error) throw error;
+  }
+};
 
 const view = async () => {
   try {
@@ -40,4 +50,4 @@ const viewSchedule = async () => {
   }
 };
 
-export { add, viewSchedule, viewCheckout, view };
+export { add, viewSchedule, viewCheckout, view, deleteCheck };
