@@ -8,7 +8,6 @@ const Salaries = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [ErrMsg, setErrMsg] = useState("");
   const [total, setTotal] = useState(0);
-  console.log(total);
 
   useEffect(() => {
     setIsLoading(true);
@@ -25,7 +24,6 @@ const Salaries = () => {
       .catch((err) => {
         setIsLoading(false);
         setErrMsg(err.response.data);
-        console.log(err);
       });
   }, []);
 

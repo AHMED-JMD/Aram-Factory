@@ -8,7 +8,6 @@ const SalariesRecords = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
 
-  console.log(data);
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,9 +40,9 @@ const SalariesRecords = () => {
           </h5>
         </div>
         <ul>
-          {/* {names.length? names.map((name) => (
+          {/* {names.map((name) => (
             <li key={name}> {name} </li>
-          )) : <Loader />} */} 
+          ))} */}
          </ul> 
     </section>
   );

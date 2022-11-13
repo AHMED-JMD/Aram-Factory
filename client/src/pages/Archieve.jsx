@@ -21,13 +21,11 @@ const Archieve = () => {
       })
       .catch((err) => {
         setIsLoading(false);
-        // console.log(err);
       });
   }, [auth.isAuthenticated]);
   return (
     <section className="employees">
       <ArchieveTable employeeData={employees} />
-      <div>hello</div>
     </section>
   );
 };

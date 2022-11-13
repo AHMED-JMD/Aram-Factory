@@ -24,7 +24,6 @@ const PresentSchedule = () => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log(err);
       });
   }, []);
 

@@ -7,7 +7,6 @@ const PastSalaries = () => {
   const [data, setData] = React.useState([]);
   const [errMsg, setErrMsg] = React.useState("");
 
-  console.log(data);
 
   useEffect(() => {
     setIsLoading(true);

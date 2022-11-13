@@ -8,7 +8,6 @@ const AuthContextProvider = (props) => {
     isAuthenticated: false,
     user: {},
   });
-  console.log(auth);
 
   useEffect(() => {
     authenticate().then((user) => {

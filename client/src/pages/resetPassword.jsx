@@ -25,7 +25,6 @@ const ResetPassword = () => {
       .then((res) => {
         setIsLoading(false);
         setVerified(true);
-        console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -43,7 +42,6 @@ const ResetPassword = () => {
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
-        console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);

@@ -54,7 +54,6 @@ const EmployeeProfile = () => {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setIsLoading(false);
       });
   }, []);
@@ -82,7 +81,6 @@ const EmployeeProfile = () => {
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
-        console.log(res);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -104,7 +102,6 @@ const EmployeeProfile = () => {
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
-        console.log(res.data);
       })
       .catch((err) => {
         setErrMsg(err.response.data);
@@ -124,7 +121,6 @@ const EmployeeProfile = () => {
       .then((res) => {
         setIsLoading(false);
         setIsAdded(true);
-        console.log(res.data);
       })
       .catch((err) => {
         setErrMsg(err.response.data);

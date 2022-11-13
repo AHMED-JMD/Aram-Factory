@@ -23,7 +23,6 @@ const Employees = () => {
       })
       .catch((err) => {
         setIsLoading(false);
-        // console.log(err);
       });
   }, [auth.isAuthenticated]);
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { login } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,7 +17,7 @@ import { useContext } from "react";
 import { authContext } from "../context/AuthContext";
 
 const Login = () => {
-  const { auth, setAuth } = useContext(authContext);
+  const { setAuth } = useContext(authContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +33,6 @@ const Login = () => {
     login(username, password)
       .then((res) => {
         setIsLoading(false);
-        console.log(res);
         setAuth({ isAuthanticated: true, user: res.user });
         navigate("/");
       })
@@ -80,12 +78,6 @@ const Login = () => {
           <br />
           <form onSubmit={(e) => HandleSubmit(e)}>
             <div className="form-group">
-              {/* <label htmlFor="name">الاسم</label> <br /> */}
-              {/* <input
-                type="text"
-                className="textfeild"
-                placeholder="ادخل الاسم"
-              /> */}
               <TextField
                 id="outlined-basic"
                 className="din"
@@ -96,14 +88,7 @@ const Login = () => {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-
             <div className="form-group">
-              {/* <label htmlFor="name">كلمة السر</label> <br />
-              <input
-                type="password"
-                className="textfeild"
-                placeholder="ادخل كلمة السر"
-              /> */}
               <FormControl
                 style={{ marginBottom: "20px", width: "320px" }}
                 variant="outlined"

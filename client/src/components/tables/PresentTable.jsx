@@ -16,34 +16,22 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
-  Divider,
   FormControl,
-  InputAdornment,
   InputLabel,
   ListItem,
   ListItemText,
   OutlinedInput,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
 import Loader from "../Loader";
 import moment from "moment";
 import { absent, nwMonth } from "../../api/attendance";
-// import Loader from "../Loader";
 
 const style = {
   position: "absolute",
@@ -257,7 +245,6 @@ export default function EnhancedTable({
 
   let date = moment(new Date()).format("YYYY/MM/DD");
 
-  console.log(idSelected);
   React.useEffect(() => {
     const dataFilter = data.filter((employee) =>
       employee.emp_name.includes(searchTxt)
@@ -371,7 +358,6 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setAbsence(true);
-        console.log(res.data);
       })
       .catch((err) => {
         setLoaded(false);
@@ -387,7 +373,6 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setNewM(true);
-        console.log(res.data);
       })
       .catch((err) => {
         setLoaded(false);
