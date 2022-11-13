@@ -8,8 +8,6 @@ const SalariesRecords = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
 
-  console.log(data);
-
   useEffect(() => {
     setIsLoading(true);
 
@@ -25,26 +23,42 @@ const SalariesRecords = () => {
   }, []);
 
   let names = [];
-  names = data.emp_names;
+  let salaries = [];
+  names.push(data.emp_names);
+  salaries.push(data.emp_salaries);
 
   if (isLoading) {
     return <Loader />;
   }
   return (
     <section className="salaries-records">
-         <div className="d-flex flex-wrap justify-content-between">
-          <h5 className="text-center">
-            المجموع: <span>{data.total}</span> جنيه
-          </h5>
-          <h5 className="text-center">
-            التاريخ: <span>{data.date}</span>
-          </h5>
-        </div>
-        <ul>
-          {/* {names.length? names.map((name) => (
-            <li key={name}> {name} </li>
-          )) : <Loader />} */} 
-         </ul> 
+      <div className="d-flex flex-wrap justify-content-between">
+        <h5 className="text-center">
+          المجموع: <span>{data.total}</span> جنيه
+        </h5>
+        <h5 className="text-center">
+          التاريخ: <span>{data.date}</span>
+        </h5>
+      </div>
+      {/* <div>{data.emp_names}</div> */}
+      <ul>
+        {data ? (
+          data.emp_names ? (
+            names[0].map((name) => <li key={name}> {name} </li>)
+          ) : (
+            <Loader />
+          )
+        ) : null}
+      </ul>
+      <ul>
+        {data ? (
+          data.emp_salaries ? (
+            salaries[0].map((name) => <li key={name}> {name} </li>)
+          ) : (
+            <Loader />
+          )
+        ) : null}
+      </ul>
     </section>
   );
 };
