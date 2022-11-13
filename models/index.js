@@ -22,7 +22,6 @@ let Employee = require("./employee")(sequelize, Sequelize.DataTypes);
 let Deduct = require("./discount")(sequelize, Sequelize.DataTypes);
 let Checkout = require("./salariesCheck")(sequelize, Sequelize.DataTypes);
 let Grants = require("./grants")(sequelize, Sequelize.DataTypes);
-let Archive = require("./archive")(sequelize, Sequelize.DataTypes);
 
 //sql relationship here -------------------------------
 //checkout and employee

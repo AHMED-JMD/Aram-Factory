@@ -9,15 +9,38 @@ const checkout = {
   add: async (req, res) => {
     try {
       let { date, total } = req.body;
+      console.log(req.body);
       //check request
       if (!(date && total))
         return res.status(400).json("please provide all data");
 
-      //find all employees
+      //find all employees net salaries and names
+      let emp_names = [];
+      let net_salaries = [];
       let newEmployee = await Employee.findAll({ include: Grants });
+      //map throw data
+      newEmployee.map((employee) => {
+        let salary =
+          employee.salary +
+          employee.grant.extra +
+          employee.grant.grant17 +
+          employee.grant.grant19 +
+          employee.grant.grant20 +
+          employee.grant.grant22 +
+          employee.grant.grantGM -
+          employee.grant.insurance;
+
+        net_salaries.push(salary);
+        emp_names.push(employee.emp_name);
+      });
 
       //add new checkouts
-      let newCheckout = await Checkout.create({ total, date });
+      let newCheckout = await Checkout.create({
+        total,
+        date,
+        emp_names,
+        emp_salaries: net_salaries,
+      });
       res.json(newCheckout);
     } catch (error) {
       if (error) throw error;
@@ -32,7 +55,16 @@ const checkout = {
       if (error) throw error;
     }
   },
-  viewOne: async (req, res) => {},
+  viewOne: async (req, res) => {
+    let { id } = req.body;
+    console.log(id);
+    if (!id) return res.status(400).json("provide id");
+
+    //find and return One from db
+    let newCheckout = await Checkout.findOne({ where: { _id: id } });
+
+    res.json(newCheckout);
+  },
   viewSchedule: async (req, res) => {
     try {
       //calculate total and find all employees

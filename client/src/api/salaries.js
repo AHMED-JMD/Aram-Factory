@@ -4,6 +4,17 @@ const add = async (date, total) => {
   try {
     let response = await axiosClient.post("/salaries/", {
       date,
+      total,
+    });
+    return response;
+  } catch (error) {
+    if (error) throw error;
+  }
+};
+const viewCheckout = async (id) => {
+  try {
+    let response = await axiosClient.post("/salaries/get-one", {
+      id,
     });
     return response;
   } catch (error) {
@@ -29,4 +40,4 @@ const viewSchedule = async () => {
   }
 };
 
-export { add, viewSchedule, view };
+export { add, viewSchedule, viewCheckout, view };

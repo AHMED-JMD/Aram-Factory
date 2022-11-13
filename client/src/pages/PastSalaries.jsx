@@ -25,27 +25,30 @@ const PastSalaries = () => {
       });
   }, []);
 
-  if(isLoading){
-   return <Loader />
+  if (isLoading) {
+    return <Loader />;
   }
   return (
     <section className="past-salaries">
       <h4 className="mb-3 text-center">الكشوفات السابقة</h4>
       <div className="row gy-3">
         {data.map((record) => (
-         <div className="col-lg-3 col-md-4 col-sm-6 col-12 text-center">
-         <Link to={`/records/${record.id}`}>
-           <div className="salaries-record">
-             <h5>
-               التاريخ: <span>{record.date}</span>
-             </h5>
-             <p>
-               قيمة المرتبات: <span>{record.total}</span> جنيه
-             </p>
-           </div>
-         </Link>
-       </div>
-        ))} 
+          <div
+            className="col-lg-3 col-md-4 col-sm-6 col-12 text-center"
+            key={record._id}
+          >
+            <Link to={`/salaries/records/${record._id}`}>
+              <div className="salaries-record">
+                <h5>
+                  التاريخ: <span>{record.date}</span>
+                </h5>
+                <p>
+                  قيمة المرتبات: <span>{record.total}</span> جنيه
+                </p>
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
     </section>
   );
