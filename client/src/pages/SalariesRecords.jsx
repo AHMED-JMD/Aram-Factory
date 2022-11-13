@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { SalariesRecordsTable, SalariesTable } from "../components";
+import { Loader, SalariesRecordsTable, SalariesTable } from "../components";
 import { useParams } from "react-router-dom";
 import { viewCheckout } from "../api/salaries";
 
 const SalariesRecords = () => {
   let params = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState(false);
+  const [data, setData] = useState({});
 
   console.log(data);
 
@@ -23,10 +23,28 @@ const SalariesRecords = () => {
         setIsLoading(false);
       });
   }, []);
+
+  let names = [];
+  names = data.emp_names;
+
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <section className="salaries-records">
-      <h1>Hi</h1>
-      {/* <SalariesRecordsTable record={data} /> */}
+         <div className="d-flex flex-wrap justify-content-between">
+          <h5 className="text-center">
+            المجموع: <span>{data.total}</span> جنيه
+          </h5>
+          <h5 className="text-center">
+            التاريخ: <span>{data.date}</span>
+          </h5>
+        </div>
+        <ul>
+          {/* {names.length? names.map((name) => (
+            <li key={name}> {name} </li>
+          )) : <Loader />} */} 
+         </ul> 
     </section>
   );
 };
