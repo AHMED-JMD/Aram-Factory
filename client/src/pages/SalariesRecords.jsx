@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Loader, SalariesRecordsTable, SalariesTable } from "../components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { deleteCheck, viewCheckout } from "../api/salaries";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, IconButton, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 const SalariesRecords = () => {
+  let navigate = useNavigate();
   let params = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [deleted, setDeleted] = React.useState(false);
@@ -50,6 +51,7 @@ const SalariesRecords = () => {
         setIsLoading(false);
         setDeleted(true);
         setErrMsg("");
+        navigate("/salaries/records");
       })
       .catch((err) => {
         setIsLoading(false);

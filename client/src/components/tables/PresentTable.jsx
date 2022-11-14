@@ -32,6 +32,7 @@ import { Stack } from "@mui/system";
 import Loader from "../Loader";
 import moment from "moment";
 import { absent, nwMonth } from "../../api/attendance";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -244,6 +245,8 @@ export default function EnhancedTable({
   const [errMsg, setErrMsg] = React.useState("");
 
   let date = moment(new Date()).format("YYYY/MM/DD");
+  //naviagation here
+  let navigate = useNavigate();
 
   React.useEffect(() => {
     const dataFilter = data.filter((employee) =>
@@ -358,7 +361,7 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setAbsence(true);
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => navigate("/"), 500);
       })
       .catch((err) => {
         setLoaded(false);

@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const add = async (date, total) => {
   try {
-    let response = await axiosClient.post("/salaries/", {
+    let response = await axiosClient.post("/salaries/add", {
       date,
       total,
     });
@@ -34,7 +34,7 @@ const deleteCheck = async (id) => {
 
 const view = async () => {
   try {
-    let response = await axiosClient.get("/salaries/");
+    let response = await axiosClient.get("/salaries/view");
     return response;
   } catch (error) {
     if (error) throw error;
