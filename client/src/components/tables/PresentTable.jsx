@@ -358,6 +358,7 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setAbsence(true);
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setLoaded(false);
@@ -373,6 +374,7 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setNewM(true);
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setLoaded(false);

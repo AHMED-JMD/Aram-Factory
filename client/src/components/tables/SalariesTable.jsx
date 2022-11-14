@@ -268,7 +268,6 @@ export default function EnhancedTable({
   employeeData: { newEmployee },
   employeeData: { total },
 }) {
-
   const [open, setOpen] = React.useState(false);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -366,6 +365,7 @@ export default function EnhancedTable({
         setLoading(false);
         setErrMsg("");
         setAdded(true);
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setLoading(false);

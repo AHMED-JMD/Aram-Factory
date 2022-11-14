@@ -22,7 +22,7 @@ import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -291,13 +291,15 @@ export default function EnhancedTable({ employeeData: data }) {
   const [archeived, setArcheived] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
+  //navigation variable
+  let navigate = useNavigate();
 
   React.useEffect(() => {
     const dataFilter = data.filter((employee) =>
       employee.emp_name.includes(searchTxt)
     );
     setfilteredData(dataFilter);
-  }, [data, searchTxt, deleted, archeived]);
+  }, [data, searchTxt]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -404,6 +406,7 @@ export default function EnhancedTable({ employeeData: data }) {
       .then((res) => {
         setLoading(false);
         setArcheived(true);
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setLoading(false);
@@ -419,6 +422,7 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setDeleted(true);
         setErrMsg("");
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -435,6 +439,7 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setDeducted(true);
         setErrMsg("");
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -451,6 +456,7 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setWarned(true);
         setErrMsg("");
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -514,7 +520,7 @@ export default function EnhancedTable({ employeeData: data }) {
       >
         <Box sx={style}>
           <Typography id="cut-title" variant="h6" component="h1">
-            خصم مرتب
+            السلفيات
           </Typography>
           {isLoading && <Loader />}
           {deducted && (
@@ -646,7 +652,7 @@ export default function EnhancedTable({ employeeData: data }) {
             onClick={handleOpen2}
             disabled={selected.length === 0 ? true : false}
           >
-            + خصم جديد
+            + السلفيات
           </Button>
           <Button
             variant="contained"
