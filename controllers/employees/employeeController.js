@@ -286,7 +286,7 @@ const employees = {
       fs.unlink(
         path.join(
           __dirname,
-          `../../client/public/images/${newEmployee.imgLink}`
+          `../../client/build/images/${newEmployee.imgLink}`
         ),
         (err) => {
           if (err) console.log(err);
@@ -316,10 +316,7 @@ const employees = {
         let employee = await Employee.findOne({ where: { emp_id: id } });
         //find and delete from server
         fs.unlink(
-          path.join(
-            __dirname,
-            `../../client/public/images/${employee.imgLink}`
-          ),
+          path.join(__dirname, `../../client/build/images/${employee.imgLink}`),
           (err) => {
             if (err) console.log(err);
             else {
