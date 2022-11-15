@@ -709,6 +709,7 @@ export default function EnhancedTable({ employeeData: data }) {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
+                        className={row.warnings > 2 ? "alert alert-danger" : ""}
                         key={row.emp_id}
                         selected={isItemSelected}
                       >

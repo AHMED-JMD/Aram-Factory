@@ -42,8 +42,8 @@ const EmployeeProfile = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
+    height: 420,
+    bgcolor: "black",
     borderRadius: 4,
     boxShadow: 24,
     p: 4,
@@ -172,21 +172,21 @@ const EmployeeProfile = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h1">
-            حذف موظف
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-            هل انت متأكد من حذف:
-          </Typography>
-          <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              style={{ margin: "0 10px" }}
-              onClick={handleClose}
-            >
-              No
-            </Button>
+          <button
+            className="btn text-right"
+            style={{ color: "white" }}
+            onClick={handleClose}
+          >
+            X
+          </button>
+          <br />
+          <div className="text-center">
+            <img
+              alt="photo"
+              className="emp-img"
+              src={`/images/${empData.imgLink}`}
+              onClick={handleOpen}
+            />
           </div>
         </Box>
       </Modal>

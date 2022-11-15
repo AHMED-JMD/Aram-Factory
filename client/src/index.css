@@ -5,14 +5,13 @@
   src: url(./assets/fonts/din.ttf);
 }
 
-
 body {
   margin: 0;
   height: 100vh;
   background-color: #f7f7f7 !important;
 }
 
-.App{
+.App {
   font-family: "din" !important;
 }
 section {
@@ -21,7 +20,7 @@ section {
   margin: 0 auto !important;
   overflow-x: hidden;
 }
-.main-color{
+.main-color {
   color: #1976d2 !important;
 }
 .din, .muirtl-14s5rfu-MuiFormLabel-root-MuiInputLabel-root
@@ -39,11 +38,11 @@ section {
     transform: rotate(360deg);
   }
 }
-.loader-container{
+.loader-container {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,15 +56,15 @@ section {
   animation: spinner 1.5s linear infinite;
 }
 
-.Login{
+.Login {
   height: 100vh;
   width: 100%;
   background-image: url("./assets/images/bg.jpg") !important;
   background-size: cover !important;
   background-position: center !important;
-  background-repeat: no-repeat !important; 
+  background-repeat: no-repeat !important;
 }
-.wrap{
+.wrap {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -74,7 +73,7 @@ section {
   transform: translate(-50%, -50%);
   /* background: url(/images/cool-background.png); */
 }
-.box{
+.box {
   padding: 30px 10px;
   width: 100%;
   /* min-height: fit-content; */
@@ -102,12 +101,29 @@ h3 {
 }
 
 /* sidebar  */
-.list-link{
+.list-link {
   color: rgb(82, 82, 82);
   text-decoration: none;
 }
 
-a,span, p, div, input, ul, li, input, label, button, td, tr, h1,h2,h3,h4,h5,h6{
+a,
+span,
+p,
+div,
+input,
+ul,
+li,
+input,
+label,
+button,
+td,
+tr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "din", "Roboto" !important;
 }
 
@@ -117,17 +133,39 @@ a,span, p, div, input, ul, li, input, label, button, td, tr, h1,h2,h3,h4,h5,h6{
 }
 
 /* salaries */
-.salaries-record{
+.salaries-record {
   background-color: #fff;
   padding: 40px 0;
   border-radius: 20px;
   border: 3px solid #f7f7f7;
   outline: 3px solid #fff;
 }
-.salaries-record:hover{
+.salaries-record:hover {
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
 }
-.past-salaries a{
+.past-salaries a {
   color: rgb(48, 48, 48);
   text-decoration: none;
 }
+.emp-img {
+  width: 540px;
+  height: 320px;
+}
+
+@media only screen and (max-width: 600px) {
+  .emp-img {
+    width: 400px;
+  }
+}
+@media only screen and (max-width: 470px) {
+  .emp-img {
+    width: 300px;
+    height: 240px;
+  }
+  
+}
+/* @media only screen and (max-width: 600px) {
+  .emp-img {
+    width: 400px;
+  }
+} */

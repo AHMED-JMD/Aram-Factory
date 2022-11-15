@@ -65,6 +65,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      isWarned: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       absent_date: {
         type: DataTypes.JSON,
         allowNull: false,

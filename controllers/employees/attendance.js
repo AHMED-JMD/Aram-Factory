@@ -111,7 +111,9 @@ const attend = {
         emp_ids.map(async (emp_id) => {
           //find and see how many warning he has
           let newEmp = await Employee.findOne({ where: emp_id });
-          if (newEmp.warnings >= 3) {
+          if (newEmp.warnings > 2) {
+            newEmp.isWarned = true;
+            newEmp.save();
             return (status = 400);
           } else {
             //update
