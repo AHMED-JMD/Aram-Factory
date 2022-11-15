@@ -9,6 +9,8 @@ import {
   TextareaAutosize,
   TextField,
   Typography,
+  Box,
+  Modal,
 } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -30,6 +32,22 @@ import { useEffect } from "react";
 
 const EmployeeProfile = () => {
   const params = useParams();
+  //mpdal data here
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //modal style
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    borderRadius: 4,
+    boxShadow: 24,
+    p: 4,
+  };
 
   //employees state
   const [empData, setEmpData] = useState({});
@@ -38,9 +56,18 @@ const EmployeeProfile = () => {
   //file state
   const [file, setFile] = useState("");
 
-  const [errMsg, setErrMsg] = useState("");
-  const [isAdded, setIsAdded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [errMsgEmp, setErrMsgEmp] = useState("");
+  const [errMsgImg, setErrMsgImg] = useState("");
+  const [errMsgGrant, setErrMsgGrant] = useState("");
+
+  const [isAddedEmp, setIsAddedEmp] = useState(false);
+  const [isAddedGrant, setIsAddedGrant] = useState(false);
+  const [isAddedImg, setIsAddedImg] = useState(false);
+
+  const [isLoading, setIsLoading] = useState();
+  const [isLoadingEmp, setIsLoadingEmp] = useState(false);
+  const [isLoadingImg, setIsLoadingImg] = useState(false);
+  const [isLoadingGrant, setIsLoadingGrant] = useState(false);
 
   //use effect function to get employee data
   useEffect(() => {
@@ -72,27 +99,29 @@ const EmployeeProfile = () => {
 
   //on submit basic data
   const handleSubmit = (e) => {
-    setIsLoading(true);
+    setIsLoadingEmp(true);
 
     e.preventDefault();
 
     //data to server
     updateEmployee(empData)
       .then((res) => {
-        setIsLoading(false);
-        setIsAdded(true);
+        setIsLoadingEmp(false);
+        setIsAddedEmp(true);
+        setErrMsgEmp("");
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
-        setIsLoading(false);
-        setIsAdded(false);
-        setErrMsg(err.response.data);
+        setIsLoadingEmp(false);
+        setIsAddedEmp(false);
+        setErrMsgEmp(err.response.data);
       });
   };
 
   //on submit image
   const handleSubmitPhoto = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoadingImg(true);
 
     let data = new FormData();
     data.append("emp_id", params.id);
@@ -100,18 +129,22 @@ const EmployeeProfile = () => {
     //send to database
     updateImage(data)
       .then((res) => {
-        setIsLoading(false);
-        setIsAdded(true);
+        setIsLoadingImg(false);
+        setIsAddedImg(true);
+        setErrMsgImg("");
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
-        setErrMsg(err.response.data);
-        setIsLoading(false);
+        setErrMsgImg(err.response.data);
+        setIsLoadingImg(false);
       });
   };
 
-  //on submit image
+  //on submit grant
   const handleSubmitGrant = (e) => {
     e.preventDefault();
+    setIsLoadingGrant(true);
+
     //prepare data
     let emp_id = params.id;
     let data = { grantData, emp_id };
@@ -119,17 +152,44 @@ const EmployeeProfile = () => {
     //send to database
     updateGrant(data)
       .then((res) => {
-        setIsLoading(false);
-        setIsAdded(true);
+        setIsLoadingGrant(false);
+        setIsAddedGrant(true);
+        setErrMsgGrant("");
+        setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
-        setErrMsg(err.response.data);
-        setIsLoading(false);
+        setErrMsgGrant(err.response.data);
+        setIsLoadingGrant(false);
       });
   };
 
   return (
     <section className="add-employees">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            حذف موظف
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            هل انت متأكد من حذف:
+          </Typography>
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              style={{ margin: "0 10px" }}
+              onClick={handleClose}
+            >
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
       <form>
         <div className="container">
           <div className="row mr-auto text-right">
@@ -141,6 +201,7 @@ const EmployeeProfile = () => {
                 alt="Remy Sharp"
                 src={`/images/${empData.imgLink}`}
                 sx={{ width: 150, height: 150 }}
+                onClick={handleOpen}
               />
             </div>
             <div className="col-lg-6 col-sm-12 mb-4">
@@ -355,6 +416,36 @@ const EmployeeProfile = () => {
               >
                 حفظ
               </Button>
+
+              {isLoadingEmp && (
+                <div className="text-center">
+                  <div
+                    className="spinner-grow  text-primary"
+                    style={{ width: "3rem", height: "3rem" }}
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
+              {errMsgEmp && (
+                <>
+                  <br />
+                  <br />
+                  <div className="alert alert-danger">{errMsgEmp}</div>
+                </>
+              )}
+              {isAddedEmp && (
+                <>
+                  <br />
+                  <br />
+                  <div className="alert alert-success">
+                    تمت تعديل البيانات الاساسية بنجاح
+                  </div>
+                </>
+              )}
+
+              {/* ---------------------------- */}
             </div>
             <Typography variant="h5" component="h1" mb={2}>
               الصورة الشخصية
@@ -369,7 +460,12 @@ const EmployeeProfile = () => {
                   require="true"
                 />
               </FormControl>
-              <span className="my-2" style={{fontSize: '14px', fontWeight: '100'}}>*يفضل أن تكون الصورة بمقاسات مربعة</span>
+              <span
+                className="my-2"
+                style={{ fontSize: "14px", fontWeight: "100" }}
+              >
+                *يفضل أن تكون الصورة بمقاسات مربعة
+              </span>
             </div>
             <div className="col-12 mb-4">
               <Button
@@ -382,6 +478,36 @@ const EmployeeProfile = () => {
               >
                 حفظ
               </Button>
+
+              {isLoadingImg && (
+                <div className="text-center">
+                  <div
+                    className="spinner-grow  text-primary"
+                    style={{ width: "3rem", height: "3rem" }}
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
+              {errMsgImg && (
+                <>
+                  <br />
+                  <br />
+                  <div className="alert alert-danger">{errMsgImg}</div>
+                </>
+              )}
+              {isAddedImg && (
+                <>
+                  <br />
+                  <br />
+                  <div className="alert alert-success">
+                    تمت تعديل الصورة بنجاح
+                  </div>
+                </>
+              )}
+
+              {/* ------------------------------ */}
             </div>
             <Typography variant="h5" component="h1" mb={2}>
               المنح
@@ -503,7 +629,7 @@ const EmployeeProfile = () => {
               >
                 حفظ
               </Button>
-              {isLoading && (
+              {isLoadingGrant && (
                 <div className="text-center">
                   <div
                     className="spinner-grow  text-primary"
@@ -514,27 +640,27 @@ const EmployeeProfile = () => {
                   </div>
                 </div>
               )}
-              {errMsg && (
+              {errMsgGrant && (
                 <>
                   <br />
                   <br />
-                  <div className="alert alert-danger">{errMsg}</div>
+                  <div className="alert alert-danger">{errMsgGrant}</div>
                 </>
               )}
-              {isAdded && (
+              {isAddedGrant && (
                 <>
                   <br />
                   <br />
                   <div className="alert alert-success">
-                    تمت اضافة الموظف بنجاح
+                    تمت تعديل بيانات المنح بنجاح
                   </div>
                 </>
               )}
             </div>
             <div className="col-12 mb-4">
-            <Typography variant="h5" component="h1" mb={2}>
-              أيام الغياب
-            </Typography>
+              <Typography variant="h5" component="h1" mb={2}>
+                أيام الغياب
+              </Typography>
               <TextareaAutosize
                 aria-label="minimum height"
                 minRows={2}

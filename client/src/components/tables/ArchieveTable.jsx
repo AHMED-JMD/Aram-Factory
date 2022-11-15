@@ -572,7 +572,7 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={row.imgLink} />
+                            <Avatar alt="user" src={`/images/${row.imgLink}`} />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}
@@ -590,7 +590,7 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>
                           <Link
                             className="edit-btn"
-                            to={`/employees/${2533402}`}
+                            to={`/employees/${row.emp_id}`}
                           >
                             <IconButton>
                               <VisibilityIcon />

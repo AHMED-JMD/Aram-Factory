@@ -20,6 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addEmployee } from "../api/employee";
+
 const AddEmployees = () => {
   //basic info states
   const [emp_id, setEmp_id] = useState("");
@@ -85,7 +86,6 @@ const AddEmployees = () => {
         setIsLoading(false);
         setIsAdded(true);
         setErrMsg("");
-
       })
       .catch((err) => {
         setIsLoading(false);
@@ -302,7 +302,12 @@ const AddEmployees = () => {
                   variant="standard"
                   require="true"
                 />
-                <span className="my-2" style={{fontSize: '14px', fontWeight: '100'}}>*يفضل أن تكون الصورة بمقاسات مربعة</span>
+                <span
+                  className="my-2"
+                  style={{ fontSize: "14px", fontWeight: "100" }}
+                >
+                  *يفضل أن تكون الصورة بمقاسات مربعة
+                </span>
               </FormControl>
             </div>
             <Typography variant="h5" component="h1" mb={2}>
