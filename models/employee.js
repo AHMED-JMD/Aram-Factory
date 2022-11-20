@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "employees",
     {
       emp_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         primaryKey: true,
         allowNull: false,
       },
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       Ssn: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
       jobTitle: {
@@ -20,18 +20,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       salary: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
       start_salary: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
+      },
+      fixed_salary: {
+        type: DataTypes.DOUBLE,
       },
       penalty: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         defaultValue: 0,
       },
       phoneNum: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       app_date: {

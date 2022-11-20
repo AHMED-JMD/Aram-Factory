@@ -32,6 +32,7 @@ import { Stack } from "@mui/system";
 import moment from "moment";
 import Loader from "../Loader";
 import { add } from "../../api/salaries";
+import { useReactToPrint } from "react-to-print";
 
 const style = {
   position: "absolute",
@@ -354,6 +355,29 @@ export default function EnhancedTable({
   const search = (text) => {
     setSearchTxt(text);
   };
+  //print function goes herer---------------
+  const componentRef = React.useRef(null);
+  // const [printing, setPrinting] = React.useState(false);
+  // const onBeforeGetContentResolve = React.useState(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    // onAfterPrint: () => {
+    //   setPrinting(false);
+    // },
+    // onBeforeGetContent: () => {
+    //   return new Promise((resolve) => {
+    //     setPrinting(true);
+    //     onBeforeGetContentResolve = resolve;
+    //   });
+    // },
+  });
+
+  // React.useEffect(() => {
+  //   if (printing && onBeforeGetContentResolve.current) {
+  //     onBeforeGetContentResolve.current(); // Resolves the Promise in
+  //   }
+  // }, [printing, onBeforeGetContentResolve]);
 
   //backend function herer-------------------
   const handleSubmit = () => {
@@ -372,7 +396,6 @@ export default function EnhancedTable({
         setErrMsg(err.response.data);
       });
   };
-  let rowTotal = 0;
 
   return (
     <>
@@ -428,6 +451,9 @@ export default function EnhancedTable({
           />
         </FormControl>
         <div>
+          <button className="btn btn-secondary btn-sm" onClick={handlePrint}>
+            الطباعة
+          </button>
           <Button
             variant="contained"
             aria-label="add new present table"
@@ -453,7 +479,12 @@ export default function EnhancedTable({
           </Button>
         </div>
       </Stack>
-      <Box>
+      <Box ref={componentRef} className="print-direction">
+        <div className="mt-5 text-center before-print print-yes">
+          <h3>بسم الله الرحمن الرحيم</h3>
+          <h5>كشف مرتبات الموظفين</h5>
+        </div>
+
         {loading && <Loader />}
         {added && (
           <div className="alert alert-success">تم اضافة كشف جديد بنجاح</div>
@@ -491,15 +522,7 @@ export default function EnhancedTable({
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.emp_id);
                     const labelId = `enhanced-table-checkbox-${index}`;
-                    rowTotal =
-                      row.salary +
-                      row.grant.extra +
-                      row.grant.grant17 +
-                      row.grant.grant19 +
-                      row.grant.grant20 +
-                      row.grant.grant22 +
-                      row.grant.grantGM -
-                      row.grant.insurance;
+
                     return (
                       <TableRow
                         hover
@@ -535,7 +558,7 @@ export default function EnhancedTable({
                         </TableCell>
 
                         <TableCell>{row.jobTitle}</TableCell>
-                        <TableCell>{row.salary}</TableCell>
+                        <TableCell>{row.start_salary}</TableCell>
                         <TableCell>{row.grant.extra}</TableCell>
                         <TableCell>{row.grant.grant17}</TableCell>
                         <TableCell>{row.grant.grant19}</TableCell>
@@ -543,7 +566,7 @@ export default function EnhancedTable({
                         <TableCell>{row.grant.grant22}</TableCell>
                         <TableCell>{row.grant.grantGM}</TableCell>
                         <TableCell>{row.grant.insurance}</TableCell>
-                        <TableCell>{rowTotal}</TableCell>
+                        <TableCell>{row.salary}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -560,6 +583,7 @@ export default function EnhancedTable({
             </Table>
           </TableContainer>
           <TablePagination
+            className="print-none"
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={filteredData.length}
@@ -570,6 +594,9 @@ export default function EnhancedTable({
             style={{ padding: "0", direction: "ltr", alignItems: "center" }}
           />
         </Paper>
+        <div className="mt-5 text-right before-print print-yes">
+          <h5>التوقيع: ____________________</h5>
+        </div>
       </Box>
     </>
   );

@@ -39,6 +39,8 @@ import { returnArchive } from "../../api/archive";
 import Loader from "../Loader";
 import { deleteEmployee } from "../../api/employee";
 import { useEffect } from "react";
+import { useReactToPrint } from "react-to-print";
+
 // import Loader from "../Loader";
 
 const style = {
@@ -371,6 +373,14 @@ export default function EnhancedTable({ employeeData: data }) {
     setSearchTxt(text);
   };
 
+  //printing functions goes herer-----------------------------
+  const componentRef = React.useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  //backend functions goes here--------------------------------------
   const UnArcheive = () => {
     setIsLoading(true);
 
@@ -494,6 +504,9 @@ export default function EnhancedTable({ employeeData: data }) {
           </FormControl>
         </div>
         <div>
+          <button className="btn btn-secondary btn-sm" onClick={handlePrint}>
+            الطباعة
+          </button>
           <IconButton
             aria-label="delete"
             onClick={handleOpen}
@@ -512,7 +525,10 @@ export default function EnhancedTable({ employeeData: data }) {
           </IconButton>
         </div>
       </Stack>
-      <Box>
+      <Box ref={componentRef} className="print-direction">
+        <div className="mt-3 text-center before-print print-yes">
+          <h5>بيانات الموظفين المؤرشفين</h5>
+        </div>
         {archeived && (
           <div className="alert alert-success">تمت الحذف من الارشيف بنجاح </div>
         )}

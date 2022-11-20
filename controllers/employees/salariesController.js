@@ -72,17 +72,7 @@ const checkout = {
       let newEmployee = await Employee.findAll({ include: Grants });
 
       newEmployee.map((employee) => {
-        let salary =
-          employee.salary +
-          employee.grant.extra +
-          employee.grant.grant17 +
-          employee.grant.grant19 +
-          employee.grant.grant20 +
-          employee.grant.grant22 +
-          employee.grant.grantGM -
-          employee.grant.insurance;
-
-        net.push(salary);
+        net.push(employee.salary);
       });
       //total sum is here
       const total = net.reduce((accumulator, value) => {

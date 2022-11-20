@@ -27,6 +27,7 @@ import {
   ListItem,
   ListItemText,
   OutlinedInput,
+  Modal,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import Loader from "../Loader";
@@ -229,6 +230,10 @@ export default function EnhancedTable({
 }) {
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [filteredData, setFilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
@@ -391,6 +396,46 @@ export default function EnhancedTable({
   }
   return (
     <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            قائمة الغياب
+          </Typography>
+          {absence && (
+            <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
+          )}
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            تأكيد قائمة الغياب:
+          </Typography>
+          {selected.map(({ emp_name }) => (
+            <Typography key={emp_name}>- {emp_name}</Typography>
+          ))}
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={() => handlAbsent()}
+            >
+              نعم
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              style={{ margin: "0 10px" }}
+              onClick={handleClose}
+            >
+              لا
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
       <Stack
         direction={{ xs: "column", md: "row" }}
         alignItems={{ xs: "start", md: "center" }}
@@ -421,15 +466,12 @@ export default function EnhancedTable({
           >
             شهر جديد
           </Button>
-          <Button variant="contained" size="small" onClick={handlAbsent}>
+          <Button variant="contained" size="small" onClick={handleOpen}>
             حفظ
           </Button>
         </div>
       </Stack>
       <Box>
-        {absence && (
-          <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
-        )}
         {newM && (
           <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
         )}
