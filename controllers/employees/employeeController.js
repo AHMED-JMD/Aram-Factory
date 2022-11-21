@@ -72,15 +72,26 @@ const employees = {
       //if no notes is provided
       if (!notes) notes = "";
 
+      //make sure phoneNum and Ssn and emp_id is compelete
+      if (emp_id.length < 6)
+        return res.status(400).json("الرقم التعريفي لا يجب ان يقل عن 6 ارقام");
+
+      if (Ssn.length < 11)
+        return res
+          .status(400)
+          .json("الرقم وطني الصحيح يجب ان لا بقل عن 11 رقم");
+
+      if (phoneNum.length < 10)
+        return res.status(400).json("الرجاء ادخال رقم هاتف صحيح");
+
       //filter inputs make sure no code is provided
       (emp_id = xssFilter.inHTMLData(emp_id)),
         (emp_name = xssFilter.inHTMLData(emp_name)),
-        (Ssn = xssFilter.inHTMLData(Ssn)),
+        // (Ssn = xssFilter.inHTMLData(Ssn)),
         (jobTitle = xssFilter.inHTMLData(jobTitle)),
         (salary = xssFilter.inHTMLData(salary)),
         (start_date = xssFilter.inHTMLData(start_date)),
         (app_date = xssFilter.inHTMLData(app_date)),
-        (notes = xssFilter.inHTMLData(notes)),
         (address = xssFilter.inHTMLData(address)),
         (extra = xssFilter.inHTMLData(extra)),
         (grant17 = xssFilter.inHTMLData(grant17)),
@@ -95,15 +106,32 @@ const employees = {
       let employee = await Employee.findOne({ where: { emp_id } });
       if (employee) return res.status(400).json("الرقم التعريفي موجود مسبقا");
 
-      //add employee to database
+      //make sure Ssn is unique
+
+      let employee2 = await Employee.findOne({ where: { Ssn } });
+      if (employee2) return res.status(400).json("الرقم الوطني موجود مسبقا");
+
+      // add employee to database
+      let sal = parseInt(salary);
+      let ex = parseInt(extra);
+      let g17 = parseInt(grant17);
+      let g19 = parseInt(grant19);
+      let g20 = parseInt(grant20);
+      let g22 = parseInt(grant22);
+      let gM = parseInt(grantGM);
+      let ins = parseInt(insurance);
+
+      let net_salary = sal + ex + g17 + g19 + g20 + g22 + gM - ins;
+      console.log(net_salary);
 
       const newEmployee = await Employee.create({
         emp_id,
         emp_name,
         Ssn,
         jobTitle,
-        salary,
+        salary: net_salary,
         start_salary: salary,
+        fixed_salary: net_salary,
         penalty,
         phoneNum,
         start_date,
@@ -189,12 +217,13 @@ const employees = {
           penalty &&
           phoneNum &&
           start_date &&
-          address &&
-          notes
+          address
         )
       ) {
         return res.status(400).json("الرجاء ملء جميع الحقول");
       }
+
+      if (!notes) notes = "";
 
       //filter inputs make sure no code is provided
       (emp_id = xssFilter.inHTMLData(emp_id)),

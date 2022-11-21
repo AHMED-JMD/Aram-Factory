@@ -40,6 +40,7 @@ import { deleteEmployee } from "../../api/employee";
 import Loader from "../Loader";
 import { borrow, warning } from "../../api/attendance";
 import { add } from "../../api/archive";
+import { useReactToPrint } from "react-to-print";
 
 const style = {
   position: "absolute",
@@ -110,6 +111,12 @@ const headCells = [
   },
   {
     id: "salary",
+    numeric: false,
+    disablePadding: false,
+    label: "الراتب الاساسي",
+  },
+  {
+    id: "net_salary",
     numeric: false,
     disablePadding: false,
     label: "الراتب",
@@ -292,7 +299,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [errMsg, setErrMsg] = React.useState("");
 
   //navigation variable
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
   React.useEffect(() => {
     const dataFilter = data.filter((employee) =>
@@ -397,6 +404,12 @@ export default function EnhancedTable({ employeeData: data }) {
   //     setSelected([])
   //   };
 
+  //printing functions goes herer-----------------------------
+  const componentRef = React.useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   //backend functions---------------------------------------
   const Archive = () => {
     setLoading(true);
@@ -576,6 +589,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <div className="alert alert-success">تم انذار الموظف بنجاح</div>
           )}
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
             هل انت متأكد من إنذار:
           </Typography>
@@ -621,6 +635,10 @@ export default function EnhancedTable({ employeeData: data }) {
           </FormControl>
         </div>
         <div>
+          <button className="btn btn-secondary btn-sm" onClick={handlePrint}>
+            الطباعة
+          </button>
+
           <IconButton
             aria-label="delete"
             onClick={handleOpen}
@@ -673,7 +691,10 @@ export default function EnhancedTable({ employeeData: data }) {
           </Button>
         </div>
       </Stack>
-      <Box>
+      <Box ref={componentRef} className="print-direction">
+        <div className="mt-3 text-center before-print print-yes">
+          <h5>بيانات الموظفين</h5>
+        </div>
         {archeived && (
           <div className="alert alert-success">تمت الارشفة بنجاح</div>
         )}
@@ -747,6 +768,9 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>{row.emp_id}</TableCell>
                         <TableCell>{row.jobTitle}</TableCell>
                         <TableCell>
+                          <span>{row.start_salary} جنيه</span>
+                        </TableCell>
+                        <TableCell>
                           <span>{row.salary} جنيه</span>
                         </TableCell>
                         <TableCell>{row.warnings}</TableCell>
@@ -778,6 +802,7 @@ export default function EnhancedTable({ employeeData: data }) {
             </Table>
           </TableContainer>
           <TablePagination
+            className="print-none"
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={filteredData.length}

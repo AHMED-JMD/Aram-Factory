@@ -161,7 +161,7 @@ const AddEmployees = () => {
                 <OutlinedInput
                   label="الرقم الوطني"
                   id="nationalid-input"
-                  type="text"
+                  type="number"
                   value={Ssn}
                   onChange={(e) => setSsn(e.target.value)}
                   require="true"

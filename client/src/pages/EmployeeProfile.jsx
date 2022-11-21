@@ -29,6 +29,8 @@ import {
 } from "../api/employee";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 const EmployeeProfile = () => {
   const params = useParams();
@@ -163,6 +165,13 @@ const EmployeeProfile = () => {
       });
   };
 
+  //printing in react
+  let componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <section className="add-employees">
       <Modal
@@ -190,7 +199,8 @@ const EmployeeProfile = () => {
           </div>
         </Box>
       </Modal>
-      <form>
+
+      <form ref={componentRef} className="print-direction">
         <div className="container">
           <div className="row mr-auto text-right">
             <Typography variant="h5" component="h1" mb={2}>
@@ -407,6 +417,7 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-12 mb-4">
               <Button
+                className="print-none"
                 variant="contained"
                 color="primary"
                 type="submit"
@@ -447,10 +458,15 @@ const EmployeeProfile = () => {
 
               {/* ---------------------------- */}
             </div>
-            <Typography variant="h5" component="h1" mb={2}>
+            <Typography
+              className="print-none"
+              variant="h5"
+              component="h1"
+              mb={2}
+            >
               الصورة الشخصية
             </Typography>
-            <div className="col-12 mb-4 pt-4">
+            <div className="col-12 mb-4 pt-4 print-none">
               <FormControl style={{ width: "100%" }}>
                 <Input
                   type="file"
@@ -469,6 +485,7 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-12 mb-4">
               <Button
+                className="print-none"
                 variant="contained"
                 color="primary"
                 type="submit"
@@ -602,7 +619,7 @@ const EmployeeProfile = () => {
                 />
               </FormControl>
             </div>
-            <div className="col-lg-6 col-sm-12 mb-4">
+            <div className=" col-lg-6 col-sm-12 mb-4">
               <FormControl style={{ width: "100%" }}>
                 <TextField
                   name="insurance"
@@ -620,6 +637,7 @@ const EmployeeProfile = () => {
             </div>
             <div className="col-12 mb-4">
               <Button
+                className="print-none"
                 variant="contained"
                 color="primary"
                 type="submit"
@@ -657,7 +675,7 @@ const EmployeeProfile = () => {
                 </>
               )}
             </div>
-            <div className="col-12 mb-4">
+            <div className="newpage col-12 mb-4">
               <Typography variant="h5" component="h1" mb={2}>
                 أيام الغياب
               </Typography>
@@ -680,6 +698,14 @@ const EmployeeProfile = () => {
           </div>
         </div>
       </form>
+
+      <br />
+      <div className="text-center">
+        {" "}
+        <button className="btn btn-secondary btn-sm" onClick={handlePrint}>
+          طباعة بيانات الموظف
+        </button>
+      </div>
     </section>
   );
 };

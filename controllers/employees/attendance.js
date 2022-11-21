@@ -9,14 +9,14 @@ const attend = {
   absent: async (req, res) => {
     try {
       const { ids, date } = req.body;
-      console.log(ids);
+
       //make sure ids are given
       if (!(ids && date)) return res.status(400).json("provide data");
       // update each user by his penalty
       ids.map(async (id) => {
         let employee = await Employee.findOne({ where: { emp_id: id } });
         //make sure employee exist
-        if (!employee) return res.status(400).json("لايوجد مستخدمين الان");
+        // if (!employee) return res.status(400).json("لايوجد مستخدمين الان");
         //update employee
         let newDates = employee.absent_date.concat(date);
         employee.update(
@@ -44,9 +44,10 @@ const attend = {
       employees.map((employee) => {
         employee.update(
           {
-            salary: employee.start_salary,
+            salary: employee.fixed_salary,
             warnings: 0,
             attendee_count_M: 0,
+            attendee_count_Y: 0,
             absent_date: [],
           },
           { where: { emp_id: employee.emp_id } }
