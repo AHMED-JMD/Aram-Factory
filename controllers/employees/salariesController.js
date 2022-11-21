@@ -69,7 +69,10 @@ const checkout = {
     try {
       //calculate total and find all employees
       let net = [];
-      let newEmployee = await Employee.findAll({ include: Grants });
+      let newEmployee = await Employee.findAll({
+        include: Grants,
+        where: { isArchieved: false },
+      });
 
       newEmployee.map((employee) => {
         let salary =
