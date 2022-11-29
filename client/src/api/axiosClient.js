@@ -1,6 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
-  baseURL: "http://localhost:40000",
+  baseURL: "https://erm-factory.com",
 });
 
 export default instance;

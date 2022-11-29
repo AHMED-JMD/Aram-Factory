@@ -46,6 +46,9 @@ const Login = () => {
     <div className="Login">
       <div className="wrap">
         <div className="box">
+          <div className="logo">
+            <img src="/images/erm-logo.png" width="45" alt="logo" />
+          </div>
           <Typography
             variant="h4"
             color="primary"

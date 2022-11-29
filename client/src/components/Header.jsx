@@ -72,11 +72,7 @@ const Header = ({ toggleFunc }) => {
           <MenuIcon />
         </IconButton>
         <div className="logo">
-          {/* <img
-            src={require("../assets/images/logo.png")}
-            width="45"
-            alt="logo"
-          /> */}
+          <img src="/images/erm-logo.png" width="45" alt="logo" />
         </div>
         <Typography
           sx={{ flexGrow: 1 }}
