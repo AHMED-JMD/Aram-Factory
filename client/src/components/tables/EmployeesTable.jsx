@@ -738,6 +738,7 @@ export default function EnhancedTable({ employeeData: data }) {
                       >
                         <TableCell padding="checkbox">
                           <Checkbox
+                            className="print-none"
                             color="primary"
                             checked={isItemSelected}
                             inputProps={{
@@ -746,6 +747,7 @@ export default function EnhancedTable({ employeeData: data }) {
                           />
                         </TableCell>
                         <TableCell
+                          
                           component="th"
                           id={labelId}
                           scope="row"
@@ -758,7 +760,11 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar alt="user" src={`/images/${row.imgLink}`} />
+                            <Avatar
+                              className="print-none"
+                              alt="user"
+                              src={`/images/${row.imgLink}`}
+                            />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}

@@ -62,7 +62,7 @@ const attend = {
   },
   borrow: async (req, res) => {
     try {
-      let { emp_id, amount } = req.body;
+      let { emp_id, amount, date } = req.body;
 
       //find and update salary from db
       let status;
@@ -81,6 +81,7 @@ const attend = {
             //save deduct data
             let newDeduct = await Deduct.create({
               amount,
+              date,
               employeeEmpId: employee.emp_id,
             });
             return (status = 200);
@@ -112,7 +113,7 @@ const attend = {
         emp_ids.map(async (emp_id) => {
           //find and see how many warning he has
           let newEmp = await Employee.findOne({ where: emp_id });
-          if (newEmp.warnings > 2) {
+          if (newEmp.warnings >= 2) {
             newEmp.isWarned = true;
             newEmp.save();
             return (status = 400);

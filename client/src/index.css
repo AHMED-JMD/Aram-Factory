@@ -177,6 +177,9 @@ h6 {
   .newpage {
     margin-top: 130px;
   }
+  .page-break{
+    margin-top: 40px;
+  }
   .print-direction {
     direction: rtl !important;
   }

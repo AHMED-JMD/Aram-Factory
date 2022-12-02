@@ -526,7 +526,7 @@ const EmployeeProfile = () => {
 
               {/* ------------------------------ */}
             </div>
-            <Typography variant="h5" component="h1" mb={2}>
+            <Typography variant="h5" className="page-break" component="h1" mb={2}>
               المنح
             </Typography>
             <div className="col-lg-6 col-sm-12 mb-4">
