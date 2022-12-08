@@ -3,7 +3,7 @@ const xssFilter = require("xss-filters");
 const { Sequelize } = require("sequelize");
 
 const Employee = db.models.Employee;
-const Deduct = db.models.Deduct;
+const Absent = db.models.Absent;
 
 const attend = {
   absent: async (req, res) => {
@@ -12,25 +12,56 @@ const attend = {
 
       //make sure ids are given
       if (!(ids && date)) return res.status(400).json("provide data");
+
       // update each user by his penalty
-      ids.map(async (id) => {
-        let employee = await Employee.findOne({ where: { emp_id: id } });
-        //make sure employee exist
-        // if (!employee) return res.status(400).json("لايوجد مستخدمين الان");
-        //update employee
-        let newDates = employee.absent_date.concat(date);
-        employee.update(
-          {
-            absent_date: newDates,
-            attendee_count_M: Sequelize.literal("attendee_count_M + 1"),
-            attendee_count_Y: Sequelize.literal("attendee_count_Y + 1"),
-            salary: employee.salary - employee.penalty,
-          },
-          { where: { emp_id: id } }
-        );
+      let obj;
+      let absent_names = [];
+      Promise.all(
+        ids.map(async (id) => {
+          let employee = await Employee.findOne({ where: { emp_id: id } });
+          // make sure employee exist
+          if (!employee) return res.status(400).json("لايوجد مستخدمين الان");
+
+          //make sure no employee is recorded twice in an absent table
+          let absentTable = await Absent.findOne({ where: { date } });
+          if (absentTable) {
+            let result = absentTable.emp_names.includes(employee.emp_name);
+            console.log(result);
+            if (result === true)
+              return (obj = { status: 400, data: employee.emp_name });
+          }
+
+          //push employee name to employee array
+          absent_names.push(employee.emp_name);
+
+          //update employee
+          let newDates = employee.absent_date.concat(date);
+          employee.update(
+            {
+              absent_date: newDates,
+              attendee_count_M: Sequelize.literal("attendee_count_M + 1"),
+              attendee_count_Y: Sequelize.literal("attendee_count_Y + 1"),
+              salary: employee.salary - employee.penalty,
+            },
+            { where: { emp_id: id } }
+          );
+
+          return (obj = { status: 200, data: "success" });
+        })
+      ).then((obj) => {
+        console.log(obj[0].status);
+        if (obj[0].status === 400) {
+          res
+            .status(obj[0].status)
+            .json(`${obj[0].data} موجود في قائمة الغياب الحالية`);
+        } else {
+          //create new absent table
+          console.log(absent_names);
+          Absent.create({ date, emp_names: absent_names }).then((response) => {
+            res.json(response);
+          });
+        }
       });
-      //send response
-      res.json("updated the employees successfully");
     } catch (error) {
       if (error) throw error;
     }
@@ -60,90 +91,25 @@ const attend = {
       if (error) throw error;
     }
   },
-  borrow: async (req, res) => {
-    try {
-      let { emp_id, amount, date } = req.body;
-
-      //find and update salary from db
-      let status;
-      Promise.all(
-        emp_id.map(async (id) => {
-          let employee = await Employee.findOne({ where: { emp_id: id } });
-
-          //if amount is bigger than half the salary reject
-          if (amount > employee.salary / 2) {
-            return (status = 400);
-          } else {
-            //update employee
-            employee.salary = employee.salary - amount;
-            await employee.save();
-
-            //save deduct data
-            let newDeduct = await Deduct.create({
-              amount,
-              date,
-              employeeEmpId: employee.emp_id,
-            });
-            return (status = 200);
-          }
-        })
-      )
-        .then((response) => {
-          console.log(response);
-          if (response === [200]) {
-            res.json("Ok");
-          } else {
-            res.status(response[0]).json("عفوا تم تجاوز الحد المسموح به");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      if (error) throw error;
-    }
+  deleteAll: async (req, res) => {
+    let deleted = await Absent.destroy({ where: {}, truncate: true });
+    res.json(deleted);
   },
-  warn: async (req, res) => {
+  findByDate: async (req, res) => {
     try {
-      let { emp_ids } = req.body;
+      let { date } = req.body;
+      //make sure date is there
+      if (!date) return res.status(400).json("provide valid date");
 
-      //map and find from database
-      let status;
-      Promise.all(
-        emp_ids.map(async (emp_id) => {
-          //find and see how many warning he has
-          let newEmp = await Employee.findOne({ where: emp_id });
-          if (newEmp.warnings >= 2) {
-            newEmp.isWarned = true;
-            newEmp.save();
-            return (status = 400);
-          } else {
-            //update
-            await newEmp.update(
-              {
-                warnings: Sequelize.literal("warnings + 1"),
-              },
-              { where: { emp_id } }
-            );
-            return (status = 200);
-          }
-        })
-      )
-        .then((response) => {
-          console.log(response);
-          if (response === [200]) {
-            res.json("Ok");
-          } else {
-            res.status(response[0]).json("الموظف لديه ثلاثة انذارات");
-          }
-        })
-        .catch((err) => {
-          if (err) throw err;
-          console.log(err);
-        });
-    } catch (error) {
-      if (error) throw error;
-      console.log(error);
+      //find from absent table by date
+      let nwTable = await Absent.findAll({});
+      if (nwTable) {
+        return res.json(nwTable);
+      } else {
+        return res.status(400).json("القائمة غير موجودة");
+      }
+    } catch (err) {
+      if (err) throw err;
     }
   },
 };

@@ -162,7 +162,7 @@ const employees = {
     try {
       //set pagination
       const employees = await Employee.findAll({
-        where: { isArchieved: false, },
+        where: { isArchieved: false, isWarned: false },
       });
 
       //count rows number
