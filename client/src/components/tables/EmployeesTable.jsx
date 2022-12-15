@@ -38,7 +38,9 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Stack } from "@mui/system";
 import { deleteEmployee } from "../../api/employee";
 import Loader from "../Loader";
-import { borrow, warning } from "../../api/attendance";
+import moment from "moment";
+import { borrow } from "../../api/borrow";
+import { warning } from "../../api/warning";
 import { add } from "../../api/archive";
 import { useReactToPrint } from "react-to-print";
 
@@ -299,6 +301,9 @@ export default function EnhancedTable({ employeeData: data }) {
   const [archeived, setArcheived] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
+  let date = moment(new Date()).format("YYYY/MM/DD");
+
+
   //navigation variable
   // let navigate = useNavigate();
 
@@ -448,7 +453,7 @@ export default function EnhancedTable({ employeeData: data }) {
     setIsLoading(true);
 
     //call db
-    borrow(idSelected, amount)
+    borrow(idSelected, amount, date)
       .then((res) => {
         setIsLoading(false);
         setDeducted(true);

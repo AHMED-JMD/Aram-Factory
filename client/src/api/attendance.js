@@ -21,26 +21,23 @@ const nwMonth = async () => {
   }
 };
 
-const borrow = async (emp_id, amount) => {
+const findByDate = async (date) => {
   try {
-    let response = await axiosClient.post("/employees/borrow", {
-      emp_id,
-      amount,
+    let response = await axiosClient.post("/employees/absence/findOne", {
+      date,
     });
     return response;
   } catch (error) {
     if (error) throw error;
   }
 };
-const warning = async (emp_ids) => {
+const DeleteAll = async () => {
   try {
-    let response = await axiosClient.post("/employees/warnings", {
-      emp_ids,
-    });
+    let response = await axiosClient.post("/employees/absence/delete", {});
     return response;
   } catch (error) {
     if (error) throw error;
   }
 };
 
-export { absent, nwMonth, borrow, warning };
+export { absent, nwMonth, findByDate, DeleteAll };

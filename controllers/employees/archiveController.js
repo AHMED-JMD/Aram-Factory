@@ -8,7 +8,7 @@ const archive = {
       let { emp_ids } = req.body;
       console.log(emp_ids);
       //update all
-
+      
       let newUser = await Employee.update(
         { isArchieved: true },
         { where: { emp_id: emp_ids } }

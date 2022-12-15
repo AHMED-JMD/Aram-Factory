@@ -3,6 +3,8 @@ const router = express.Router();
 const multer = require("multer");
 const employees = require("../../controllers/employees/employeeController");
 const attend = require("../../controllers/employees/attendance");
+const Expelled = require("../../controllers/employees/warnedCont");
+const Borrowed = require("../../controllers/employees/borrowCont");
 const archive = require("../../controllers/employees/archiveController");
 //setting up multer disk storage
 const storage = multer.diskStorage({
@@ -37,10 +39,20 @@ router.post("/delete", employees.delete);
 router.post("/absence", attend.absent);
 //start new month
 router.get("/new-month", attend.nwMonth);
+router.get("/absence/delete", attend.deleteAll);
+router.post("/absence/findOne", attend.findByDate);
+
+
 //borrow from salary
-router.post("/borrow", attend.borrow);
+router.post("/borrow", Borrowed.post);
+router.get("/borrow", Borrowed.get);
+router.get("/borrow/deleteAll", Borrowed.deleteAll);
+router.post("/borrow/return", Borrowed.return);
+
 //warn employes
-router.post("/warnings", attend.warn);
+router.post("/warnings", Expelled.warn);
+router.get("/warnings", Expelled.get); 
+router.post("/warnings/return", Expelled.return);
 
 //add to archive
 router.post("/archive", archive.add);

@@ -22,6 +22,7 @@ let Employee = require("./employee")(sequelize, Sequelize.DataTypes);
 let Deduct = require("./discount")(sequelize, Sequelize.DataTypes);
 let Checkout = require("./salariesCheck")(sequelize, Sequelize.DataTypes);
 let Grants = require("./grants")(sequelize, Sequelize.DataTypes);
+let Absent = require("./absentTable")(sequelize, Sequelize.DataTypes);
 
 //sql relationship here -------------------------------
 //checkout and employee
@@ -43,5 +44,6 @@ db.models.Employee = Employee;
 db.models.Deduct = Deduct;
 db.models.Checkout = Checkout;
 db.models.Grants = Grants;
+db.models.Absent = Absent;
 
 module.exports = db;
