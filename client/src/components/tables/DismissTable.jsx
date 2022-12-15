@@ -18,16 +18,14 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Modal from "@mui/material/Modal";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
-import ArchiveIcon from "@mui/icons-material/Archive";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
   FormControl,
-  Input,
   InputAdornment,
   InputLabel,
   ListItem,
@@ -35,12 +33,15 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
-import { deleteEmployee } from "../../api/employee";
+import { returnArchive } from "../../api/archive";
 import Loader from "../Loader";
-import { borrow, warning } from "../../api/attendance";
-import { add } from "../../api/archive";
+import { deleteEmployee } from "../../api/employee";
+import { useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
+
+// import Loader from "../Loader";
 
 const style = {
   position: "absolute",
@@ -113,31 +114,25 @@ const headCells = [
     id: "salary",
     numeric: false,
     disablePadding: false,
-    label: "الراتب الاساسي",
-  },
-  {
-    id: "net_salary",
-    numeric: false,
-    disablePadding: false,
     label: "الراتب",
   },
   {
     id: "phone",
     numeric: true,
     disablePadding: false,
-    label: "الانذارات",
+    label: "رقم الجوال",
   },
   {
     id: "dateofbirth",
     numeric: false,
     disablePadding: false,
-    label: "الغياب في الشهر",
+    label: "تاريخ التعيين",
   },
   {
     id: "address",
     numeric: false,
     disablePadding: false,
-    label: "الغياب في السنة",
+    label: "السكن",
   },
   {
     id: "edit",
@@ -268,7 +263,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ employeeData: data }) {
-  console.log(data)
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -279,9 +273,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const handleOpen3 = () => setOpen3(true);
   const handleClose3 = () => setOpen3(false);
 
-  const [filteredData, setfilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
-  const [amount, setAmount] = React.useState(0);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -290,24 +282,16 @@ export default function EnhancedTable({ employeeData: data }) {
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
   const [isLoading, setIsLoading] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const [deleted, setDeleted] = React.useState(false);
-  const [deducted, setDeducted] = React.useState(false);
-  const [warned, setWarned] = React.useState(false);
   const [archeived, setArcheived] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
-  //navigation variable
-  // let navigate = useNavigate();
+  React.useEffect(() => {}, [data]);
 
-  React.useEffect(() => {
-    const dataFilter = data.filter((employee) =>
-      employee.emp_name.includes(searchTxt)
-    );
-    setfilteredData(dataFilter);
-  }, [data, searchTxt]);
+  useEffect(() => {
+    console.log("hello there");
+  }, [deleted, archeived]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -317,14 +301,14 @@ export default function EnhancedTable({ employeeData: data }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = filteredData.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
   };
 
-  const handleClick = (event, { emp_name, emp_id, warnings }) => {
-    const entry = { emp_name, emp_id, warnings };
+  const handleClick = (event, { emp_name, emp_id }) => {
+    const entry = { emp_name, emp_id };
     const selectedIndex = selected.findIndex(
       (item) => item.emp_id === entry.emp_id
     );
@@ -383,27 +367,11 @@ export default function EnhancedTable({ employeeData: data }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.users.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
   };
-
-  //   const deleteItem = async () => {
-  //     setDeleteLoading(true);
-  //     await Promise.all(
-  //       selected.map(async ({ id }) => {
-  //         await userDelete({
-  //           variables: {
-  //             userDeleteId: id,
-  //           },
-  //         });
-  //       })
-  //     );
-  //     setDeleteLoading(false);
-  //     handleClose();
-  //     setSelected([])
-  //   };
 
   //printing functions goes herer-----------------------------
   const componentRef = React.useRef();
@@ -411,19 +379,20 @@ export default function EnhancedTable({ employeeData: data }) {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-  //backend functions---------------------------------------
-  const Archive = () => {
-    setLoading(true);
 
-    //call to db
-    add(idSelected)
+  //backend functions goes here--------------------------------------
+  const UnArcheive = () => {
+    setIsLoading(true);
+
+    //call to database
+    returnArchive(idSelected)
       .then((res) => {
-        setLoading(false);
+        setIsLoading(false);
         setArcheived(true);
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
-        setLoading(false);
+        setIsLoading(false);
         setArcheived(false);
         setErrMsg(err.response.data);
       });
@@ -431,6 +400,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const deleteItem = () => {
     setIsLoading(true);
     //call db
+
     deleteEmployee(idSelected)
       .then((res) => {
         setIsLoading(false);
@@ -444,42 +414,7 @@ export default function EnhancedTable({ employeeData: data }) {
         setErrMsg(err.response.data);
       });
   };
-  const DeductItem = () => {
-    setIsLoading(true);
-
-    //call db
-    borrow(idSelected, amount)
-      .then((res) => {
-        setIsLoading(false);
-        setDeducted(true);
-        setErrMsg("");
-        setTimeout(() => window.location.reload(), 1000);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setDeducted(false);
-        setErrMsg(err.response.data);
-      });
-  };
-  const WarnItem = () => {
-    setIsLoading(true);
-
-    //call db
-    warning(idSelected)
-      .then((res) => {
-        setIsLoading(false);
-        setWarned(true);
-        setErrMsg("");
-        setTimeout(() => window.location.reload(), 1000);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setWarned(false);
-        setErrMsg(err.response.data);
-      });
-  };
-
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
   return (
@@ -509,67 +444,18 @@ export default function EnhancedTable({ employeeData: data }) {
             <Button
               variant="contained"
               disableElevation
+              color="error"
               onClick={() => deleteItem()}
             >
-              نعم
+              Yes
             </Button>
             <Button
               variant="contained"
               disableElevation
-              color="error"
               style={{ margin: "0 10px" }}
               onClick={handleClose}
             >
-              لا
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={open2}
-        onClose={handleClose2}
-        aria-labelledby="add-new-salary-cut"
-        aria-describedby="add-new-salary-cut"
-      >
-        <Box sx={style}>
-          <Typography id="cut-title" variant="h6" component="h1">
-            السلفيات
-          </Typography>
-          {isLoading && <Loader />}
-          {deducted && (
-            <div className="alert alert-success">تم خصم القيمة بنجاح</div>
-          )}
-          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
-          {selected.map(({ emp_name, emp_id }) => (
-            <Typography key={emp_id}>- {emp_name}</Typography>
-          ))}
-          <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-amount">القيمة</InputLabel>
-            <Input
-              id="standard-adornment-amount"
-              onChange={(e) => setAmount(e.target.value)}
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
-            />
-          </FormControl>
-          <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              onClick={() => DeductItem()}
-            >
-              موافق
-            </Button>
-            <Button
-              variant="contained"
-              disableElevation
-              color="error"
-              style={{ margin: "0 10px" }}
-              onClick={handleClose2}
-            >
-              إلغاء
+              No
             </Button>
           </div>
         </Box>
@@ -582,47 +468,16 @@ export default function EnhancedTable({ employeeData: data }) {
         aria-describedby="archive"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h1">
-            إنذار موظف
+          <Typography id="cut-title" variant="h6" component="h1">
+            تمت أرشفة الموظف بنجاح
           </Typography>
-          {isLoading && <Loader />}
-          {warned && (
-            <div className="alert alert-success">تم انذار الموظف بنجاح</div>
-          )}
-          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
-
-          {selected.map(({ emp_name, emp_id, warnings }) => (
-            <>
-          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-           {warnings < 2? 'هل انت متأكد من إنذار:' : 'تحذير هل انت متأكد من حذف:'} 
-          </Typography>
-            <Typography className="mb-2" key={emp_id}>- {emp_name}</Typography>
-            </>
-          ))}
-          <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              onClick={() => WarnItem()}
-            >
-              موافق
-            </Button>
-            <Button
-              variant="contained"
-              disableElevation
-              color="error"
-              style={{ margin: "0 10px" }}
-              onClick={handleClose3}
-            >
-              إلغاء
-            </Button>
-          </div>
+          <div className="mt-2" style={{ marginTop: "10px" }}></div>
         </Box>
       </Modal>
 
       <Stack
-        direction={{ xs: "column", sm: "row" }}
-        alignItems={{ xs: "start", sm: "center" }}
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "start", md: "center" }}
         justifyContent="space-between"
         spacing={1}
         mb={1}
@@ -632,7 +487,18 @@ export default function EnhancedTable({ employeeData: data }) {
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              onChange={(e) => search(e.target.value)}
+              // onChange=""
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="search"
+                    // onClick=""
+                    edge="end"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
               label="بحث"
             />
           </FormControl>
@@ -641,7 +507,6 @@ export default function EnhancedTable({ employeeData: data }) {
           <button className="btn btn-secondary btn-sm" onClick={handlePrint}>
             الطباعة
           </button>
-
           <IconButton
             aria-label="delete"
             onClick={handleOpen}
@@ -652,63 +517,20 @@ export default function EnhancedTable({ employeeData: data }) {
           </IconButton>
           <IconButton
             aria-label="archive"
-            onClick={Archive}
+            onClick={UnArcheive}
             disabled={selected.length === 0 ? true : false}
             className="mx-1"
           >
-            <ArchiveIcon />
+            <UnarchiveIcon />
           </IconButton>
-          <IconButton
-            aria-label="archive"
-            onClick={handleOpen3}
-            disabled={selected.length === 0 ? true : false}
-            className="mx-1"
-          >
-            <DoDisturbOnIcon />
-          </IconButton>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-1"
-            onClick={handleOpen2}
-            disabled={selected.length === 0 ? true : false}
-          >
-            + السلفيات
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-1"
-            href="/dismissed-employees"
-            style={{ color: "#fff" }}
-          >
-            المحذوفين
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-1"
-            href="/archieve"
-            style={{ color: "#fff" }}
-          >
-            الأرشيف
-          </Button>
-          <Button
-            href="/add-employees"
-            size="small"
-            variant="contained"
-            style={{ color: "#fff" }}
-          >
-            + موظف جديد
-          </Button>
         </div>
       </Stack>
       <Box ref={componentRef} className="print-direction">
         <div className="mt-3 text-center before-print print-yes">
-          <h5>بيانات الموظفين</h5>
+          <h5>بيانات الموظفين المؤرشفين</h5>
         </div>
         {archeived && (
-          <div className="alert alert-success">تمت الارشفة بنجاح</div>
+          <div className="alert alert-success">تمت الحذف من الارشيف بنجاح </div>
         )}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
@@ -724,13 +546,12 @@ export default function EnhancedTable({ employeeData: data }) {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={filteredData.length}
+                rowCount={data.length}
               />
-
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(filteredData, getComparator(order, orderBy))
+                {stableSort(data, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.emp_id);
@@ -742,15 +563,12 @@ export default function EnhancedTable({ employeeData: data }) {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        className={
-                          row.warnings >= 2 ? "alert alert-danger" : ""
-                        }
                         key={row.emp_id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
                           <Checkbox
-                            className="print-none"
+                          className="print-none"
                             color="primary"
                             checked={isItemSelected}
                             inputProps={{
@@ -759,7 +577,7 @@ export default function EnhancedTable({ employeeData: data }) {
                           />
                         </TableCell>
                         <TableCell
-                          
+                          className="print-none"
                           component="th"
                           id={labelId}
                           scope="row"
@@ -772,11 +590,7 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar
-                              className="print-none"
-                              alt="user"
-                              src={`/images/${row.imgLink}`}
-                            />
+                            <Avatar className="print-none" alt="user" src={`/images/${row.imgLink}`} />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}
@@ -786,14 +600,11 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>{row.emp_id}</TableCell>
                         <TableCell>{row.jobTitle}</TableCell>
                         <TableCell>
-                          <span>{row.start_salary} جنيه</span>
-                        </TableCell>
-                        <TableCell>
                           <span>{row.salary} جنيه</span>
                         </TableCell>
-                        <TableCell>{row.warnings}</TableCell>
-                        <TableCell>{row.attendee_count_M}</TableCell>
-                        <TableCell>{row.attendee_count_Y}</TableCell>
+                        <TableCell>{row.phoneNum}</TableCell>
+                        <TableCell>{row.start_date}</TableCell>
+                        <TableCell>{row.address}</TableCell>
                         <TableCell>
                           <Link
                             className="edit-btn"
@@ -820,10 +631,9 @@ export default function EnhancedTable({ employeeData: data }) {
             </Table>
           </TableContainer>
           <TablePagination
-            className="print-none"
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={filteredData.length}
+            count={data.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
