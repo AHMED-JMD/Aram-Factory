@@ -1,4 +1,5 @@
 const db = require("../../models/index");
+const Sequelize = require("sequelize");
 
 const Employee = db.models.Employee;
 
@@ -45,24 +46,24 @@ const Expelled = {
     try {
       //add employees to database
       let newEmployees = await Employee.findAll({ where: { isWarned: true } });
-      
+
       //make sure there is employees
-      if(!newEmployees){
-        return res.status(400).json('no employees now')
+      if (!newEmployees) {
+        return res.status(400).json("no employees now");
       }
       res.json(newEmployees);
     } catch (err) {
       if (err) throw err;
     }
   },
-  return : async (req, res) =>{
+  return: async (req, res) => {
     try {
       let { emp_ids } = req.body;
       console.log(emp_ids);
       //update all
 
       let newUser = await Employee.update(
-        { isWarned: false },
+        { isWarned: false, warnings: 0 },
         { where: { emp_id: emp_ids } }
       );
       res.json(newUser);
@@ -70,7 +71,7 @@ const Expelled = {
       if (error) throw error;
       console.log(error);
     }
-  }
+  },
 };
 
 module.exports = Expelled;
