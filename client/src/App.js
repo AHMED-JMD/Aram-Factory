@@ -16,6 +16,7 @@ import ConfirmEmail from "./pages/confirmEmail";
 import ResetPassword from "./pages/resetPassword";
 import DismissedEmployees from "./pages/DismissedEmpoyees";
 import PresentRecords from "./pages/PresentRecords";
+import Borrows from "./pages/Borrows";
 
 function App() {
   const { auth } = useContext(authContext);
@@ -41,6 +42,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Employees />} exact />
           <Route path="/archieve" element={<Archieve />} />
+          <Route path="/borrows" element={<Borrows />} />
           <Route path="/dismissed-employees" element={<DismissedEmployees />} />
           <Route path="/add-employees" element={<AddEmployees />} />
           <Route path="/employees/:id" element={<EmployeeProfile />} />

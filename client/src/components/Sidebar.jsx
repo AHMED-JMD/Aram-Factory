@@ -12,6 +12,7 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Toolbar from "@mui/material/Toolbar";
 import { IronTwoTone } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
@@ -35,6 +36,11 @@ const Sidebar = (props) => {
       text: "دفتر الحضور",
       icon: <BusinessCenterIcon />,
       to: "/present-schedule",
+    },
+    {
+      text: "السلفيات",
+      icon: <AttachMoneyIcon />,
+      to: "/borrows",
     }
   ];
 

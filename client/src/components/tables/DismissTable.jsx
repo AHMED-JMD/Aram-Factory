@@ -40,6 +40,7 @@ import Loader from "../Loader";
 import { deleteEmployee } from "../../api/employee";
 import { useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
+import { returnWarn } from "../../api/warning";
 
 // import Loader from "../Loader";
 
@@ -284,14 +285,10 @@ export default function EnhancedTable({ employeeData: data }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(false);
   const [deleted, setDeleted] = React.useState(false);
-  const [archeived, setArcheived] = React.useState(false);
+  const [returned, setReturned] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
   React.useEffect(() => {}, [data]);
-
-  useEffect(() => {
-    console.log("hello there");
-  }, [deleted, archeived]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -381,19 +378,19 @@ export default function EnhancedTable({ employeeData: data }) {
   });
 
   //backend functions goes here--------------------------------------
-  const UnArcheive = () => {
+  const returnItem = () => {
     setIsLoading(true);
 
     //call to database
-    returnArchive(idSelected)
+    returnWarn(idSelected)
       .then((res) => {
         setIsLoading(false);
-        setArcheived(true);
+        setReturned(true);
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setIsLoading(false);
-        setArcheived(false);
+        setReturned(false);
         setErrMsg(err.response.data);
       });
   };
@@ -447,7 +444,7 @@ export default function EnhancedTable({ employeeData: data }) {
               color="error"
               onClick={() => deleteItem()}
             >
-              Yes
+              موافق
             </Button>
             <Button
               variant="contained"
@@ -455,7 +452,7 @@ export default function EnhancedTable({ employeeData: data }) {
               style={{ margin: "0 10px" }}
               onClick={handleClose}
             >
-              No
+              إلغاء
             </Button>
           </div>
         </Box>
@@ -467,11 +464,39 @@ export default function EnhancedTable({ employeeData: data }) {
         aria-labelledby="archive"
         aria-describedby="archive"
       >
-        <Box sx={style}>
-          <Typography id="cut-title" variant="h6" component="h1">
-            تمت أرشفة الموظف بنجاح
+       <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            إرجاع موظف
           </Typography>
-          <div className="mt-2" style={{ marginTop: "10px" }}></div>
+          {isLoading && <Loader />}
+          {returned && (
+            <div className="alert alert-success">تم إرجاع الموظف بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            هل انت متأكد من إرجاع:
+          </Typography>
+          {selected.map(({ emp_name }) => (
+            <Typography key={emp_name}>- {emp_name}</Typography>
+          ))}
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              onClick={() => returnItem()}
+            >
+              موافق
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              style={{ margin: "0 10px" }}
+              onClick={handleClose}
+            >
+              إلغاء
+            </Button>
+          </div>
         </Box>
       </Modal>
 
@@ -515,23 +540,18 @@ export default function EnhancedTable({ employeeData: data }) {
           >
             <DeleteIcon />
           </IconButton>
-          <IconButton
-            aria-label="archive"
-            onClick={UnArcheive}
-            disabled={selected.length === 0 ? true : false}
-            className="mx-1"
-          >
-            <UnarchiveIcon />
-          </IconButton>
+          <Button 
+          color="primary" 
+          variant="contained" 
+          onClick={handleOpen3}>
+            إرجاع الموظف
+          </Button>
         </div>
       </Stack>
       <Box ref={componentRef} className="print-direction">
         <div className="mt-3 text-center before-print print-yes">
-          <h5>بيانات الموظفين المؤرشفين</h5>
+          <h5>بيانات الموظفين المحذوفين</h5>
         </div>
-        {archeived && (
-          <div className="alert alert-success">تمت الحذف من الارشيف بنجاح </div>
-        )}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -568,7 +588,7 @@ export default function EnhancedTable({ employeeData: data }) {
                       >
                         <TableCell padding="checkbox">
                           <Checkbox
-                          className="print-none"
+                            className="print-none"
                             color="primary"
                             checked={isItemSelected}
                             inputProps={{
@@ -590,7 +610,11 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar className="print-none" alt="user" src={`/images/${row.imgLink}`} />
+                            <Avatar
+                              className="print-none"
+                              alt="user"
+                              src={`/images/${row.imgLink}`}
+                            />
                             <ListItemText
                               style={{ margin: "10px" }}
                               primary={row.emp_name}

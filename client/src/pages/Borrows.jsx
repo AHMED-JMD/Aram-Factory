@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { view } from "../api/archive";
-import { getWarn } from "../api/warning";
-import { DismissTable } from "../components";
+import { viewAll } from "../api/employee";
+import { BorrowTable } from "../components";
 import { authContext } from "../context/AuthContext";
 
-const DismissedEmployees = () => {
+const Borrows = () => {
   let { auth } = useContext(authContext);
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +14,7 @@ const DismissedEmployees = () => {
     setIsLoading(true);
 
     //call db for data
-    getWarn()
+    view()
       .then((res) => {
         setIsLoading(false);
         setEmployees(res.data);
@@ -25,9 +25,9 @@ const DismissedEmployees = () => {
   }, [auth.isAuthenticated]);
   return (
     <section className="employees">
-      <DismissTable employeeData={employees} />
+      {/* <BorrowsTable employeeData={employees} /> */}
     </section>
   );
 };
 
-export default DismissedEmployees;
+export default Borrows;
