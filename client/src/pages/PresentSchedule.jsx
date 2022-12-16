@@ -49,7 +49,8 @@ const PresentSchedule = () => {
           </div>
         </>
       ) : (
-        <div className="text-center">
+        <div className="row">
+          <div className="col-sm-6 col-12 text-center mb-5">
           <h4 className="mb-3">إنشاء جدول حضور جديد</h4>
           <button
             className="btn btn-primary "
@@ -60,6 +61,17 @@ const PresentSchedule = () => {
           >
             إضافة جدول
           </button>
+        </div>
+          <div className="col-sm-6 col-12 text-center">
+          <h4 className="mb-3">عرض سجلات الحضور السابقة</h4>
+          <a href="/present-schedule/records">
+          <button
+            className="btn btn-success"
+          >
+            عرض السجلات
+          </button>
+          </a>
+        </div>
         </div>
       )}
     </section>

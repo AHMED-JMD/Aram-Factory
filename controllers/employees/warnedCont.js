@@ -1,6 +1,5 @@
 const db = require("../../models/index");
 const Sequelize = require("sequelize");
-
 const Employee = db.models.Employee;
 
 const Expelled = {

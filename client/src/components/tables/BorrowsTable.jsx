@@ -16,24 +16,32 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import Modal from "@mui/material/Modal";
 import DeleteIcon from "@mui/icons-material/Delete";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
   FormControl,
+  InputAdornment,
   InputLabel,
   ListItem,
   ListItemText,
   OutlinedInput,
-  Modal,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import SearchIcon from "@mui/icons-material/Search";
 import { Stack } from "@mui/system";
+import { returnArchive } from "../../api/archive";
 import Loader from "../Loader";
-import moment from "moment";
-import { absent, nwMonth } from "../../api/attendance";
-import { useNavigate } from "react-router-dom";
+import { deleteEmployee } from "../../api/employee";
+import { useEffect } from "react";
+import { useReactToPrint } from "react-to-print";
+
+// import Loader from "../Loader";
 
 const style = {
   position: "absolute",
@@ -79,10 +87,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "check",
+    numeric: false,
+    disablePadding: true,
+    label: "",
+  },
+  {
     id: "name",
     numeric: false,
     disablePadding: true,
     label: "الإسم رباعي",
+  },
+  {
+    id: "id",
+    numeric: false,
+    disablePadding: false,
+    label: "الرقم التعريفي",
   },
   {
     id: "title",
@@ -97,10 +117,28 @@ const headCells = [
     label: "الراتب",
   },
   {
-    id: "status",
+    id: "phone",
+    numeric: true,
+    disablePadding: false,
+    label: "رقم الجوال",
+  },
+  {
+    id: "dateofbirth",
     numeric: false,
     disablePadding: false,
-    label: "الغياب",
+    label: "تاريخ التعيين",
+  },
+  {
+    id: "address",
+    numeric: false,
+    disablePadding: false,
+    label: "السكن",
+  },
+  {
+    id: "edit",
+    numeric: false,
+    disablePadding: false,
+    label: "عرض/تعديل",
   },
 ];
 
@@ -120,8 +158,8 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox"> */}
-        {/* <Checkbox
+        <TableCell padding="checkbox">
+          {/* <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -130,12 +168,12 @@ function EnhancedTableHead(props) {
               "aria-label": "select all desserts",
             }}
           /> */}
-        {/* </TableCell> */}
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             // align={headCell.numeric ? 'right' : 'left'}
-            // padding={headCell.disablePadding ? "none" : "normal"}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -224,17 +262,17 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({
-  data: { employees: data },
-  isLoading,
-}) {
-  const [deleteLoading, setDeleteLoading] = React.useState(false);
-
+export default function EnhancedTable({ employeeData: data }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
+  const [open3, setOpen3] = React.useState(false);
+  const handleOpen3 = () => setOpen3(true);
+  const handleClose3 = () => setOpen3(false);
 
-  const [filteredData, setFilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -244,21 +282,16 @@ export default function EnhancedTable({
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [loaded, setLoaded] = React.useState(false);
-  const [absence, setAbsence] = React.useState(false);
-  const [newM, setNewM] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(false);
+  const [archeived, setArcheived] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
 
-  let date = moment(new Date()).format("YYYY/MM/DD");
-  //naviagation here
-  let navigate = useNavigate();
+  React.useEffect(() => {}, [data]);
 
-  React.useEffect(() => {
-    const dataFilter = data.filter((employee) =>
-      employee.emp_name.includes(searchTxt)
-    );
-    setFilteredData(dataFilter);
-  }, [data, searchTxt]);
+  useEffect(() => {
+    console.log("hello there");
+  }, [deleted, archeived]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -268,7 +301,7 @@ export default function EnhancedTable({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = filteredData.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
@@ -293,13 +326,12 @@ export default function EnhancedTable({
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
-    // id selected
+    // idSelected
+    // const idEntry = {emp_id};
     const idSelectedIndex = selected.findIndex(
       (item) => item.emp_id === emp_id
     );
-
     let newIdSelected = [];
 
     if (idSelectedIndex === -1) {
@@ -335,64 +367,54 @@ export default function EnhancedTable({
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.users.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
   };
 
-  //   const deleteItem = async () => {
-  //     setDeleteLoading(true);
-  //     await Promise.all(
-  //       selected.map(async ({ id }) => {
-  //         await userDelete({
-  //           variables: {
-  //             userDeleteId: id,
-  //           },
-  //         });
-  //       })
-  //     );
-  //     setDeleteLoading(false);
-  //     handleClose();
-  //     setSelected([])
-  //   };
+  //printing functions goes herer-----------------------------
+  const componentRef = React.useRef();
 
-  //backend functions----------------------------
-  const handlAbsent = () => {
-    setLoaded(true);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
-    //call backend
-    absent(idSelected, date)
+  //backend functions goes here--------------------------------------
+  const UnArcheive = () => {
+    setIsLoading(true);
+
+    //call to database
+    returnArchive(idSelected)
       .then((res) => {
-        setLoaded(false);
-        setAbsence(true);
-        setTimeout(() => navigate("/"), 500);
-      })
-      .catch((err) => {
-        setLoaded(false);
-        setAbsence(false);
-        setErrMsg(err.response.data);
-      });
-  };
-  const handleNwMonth = () => {
-    setLoaded(true);
-
-    //call db
-    nwMonth()
-      .then((res) => {
-        setLoaded(false);
-        setNewM(true);
+        setIsLoading(false);
+        setArcheived(true);
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
-        setLoaded(false);
-        setNewM(false);
+        setIsLoading(false);
+        setArcheived(false);
         setErrMsg(err.response.data);
       });
   };
+  const deleteItem = () => {
+    setIsLoading(true);
+    //call db
 
-
-  if (isLoading || loaded) {
+    deleteEmployee(idSelected)
+      .then((res) => {
+        setIsLoading(false);
+        setDeleted(true);
+        setErrMsg("");
+        setTimeout(() => window.location.reload(), 1000);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setDeleted(false);
+        setErrMsg(err.response.data);
+      });
+  };
+  if (isLoading) {
     return <Loader />;
   }
   return (
@@ -405,14 +427,15 @@ export default function EnhancedTable({
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h1">
-            قائمة الغياب
+            حذف موظف
           </Typography>
-          {absence && (
-            <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
+          {isLoading && <Loader />}
+          {deleted && (
+            <div className="alert alert-success">تم حذف الموظف بنجاح</div>
           )}
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-            تأكيد قائمة الغياب:
+            هل انت متأكد من حذف:
           </Typography>
           {selected.map(({ emp_name }) => (
             <Typography key={emp_name}>- {emp_name}</Typography>
@@ -421,20 +444,34 @@ export default function EnhancedTable({
             <Button
               variant="contained"
               disableElevation
-              onClick={() => handlAbsent()}
+              color="error"
+              onClick={() => deleteItem()}
             >
-              نعم
+              Yes
             </Button>
             <Button
               variant="contained"
               disableElevation
-              color="error"
               style={{ margin: "0 10px" }}
               onClick={handleClose}
             >
-              لا
+              No
             </Button>
           </div>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="archive"
+        aria-describedby="archive"
+      >
+        <Box sx={style}>
+          <Typography id="cut-title" variant="h6" component="h1">
+            تمت أرشفة الموظف بنجاح
+          </Typography>
+          <div className="mt-2" style={{ marginTop: "10px" }}></div>
         </Box>
       </Modal>
 
@@ -445,40 +482,56 @@ export default function EnhancedTable({
         spacing={1}
         mb={1}
       >
-        <div>
-          {/* <TextField label="Search input" variant="outlined" fullWidth />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton> */}
+        <div className="d-flex align-items-center">
           <FormControl sx={{ width: "300px" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              onChange={(e) => search(e.target.value)}
-              label="بحث"
+              // onChange=""
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="search"
+                    // onClick=""
+                    edge="end"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="search"
             />
           </FormControl>
         </div>
         <div>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-2"
-            onClick={handleNwMonth}
+          <button className="btn btn-secondary btn-sm" onClick={handlePrint}>
+            الطباعة
+          </button>
+          <IconButton
+            aria-label="delete"
+            onClick={handleOpen}
+            disabled={selected.length === 0 ? true : false}
+            className="mx-1"
           >
-            شهر جديد
-          </Button>
-          <Button variant="contained" size="small" onClick={handleOpen}>
-            حفظ
-          </Button>
+            <DeleteIcon />
+          </IconButton>
+          <IconButton
+            aria-label="archive"
+            onClick={UnArcheive}
+            disabled={selected.length === 0 ? true : false}
+            className="mx-1"
+          >
+            <UnarchiveIcon />
+          </IconButton>
         </div>
       </Stack>
-      <Box>
-        {newM && (
-          <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
+      <Box ref={componentRef} className="print-direction">
+        <div className="mt-3 text-center before-print print-yes">
+          <h5>بيانات الموظفين المؤرشفين</h5>
+        </div>
+        {archeived && (
+          <div className="alert alert-success">تمت الحذف من الارشيف بنجاح </div>
         )}
-        <br />
-        <h5 className="">التاريخ: {date}</h5>
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -493,12 +546,12 @@ export default function EnhancedTable({
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={filteredData.length}
+                rowCount={data.length}
               />
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(filteredData, getComparator(order, orderBy))
+                {stableSort(data, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.emp_id);
@@ -513,33 +566,54 @@ export default function EnhancedTable({
                         key={row.emp_id}
                         selected={isItemSelected}
                       >
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          // padding="none"
-                        >
-                          <ListItem disablePadding>
-                            <Avatar alt="user" src={`/images/${row.imgLink}`} />
-                            <ListItemText
-                              style={{ margin: "10px" }}
-                              primary={row.emp_name}
-                            />
-                          </ListItem>
-                        </TableCell>
-
-                        <TableCell>{row.jobTitle}</TableCell>
-                        <TableCell>
-                          <span>{row.salary} جنيه</span>
-                        </TableCell>
                         <TableCell padding="checkbox">
                           <Checkbox
+                          className="print-none"
                             color="primary"
                             checked={isItemSelected}
                             inputProps={{
                               "aria-labelledby": labelId,
                             }}
                           />
+                        </TableCell>
+                        <TableCell
+                          className="print-none"
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        ></TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          <ListItem disablePadding>
+                            <Avatar className="print-none" alt="user" src={`/images/${row.imgLink}`} />
+                            <ListItemText
+                              style={{ margin: "10px" }}
+                              primary={row.emp_name}
+                            />
+                          </ListItem>
+                        </TableCell>
+                        <TableCell>{row.emp_id}</TableCell>
+                        <TableCell>{row.jobTitle}</TableCell>
+                        <TableCell>
+                          <span>{row.salary} جنيه</span>
+                        </TableCell>
+                        <TableCell>{row.phoneNum}</TableCell>
+                        <TableCell>{row.start_date}</TableCell>
+                        <TableCell>{row.address}</TableCell>
+                        <TableCell>
+                          <Link
+                            className="edit-btn"
+                            to={`/employees/${row.emp_id}`}
+                          >
+                            <IconButton>
+                              <VisibilityIcon />
+                            </IconButton>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     );
@@ -559,7 +633,7 @@ export default function EnhancedTable({
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={filteredData.length}
+            count={data.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

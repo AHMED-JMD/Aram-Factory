@@ -270,6 +270,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ employeeData: data }) {
+  console.log(data);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -302,7 +303,6 @@ export default function EnhancedTable({ employeeData: data }) {
 
   let date = moment(new Date()).format("YYYY/MM/DD");
 
-
   //navigation variable
   // let navigate = useNavigate();
 
@@ -327,8 +327,8 @@ export default function EnhancedTable({ employeeData: data }) {
     setSelected([]);
   };
 
-  const handleClick = (event, { emp_name, emp_id }) => {
-    const entry = { emp_name, emp_id };
+  const handleClick = (event, { emp_name, emp_id, warnings }) => {
+    const entry = { emp_name, emp_id, warnings };
     const selectedIndex = selected.findIndex(
       (item) => item.emp_id === entry.emp_id
     );
@@ -480,6 +480,8 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setWarned(false);
         setErrMsg(err.response.data);
+        setTimeout(() => window.location.reload(), 1000);
+
       });
   };
 
@@ -595,11 +597,17 @@ export default function EnhancedTable({ employeeData: data }) {
           )}
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
 
-          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-            هل انت متأكد من إنذار:
-          </Typography>
-          {selected.map(({ emp_name, emp_id }) => (
-            <Typography key={emp_id}>- {emp_name}</Typography>
+          {selected.map(({ emp_name, emp_id, warnings }) => (
+            <>
+              <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+                {warnings < 2
+                  ? "هل انت متأكد من إنذار:"
+                  : "تحذير هل انت متأكد من فصل:"}
+              </Typography>
+              <Typography className="mb-2" key={emp_id}>
+                - {emp_name}
+              </Typography>
+            </>
           ))}
           <div className="mt-2" style={{ marginTop: "10px" }}>
             <Button
@@ -675,7 +683,16 @@ export default function EnhancedTable({ employeeData: data }) {
             onClick={handleOpen2}
             disabled={selected.length === 0 ? true : false}
           >
-            + السلفيات
+            + سلفية
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            className="mx-1"
+            href="/dismissed-employees"
+            style={{ color: "#fff" }}
+          >
+            المفصولين{" "}
           </Button>
           <Button
             variant="contained"
@@ -752,7 +769,6 @@ export default function EnhancedTable({ employeeData: data }) {
                           />
                         </TableCell>
                         <TableCell
-                          
                           component="th"
                           id={labelId}
                           scope="row"

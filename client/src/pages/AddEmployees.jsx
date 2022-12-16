@@ -261,7 +261,7 @@ const AddEmployees = () => {
               <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="pin">الخصم عند الغياب</InputLabel>
                 <OutlinedInput
-                  label="الخصم"
+                  label="الخصم عند الغياب"
                   id="penalty-input"
                   type="number"
                   value={penalty}
