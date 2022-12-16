@@ -81,14 +81,15 @@ const Borrowed = {
         return res.status(400).json("عذرا القيمة اكبر من السلفية");
 
       //update db
-      nwDeduct.amount = nwDeduct.amount - nwAmount;
+      nwDeduct.amount = nwAmount;
       nwDeduct.save();
 
       //update employee salary
       let employ = await Employee.findOne({
         where: { emp_id: nwDeduct.employeeEmpId },
       });
-      employ.salary = employ.salary + nwAmount;
+      let nwSal = employ.fixed_salary - nwAmount;
+      employ.salary = nwSal;
       employ.save();
       //response to backend
       res.json({ employee: employ, deduct: nwDeduct });

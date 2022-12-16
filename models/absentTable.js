@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       _id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV1,
-        primaryKey: true
+        primaryKey: true,
       },
       date: {
         type: DataTypes.DATEONLY,
@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.JSON,
         defaultValue: [],
       },
-      
+      emp_Jobs: {
+        type: DataTypes.JSON,
+        defaultValue: [],
+      },
     },
     { freezeTableName: true }
   );

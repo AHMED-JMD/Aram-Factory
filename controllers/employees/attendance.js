@@ -1,6 +1,6 @@
 const db = require("../../models/index");
 const xssFilter = require("xss-filters");
-const { Sequelize } = require("sequelize");
+const { Sequelize, where } = require("sequelize");
 
 const Employee = db.models.Employee;
 const Absent = db.models.Absent;
@@ -16,6 +16,7 @@ const attend = {
       // update each user by his penalty
       let obj;
       let absent_names = [];
+      let absent_jobs = [];
       Promise.all(
         ids.map(async (id) => {
           let employee = await Employee.findOne({ where: { emp_id: id } });
@@ -30,8 +31,21 @@ const attend = {
             if (result === true) {
               return (obj = { status: 400, data: employee.emp_name });
             } else {
-              absentTable.emp_names.push(employee.emp_name);
-              absentTable.save();
+              //update name and job in the same area
+
+              //update names
+              absent_names.push(employee.emp_name);
+              let nwabsentnames = absentTable.emp_names.concat(absent_names);
+
+              //update jobs
+              absent_jobs.push(employee.jobTitle);
+              let nwjobTitle = absentTable.emp_names.concat(absent_jobs);
+
+              //update db
+              absentTable.update(
+                { emp_names: nwabsentnames, emp_Jobs: nwjobTitle },
+                { where: date }
+              );
               console.log(absentTable.emp_names, absentTable.date);
               return (obj = {
                 status: 400,
@@ -41,6 +55,7 @@ const attend = {
           } else {
             //push employee name to employee array
             absent_names.push(employee.emp_name);
+            absent_jobs.push(employee.jobTitle);
 
             //update employee
             let newDates = employee.absent_date.concat(date);
@@ -65,7 +80,11 @@ const attend = {
         } else {
           //create new absent table
           console.log(absent_names);
-          Absent.create({ date, emp_names: absent_names }).then((response) => {
+          Absent.create({
+            date,
+            emp_names: absent_names,
+            emp_Jobs: absent_jobs,
+          }).then((response) => {
             res.json(response);
           });
         }

@@ -60,7 +60,7 @@ const PresentRecords = () => {
                 setDate(date);
               }}
               onAccept={AbsentTable}
-              inputFormat="YYYY/MM/DD"
+              inputFormat="YYYY-MM-DD"
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
