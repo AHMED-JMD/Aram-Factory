@@ -270,7 +270,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ employeeData: data }) {
-  console.log(data)
+  console.log(data);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -302,7 +302,6 @@ export default function EnhancedTable({ employeeData: data }) {
   const [errMsg, setErrMsg] = React.useState("");
 
   let date = moment(new Date()).format("YYYY/MM/DD");
-
 
   //navigation variable
   // let navigate = useNavigate();
@@ -481,6 +480,8 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setWarned(false);
         setErrMsg(err.response.data);
+        setTimeout(() => window.location.reload(), 1000);
+
       });
   };
 
@@ -598,10 +599,14 @@ export default function EnhancedTable({ employeeData: data }) {
 
           {selected.map(({ emp_name, emp_id, warnings }) => (
             <>
-          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-           {warnings < 2? 'هل انت متأكد من إنذار:' : 'تحذير هل انت متأكد من حذف:'} 
-          </Typography>
-            <Typography className="mb-2" key={emp_id}>- {emp_name}</Typography>
+              <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+                {warnings < 2
+                  ? "هل انت متأكد من إنذار:"
+                  : "تحذير هل انت متأكد من فصل:"}
+              </Typography>
+              <Typography className="mb-2" key={emp_id}>
+                - {emp_name}
+              </Typography>
             </>
           ))}
           <div className="mt-2" style={{ marginTop: "10px" }}>
@@ -687,7 +692,7 @@ export default function EnhancedTable({ employeeData: data }) {
             href="/dismissed-employees"
             style={{ color: "#fff" }}
           >
-            المحذوفين
+            المفصولين{" "}
           </Button>
           <Button
             variant="contained"
@@ -764,7 +769,6 @@ export default function EnhancedTable({ employeeData: data }) {
                           />
                         </TableCell>
                         <TableCell
-                          
                           component="th"
                           id={labelId}
                           scope="row"

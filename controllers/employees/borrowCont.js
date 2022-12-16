@@ -60,7 +60,7 @@ const Borrowed = {
       let { ids } = req.body;
 
       //delete from db
-      let deletedBorr = await Deduct.destroy({ where: {id: ids} });
+      let deletedBorr = await Deduct.destroy({ where: { id: ids } });
 
       res.json(deletedBorr);
     } catch (err) {
@@ -75,8 +75,10 @@ const Borrowed = {
 
       //find and update deduct
       let nwDeduct = await Deduct.findOne({ where: { id } });
+
       //make sure nwAmount is not bigger than real amoun
-      if (nwAmount > nwDeduct.amount) return res.status(400).json("عذرا القيمة اكبر من السلفية");
+      if (nwAmount > nwDeduct.amount)
+        return res.status(400).json("عذرا القيمة اكبر من السلفية");
 
       //update db
       nwDeduct.amount = nwDeduct.amount - nwAmount;
@@ -87,9 +89,9 @@ const Borrowed = {
         where: { emp_id: nwDeduct.employeeEmpId },
       });
       employ.salary = employ.salary + nwAmount;
-      employ.save()
+      employ.save();
       //response to backend
-      res.json(employ);
+      res.json({ employee: employ, deduct: nwDeduct });
     } catch (err) {
       if (err) throw err;
     }

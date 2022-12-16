@@ -26,30 +26,38 @@ const attend = {
           let absentTable = await Absent.findOne({ where: { date } });
           if (absentTable) {
             let result = absentTable.emp_names.includes(employee.emp_name);
-            console.log(result);
-            if (result === true)
+
+            if (result === true) {
               return (obj = { status: 400, data: employee.emp_name });
+            } else {
+              absentTable.emp_names.push(employee.emp_name);
+              absentTable.save();
+              console.log(absentTable.emp_names, absentTable.date);
+              return (obj = {
+                status: 400,
+                data: "تم اضافة الموظف للقائمة بنجاح",
+              });
+            }
+          } else {
+            //push employee name to employee array
+            absent_names.push(employee.emp_name);
+
+            //update employee
+            let newDates = employee.absent_date.concat(date);
+            employee.update(
+              {
+                absent_date: newDates,
+                attendee_count_M: Sequelize.literal("attendee_count_M + 1"),
+                attendee_count_Y: Sequelize.literal("attendee_count_Y + 1"),
+                salary: employee.salary - employee.penalty,
+              },
+              { where: { emp_id: id } }
+            );
+
+            return (obj = { status: 200, data: "success" });
           }
-
-          //push employee name to employee array
-          absent_names.push(employee.emp_name);
-
-          //update employee
-          let newDates = employee.absent_date.concat(date);
-          employee.update(
-            {
-              absent_date: newDates,
-              attendee_count_M: Sequelize.literal("attendee_count_M + 1"),
-              attendee_count_Y: Sequelize.literal("attendee_count_Y + 1"),
-              salary: employee.salary - employee.penalty,
-            },
-            { where: { emp_id: id } }
-          );
-
-          return (obj = { status: 200, data: "success" });
         })
       ).then((obj) => {
-        console.log(obj[0].status);
         if (obj[0].status === 400) {
           res
             .status(obj[0].status)

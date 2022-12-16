@@ -391,6 +391,7 @@ export default function EnhancedTable({
       });
   };
 
+
   if (isLoading || loaded) {
     return <Loader />;
   }
@@ -409,9 +410,7 @@ export default function EnhancedTable({
           {absence && (
             <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
           )}
-          {errMsg && (
-            <div className="alert alert-danger">{errMsg}</div>
-          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
             تأكيد قائمة الغياب:
           </Typography>
