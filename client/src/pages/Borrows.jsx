@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { view } from "../api/archive";
-import { viewAll } from "../api/employee";
-import { BorrowTable } from "../components";
+import { getDeduct } from "../api/borrow";
+import { BorrowsTable, BorrowTable } from "../components";
 import { authContext } from "../context/AuthContext";
 
 const Borrows = () => {
@@ -14,7 +14,7 @@ const Borrows = () => {
     setIsLoading(true);
 
     //call db for data
-    view()
+    getDeduct()
       .then((res) => {
         setIsLoading(false);
         setEmployees(res.data);
@@ -23,9 +23,10 @@ const Borrows = () => {
         setIsLoading(false);
       });
   }, [auth.isAuthenticated]);
+  console.log(employees)
   return (
     <section className="employees">
-      {/* <BorrowsTable employeeData={employees} /> */}
+      <BorrowsTable employeeData={employees} />
     </section>
   );
 };

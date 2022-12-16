@@ -31,6 +31,7 @@ import {
   ListItem,
   ListItemText,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
@@ -40,6 +41,7 @@ import Loader from "../Loader";
 import { deleteEmployee } from "../../api/employee";
 import { useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
+import { returnAmount } from "../../api/borrow";
 
 // import Loader from "../Loader";
 
@@ -114,31 +116,13 @@ const headCells = [
     id: "salary",
     numeric: false,
     disablePadding: false,
-    label: "الراتب",
+    label: "قيمة السلفية",
   },
   {
-    id: "phone",
-    numeric: true,
-    disablePadding: false,
-    label: "رقم الجوال",
-  },
-  {
-    id: "dateofbirth",
+    id: "save",
     numeric: false,
     disablePadding: false,
-    label: "تاريخ التعيين",
-  },
-  {
-    id: "address",
-    numeric: false,
-    disablePadding: false,
-    label: "السكن",
-  },
-  {
-    id: "edit",
-    numeric: false,
-    disablePadding: false,
-    label: "عرض/تعديل",
+    label: "حفظ",
   },
 ];
 
@@ -284,14 +268,11 @@ export default function EnhancedTable({ employeeData: data }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(false);
   const [deleted, setDeleted] = React.useState(false);
-  const [archeived, setArcheived] = React.useState(false);
+  const [changeAmount, setChangeAmount] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
-
+  const [amount, setAmount] = React.useState();
+console.log(selected) 
   React.useEffect(() => {}, [data]);
-
-  useEffect(() => {
-    console.log("hello there");
-  }, [deleted, archeived]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -307,10 +288,10 @@ export default function EnhancedTable({ employeeData: data }) {
     setSelected([]);
   };
 
-  const handleClick = (event, { emp_name, emp_id }) => {
-    const entry = { emp_name, emp_id };
+  const handleClick = (event, { emp_name, id  }) => {
+    const entry = { emp_name, id };
     const selectedIndex = selected.findIndex(
-      (item) => item.emp_id === entry.emp_id
+      (item) => item.id === entry.id
     );
     let newSelected = [];
 
@@ -329,24 +310,25 @@ export default function EnhancedTable({ employeeData: data }) {
     setSelected(newSelected);
     // idSelected
     // const idEntry = {emp_id};
-    const idSelectedIndex = selected.findIndex(
-      (item) => item.emp_id === emp_id
-    );
-    let newIdSelected = [];
+    // const idSelectedIndex = idSelected.findIndex(
+    //   (item) => item.employeeEmpId === employeeEmpId
+    // );
 
-    if (idSelectedIndex === -1) {
-      newIdSelected = newIdSelected.concat(idSelected, emp_id);
-    } else if (idSelectedIndex === 0) {
-      newIdSelected = newIdSelected.concat(idSelected.slice(1));
-    } else if (idSelectedIndex === selected.length - 1) {
-      newIdSelected = newIdSelected.concat(idSelected.slice(0, -1));
-    } else if (idSelectedIndex > 0) {
-      newIdSelected = newIdSelected.concat(
-        idSelected.slice(0, emp_id),
-        idSelected.slice(emp_id + 1)
-      );
-    }
-    setIdSelected(newIdSelected);
+    // let newIdSelected = [];
+
+    // if (idSelectedIndex === -1) {
+    //   newIdSelected = newIdSelected.concat(idSelected, employeeEmpId);
+    // } else if (idSelectedIndex === 0) {
+    //   newIdSelected = newIdSelected.concat(idSelected.slice(1));
+    // } else if (idSelectedIndex === idSelected.length - 1) {
+    //   newIdSelected = newIdSelected.concat(idSelected.slice(0, -1));
+    // } else if (idSelectedIndex > 0) {
+    //   newIdSelected = newIdSelected.concat(
+    //     idSelected.slice(0, idSelectedIndex),
+    //     idSelected.slice(idSelectedIndex + 1)
+    //   );
+    // }
+    // setIdSelected(newIdSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -381,19 +363,19 @@ export default function EnhancedTable({ employeeData: data }) {
   });
 
   //backend functions goes here--------------------------------------
-  const UnArcheive = () => {
+  const editAmount = () => {
     setIsLoading(true);
 
     //call to database
-    returnArchive(idSelected)
+    returnAmount(selected[0].id, amount)
       .then((res) => {
         setIsLoading(false);
-        setArcheived(true);
+        setChangeAmount(true);
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setIsLoading(false);
-        setArcheived(false);
+        setChangeAmount(false);
         setErrMsg(err.response.data);
       });
   };
@@ -515,23 +497,12 @@ export default function EnhancedTable({ employeeData: data }) {
           >
             <DeleteIcon />
           </IconButton>
-          <IconButton
-            aria-label="archive"
-            onClick={UnArcheive}
-            disabled={selected.length === 0 ? true : false}
-            className="mx-1"
-          >
-            <UnarchiveIcon />
-          </IconButton>
         </div>
       </Stack>
       <Box ref={componentRef} className="print-direction">
-        <div className="mt-3 text-center before-print print-yes">
+        {/* <div className="mt-3 text-center before-print print-yes">
           <h5>بيانات الموظفين المؤرشفين</h5>
-        </div>
-        {archeived && (
-          <div className="alert alert-success">تمت الحذف من الارشيف بنجاح </div>
-        )}
+        </div> */}
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -568,7 +539,7 @@ export default function EnhancedTable({ employeeData: data }) {
                       >
                         <TableCell padding="checkbox">
                           <Checkbox
-                          className="print-none"
+                            className="print-none"
                             color="primary"
                             checked={isItemSelected}
                             inputProps={{
@@ -590,30 +561,35 @@ export default function EnhancedTable({ employeeData: data }) {
                           padding="none"
                         >
                           <ListItem disablePadding>
-                            <Avatar className="print-none" alt="user" src={`/images/${row.imgLink}`} />
+                            <Avatar
+                              className="print-none"
+                              alt="user"
+                              src={`/images/${row.imgLink}`}
+                            />
                             <ListItemText
                               style={{ margin: "10px" }}
-                              primary={row.emp_name}
+                              primary={row.employee.emp_name}
                             />
                           </ListItem>
                         </TableCell>
-                        <TableCell>{row.emp_id}</TableCell>
-                        <TableCell>{row.jobTitle}</TableCell>
-                        <TableCell>
-                          <span>{row.salary} جنيه</span>
+                        <TableCell>{row.employee.emp_id}</TableCell>
+                        <TableCell>{row.employee.jobTitle}</TableCell>
+                        <TableCell className="d-flex align-items-center">
+                          <TextField
+                            placeholder={row.amount}
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                          />
+                          <span className="mx-2">جنيه</span>
                         </TableCell>
-                        <TableCell>{row.phoneNum}</TableCell>
-                        <TableCell>{row.start_date}</TableCell>
-                        <TableCell>{row.address}</TableCell>
                         <TableCell>
-                          <Link
-                            className="edit-btn"
-                            to={`/employees/${row.emp_id}`}
+                          <Button
+                            disabled={amount ? false : true}
+                            variant="contained"
+                            onClick={editAmount}
                           >
-                            <IconButton>
-                              <VisibilityIcon />
-                            </IconButton>
-                          </Link>
+                            حفظ
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
