@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Loader, PresentTable } from "../components";
+import { Loader, PresentRecordsTable, PresentTable } from "../components";
 import { viewAll } from "../api/employee";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
@@ -12,22 +12,6 @@ const PresentRecords = () => {
   const [date, setDate] = useState("");
   const [errMsg, setErrMsg] = React.useState("");
 
-  useEffect(() => {
-    //set loading to true
-    setIsLoading(true);
-
-    //call db for data
-    viewAll()
-      .then((res) => {
-        setIsLoading(false);
-        //set data
-        setEmployees(res.data);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-      });
-  }, []);
-
   const AbsentTable = (date) => {
     setIsLoading(true);
 
@@ -36,7 +20,7 @@ const PresentRecords = () => {
       .then((res) => {
         setIsLoading(false);
         setErrMsg("")
-        console.log(res);
+        setEmployees(res.data[0])
       })
       .catch((err) => {
         setIsLoading(false);
@@ -47,11 +31,11 @@ const PresentRecords = () => {
   if (isLoading) {
     return <Loader />;
   }
-
+console.log(employees)
   return (
     <section className="employees">
       <>
-        <div>
+        <div className="mb-4">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="قم بإختبار تاريخ السجل"
@@ -67,7 +51,59 @@ const PresentRecords = () => {
           <br />
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
         </div>
-        {/* <PresentTable data={employees} isLoading={isLoading} /> */}
+         <div
+          className="row align-items-stretch flex-nowrap text-nowrap mx-auto py-2"
+          style={{
+            maxWidth: "800px",
+            backgroundColor: "#fff",
+            overflowX: "scroll",
+          }}
+        >
+          <div className="col-9 px-0">
+            <div
+              className="p-2 mb-3"
+              style={{ backgroundColor: "#ddd", fontSize: "14px" }}
+            >
+              الإسم
+            </div>
+            {employees &&
+                employees?.emp_names?.map((name) => (
+                  <div
+                    className="p-2 mb-3"
+                    style={{
+                      borderBottom: "1px solid #f7f7f7",
+                      fontSize: "14px",
+                    }}
+                    key={name}
+                  >
+                    {name}
+                  </div>
+                ))}
+          </div>
+          <div className="col px-0">
+            <div
+              className="p-2 mb-3"
+              style={{ backgroundColor: "#ddd", fontSize: "14px" }}
+            >
+             المسمى الوظيفي
+            </div>
+            {employees &&
+                employees?.emp_names?.map((name) => (
+                  <div
+                    className="p-2 mb-3"
+                    style={{
+                      borderBottom: "1px solid #f7f7f7",
+                      fontSize: "14px",
+                    }}
+                    key={name}
+                  >
+                    {" "}
+                    {name}{" "}
+                  </div>
+                ))}
+          </div>
+          </div>
+        {/* <PresentRecordsTable data={employees} /> */}
       </>
     </section>
   );
