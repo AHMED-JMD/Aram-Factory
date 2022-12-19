@@ -31,13 +31,24 @@ const findByDate = async (date) => {
     if (error) throw error;
   }
 };
+const DeletOne = async (date, emp_id) => {
+  try {
+    let response = await axiosClient.post("/employees/absence/deleteOne", {
+      date,
+      emp_id,
+    });
+    return response;
+  } catch (error) {
+    if (error) throw error;
+  }
+};
 const DeleteAll = async () => {
   try {
-    let response = await axiosClient.post("/employees/absence/delete", {});
+    let response = await axiosClient.get("/employees/absence/delete");
     return response;
   } catch (error) {
     if (error) throw error;
   }
 };
 
-export { absent, nwMonth, findByDate, DeleteAll };
+export { absent, nwMonth, findByDate, DeletOne, DeleteAll };

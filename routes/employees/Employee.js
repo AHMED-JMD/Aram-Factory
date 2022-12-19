@@ -40,8 +40,8 @@ router.post("/absence", attend.absent);
 //start new month
 router.get("/new-month", attend.nwMonth);
 router.get("/absence/delete", attend.deleteAll);
+router.post("/absence/deleteOne", attend.deleteOne);
 router.post("/absence/findOne", attend.findByDate);
-
 
 //borrow from salary
 router.post("/borrow", Borrowed.post);
@@ -51,7 +51,7 @@ router.post("/borrow/return", Borrowed.return);
 
 //warn employes
 router.post("/warnings", Expelled.warn);
-router.get("/warnings", Expelled.get); 
+router.get("/warnings", Expelled.get);
 router.post("/warnings/return", Expelled.return);
 
 //add to archive
