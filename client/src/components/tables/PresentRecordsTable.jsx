@@ -30,7 +30,6 @@ import {
   Modal,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import Loader from "../Loader";
 import moment from "moment";
 import { absent, nwMonth } from "../../api/attendance";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +81,7 @@ const headCells = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "الإسم رباعي",
+    label: "الإسم",
   },
   {
     id: "title",
@@ -94,14 +93,8 @@ const headCells = [
     id: "salary",
     numeric: false,
     disablePadding: false,
-    label: "الراتب",
-  },
-  {
-    id: "status",
-    numeric: false,
-    disablePadding: false,
-    label: "الغياب",
-  },
+    label: "السكن",
+  }
 ];
 
 function EnhancedTableHead(props) {
@@ -225,17 +218,11 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({
-  data: { employees: data },
-  isLoading,
+  employees: data,
 }) {
-  const [deleteLoading, setDeleteLoading] = React.useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
-  const [filteredData, setFilteredData] = React.useState([]);
-  const [searchTxt, setSearchTxt] = React.useState("");
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -244,21 +231,10 @@ export default function EnhancedTable({
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [loaded, setLoaded] = React.useState(false);
-  const [absence, setAbsence] = React.useState(false);
-  const [newM, setNewM] = React.useState(false);
-  const [errMsg, setErrMsg] = React.useState("");
 
-  let date = moment(new Date()).format("YYYY/MM/DD");
   //naviagation here
   let navigate = useNavigate();
 
-  React.useEffect(() => {
-    const dataFilter = data.filter((employee) =>
-      employee.emp_name.includes(searchTxt)
-    );
-    setFilteredData(dataFilter);
-  }, [data, searchTxt]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -268,7 +244,7 @@ export default function EnhancedTable({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = filteredData.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
@@ -335,11 +311,8 @@ export default function EnhancedTable({
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-  const search = (text) => {
-    setSearchTxt(text);
-  };
 
   //   const deleteItem = async () => {
   //     setDeleteLoading(true);
@@ -358,127 +331,11 @@ export default function EnhancedTable({
   //   };
 
   //backend functions----------------------------
-  const handlAbsent = () => {
-    setLoaded(true);
-
-    //call backend
-    absent(idSelected, date)
-      .then((res) => {
-        setLoaded(false);
-        setAbsence(true);
-        setTimeout(() => navigate("/"), 500);
-      })
-      .catch((err) => {
-        setLoaded(false);
-        setAbsence(false);
-        setErrMsg(err.response.data);
-      });
-  };
-  const handleNwMonth = () => {
-    setLoaded(true);
-
-    //call db
-    nwMonth()
-      .then((res) => {
-        setLoaded(false);
-        setNewM(true);
-        setTimeout(() => window.location.reload(), 1000);
-      })
-      .catch((err) => {
-        setLoaded(false);
-        setNewM(false);
-        setErrMsg(err.response.data);
-      });
-  };
-
-
-  if (isLoading || loaded) {
-    return <Loader />;
-  }
   return (
     <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h1">
-            قائمة الغياب
-          </Typography>
-          {absence && (
-            <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
-          )}
-          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
-          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-            تأكيد قائمة الغياب:
-          </Typography>
-          {selected.map(({ emp_name }) => (
-            <Typography key={emp_name}>- {emp_name}</Typography>
-          ))}
-          <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              onClick={() => handlAbsent()}
-            >
-              نعم
-            </Button>
-            <Button
-              variant="contained"
-              disableElevation
-              color="error"
-              style={{ margin: "0 10px" }}
-              onClick={handleClose}
-            >
-              لا
-            </Button>
-          </div>
-        </Box>
-      </Modal>
 
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        alignItems={{ xs: "start", md: "center" }}
-        justifyContent="space-between"
-        spacing={1}
-        mb={1}
-      >
-        <div>
-          {/* <TextField label="Search input" variant="outlined" fullWidth />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton> */}
-          <FormControl sx={{ width: "300px" }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              onChange={(e) => search(e.target.value)}
-              label="بحث"
-            />
-          </FormControl>
-        </div>
-        <div>
-          <Button
-            variant="contained"
-            size="small"
-            className="mx-2"
-            onClick={handleNwMonth}
-          >
-            شهر جديد
-          </Button>
-          <Button variant="contained" size="small" onClick={handleOpen}>
-            حفظ
-          </Button>
-        </div>
-      </Stack>
       <Box>
-        {newM && (
-          <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
-        )}
         <br />
-        <h5 className="">التاريخ: {date}</h5>
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
@@ -493,13 +350,13 @@ export default function EnhancedTable({
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={filteredData.length}
+                rowCount={data.length}
               />
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(filteredData, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {stableSort(data, getComparator(order, orderBy))
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.emp_id);
                     const labelId = `enhanced-table-checkbox-${index}`;
@@ -529,18 +386,7 @@ export default function EnhancedTable({
                         </TableCell>
 
                         <TableCell>{row.jobTitle}</TableCell>
-                        <TableCell>
-                          <span>{row.salary} جنيه</span>
-                        </TableCell>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
+                        <TableCell>{row.address}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -559,7 +405,7 @@ export default function EnhancedTable({
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={filteredData.length}
+            count={data.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
