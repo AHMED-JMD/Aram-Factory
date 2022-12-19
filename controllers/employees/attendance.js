@@ -136,6 +136,38 @@ const attend = {
       if (err) throw err;
     }
   },
+  deleteOne: async (req, res) => {
+    try {
+      let { date, emp_id } = req.body;
+
+      if (!emp_id) return res.status(400).json("enter all feilds");
+
+      //find by date and filter schedule by emp_id
+      let AbsTable = await Absent.findOne({ where: { date } });
+
+      //filter and save the table
+      let newArr = AbsTable.emp_ids;
+      console.log(newArr[0]);
+
+      //get the index and splice
+      let index = newArr.indexOf(emp_id);
+      let x = newArr.splice(index, 1);
+
+      console.log(newArr, x);
+
+      //save and send response
+      await Absent.update(
+        {
+          emp_ids: newArr,
+        },
+        { where: { date } }
+      );
+      //send to back
+      res.send(AbsTable);
+    } catch (err) {
+      if (err) throw err;
+    }
+  },
 };
 
 module.exports = attend;
