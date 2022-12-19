@@ -372,6 +372,8 @@ export default function EnhancedTable({
         setLoaded(false);
         setAbsence(false);
         setErrMsg(err.response.data);
+        setTimeout(() => window.location.reload(), 900);
+
       });
   };
   const handleNwMonth = () => {

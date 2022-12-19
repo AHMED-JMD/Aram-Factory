@@ -76,9 +76,9 @@ const Borrowed = {
       //find and update deduct
       let nwDeduct = await Deduct.findOne({ where: { id } });
 
-      //make sure nwAmount is not bigger than real amoun
-      if (nwAmount > nwDeduct.amount)
-        return res.status(400).json("عذرا القيمة اكبر من السلفية");
+      //make sure nwAmount is not bigger than real amount
+      // if (nwAmount > nwDeduct.amount)
+      //   return res.status(400).json("عذرا القيمة اكبر من السلفية");
 
       //update db
       nwDeduct.amount = nwAmount;

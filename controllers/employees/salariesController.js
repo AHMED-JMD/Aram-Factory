@@ -71,7 +71,7 @@ const checkout = {
       let net = [];
       let newEmployee = await Employee.findAll({
         include: Grants,
-        where: { isArchieved: false },
+        where: { isArchieved: false, isWarned: false },
       });
 
       newEmployee.map((employee) => {
