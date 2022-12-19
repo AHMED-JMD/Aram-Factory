@@ -119,6 +119,12 @@ const headCells = [
     label: "قيمة السلفية",
   },
   {
+    id: "id",
+    numeric: false,
+    disablePadding: false,
+    label: "id",
+  },
+  {
     id: "save",
     numeric: false,
     disablePadding: false,
@@ -288,8 +294,8 @@ export default function EnhancedTable({ employeeData: data }) {
     setSelected([]);
   };
 
-  const handleClick = (event, { emp_name, id }) => {
-    const entry = { emp_name, id };
+  const handleClick = (event, { id }) => {
+    const entry = { id };
     const selectedIndex = selected.findIndex((item) => item.id === entry.id);
     let newSelected = [];
 
@@ -580,7 +586,8 @@ export default function EnhancedTable({ employeeData: data }) {
                           />
                           <span className="mx-2">جنيه</span>
                         </TableCell>
-                        <TableCell className="print-none">
+                        <TableCell>{row.id}</TableCell>
+                        <TableCell>
                           <Button
                             disabled={amount ? false : true}
                             variant="contained"
