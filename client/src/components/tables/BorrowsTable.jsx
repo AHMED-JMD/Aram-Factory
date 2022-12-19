@@ -119,6 +119,12 @@ const headCells = [
     label: "قيمة السلفية",
   },
   {
+    id: "id",
+    numeric: false,
+    disablePadding: false,
+    label: "id",
+  },
+  {
     id: "save",
     numeric: false,
     disablePadding: false,
@@ -288,8 +294,8 @@ console.log(selected)
     setSelected([]);
   };
 
-  const handleClick = (event, { emp_name, id  }) => {
-    const entry = { emp_name, id };
+  const handleClick = (event, { id  }) => {
+    const entry = { id };
     const selectedIndex = selected.findIndex(
       (item) => item.id === entry.id
     );
@@ -583,6 +589,7 @@ console.log(selected)
                           />
                           <span className="mx-2">جنيه</span>
                         </TableCell>
+                        <TableCell>{row.id}</TableCell>
                         <TableCell>
                           <Button
                             disabled={amount ? false : true}
