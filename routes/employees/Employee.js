@@ -37,6 +37,7 @@ router.post("/delete", employees.delete);
 
 //record absent
 router.post("/absence", attend.absent);
+router.post("/multi-absence", attend.multiAbsent);
 //start new month
 router.get("/new-month", attend.nwMonth);
 router.get("/absence/delete", attend.deleteAll);
