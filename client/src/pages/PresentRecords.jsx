@@ -88,7 +88,7 @@ console.log(employees)
              المسمى الوظيفي
             </div>
             {employees &&
-                employees?.emp_names?.map((name) => (
+                employees?.emp_Jobs?.map((name) => (
                   <div
                     className="p-2 mb-3"
                     style={{

@@ -371,6 +371,7 @@ console.log(selected)
       .then((res) => {
         setIsLoading(false);
         setChangeAmount(true);
+        console.log(res.data)
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {

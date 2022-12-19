@@ -91,6 +91,7 @@ const Borrowed = {
       let nwSal = employ.fixed_salary - nwAmount;
       employ.salary = nwSal;
       employ.save();
+
       //response to backend
       res.json({ employee: employ, deduct: nwDeduct });
     } catch (err) {
