@@ -501,9 +501,9 @@ console.log(selected)
         </div>
       </Stack>
       <Box ref={componentRef} className="print-direction">
-        {/* <div className="mt-3 text-center before-print print-yes">
-          <h5>بيانات الموظفين المؤرشفين</h5>
-        </div> */}
+        <div className="mt-3 text-center before-print print-yes">
+          <h5> السلفيات</h5>
+        </div>
         <Paper sx={{ mb: 2 }}>
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>

@@ -20,18 +20,19 @@ const PresentRecords = () => {
       .then((res) => {
         setIsLoading(false);
         setErrMsg("")
-        setEmployees(res.data[0])
+        setEmployees(res.data)
+        console.log(res.data)
       })
       .catch((err) => {
         setIsLoading(false);
         setErrMsg(err.response.data);
+        setEmployees({})
       });
   };
 
   if (isLoading) {
     return <Loader />;
   }
-console.log(employees)
   return (
     <section className="employees">
       <>
@@ -48,6 +49,7 @@ console.log(employees)
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
+          <br />
           <br />
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
         </div>

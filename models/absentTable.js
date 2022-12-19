@@ -11,11 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
-      emp_names: {
-        type: DataTypes.JSON,
-        defaultValue: [],
-      },
-      emp_Jobs: {
+      emp_ids: {
         type: DataTypes.JSON,
         defaultValue: [],
       },
