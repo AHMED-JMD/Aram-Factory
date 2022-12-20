@@ -19,6 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import MultipleDatesPicker from '@ambiot/material-ui-multiple-dates-picker';
 import {
   Avatar,
   Button,
@@ -231,6 +232,7 @@ export default function EnhancedTable({
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -248,6 +250,8 @@ export default function EnhancedTable({
   const [absence, setAbsence] = React.useState(false);
   const [newM, setNewM] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
+  const [dates, setDates] = React.useState({});
+  console.log(dates)
 
   let date = moment(new Date()).format("YYYY/MM/DD");
   //naviagation here
@@ -475,6 +479,18 @@ export default function EnhancedTable({
           </Button>
         </div>
       </Stack>
+      <div>
+      <Button variant="contained" onClick={() => setOpen2(!open2)}>
+        تواريخ الغياب
+      </Button>
+      <MultipleDatesPicker
+        open={open2}
+        selectedDates={[]}
+        onCancel={() => setOpen2(false)}
+        onSubmit={(dates) => {setDates(dates);
+                              setOpen2(false);}}
+      />
+    </div>
       <Box>
         {newM && (
           <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
