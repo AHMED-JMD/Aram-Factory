@@ -464,7 +464,7 @@ export default function EnhancedTable({ employeeData: data }) {
         aria-labelledby="archive"
         aria-describedby="archive"
       >
-       <Box sx={style}>
+        <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h1">
             إرجاع موظف
           </Typography>
@@ -540,10 +540,7 @@ export default function EnhancedTable({ employeeData: data }) {
           >
             <DeleteIcon />
           </IconButton>
-          <Button 
-          color="primary" 
-          variant="contained" 
-          onClick={handleOpen3}>
+          <Button color="primary" variant="contained" onClick={handleOpen3}>
             إرجاع الموظف
           </Button>
         </div>
@@ -655,6 +652,7 @@ export default function EnhancedTable({ employeeData: data }) {
             </Table>
           </TableContainer>
           <TablePagination
+            className="print-none"
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={data.length}

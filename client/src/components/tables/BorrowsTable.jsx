@@ -277,7 +277,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [changeAmount, setChangeAmount] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
   const [amount, setAmount] = React.useState();
-console.log(selected) 
+  console.log(selected);
   React.useEffect(() => {}, [data]);
 
   const handleRequestSort = (event, property) => {
@@ -294,11 +294,9 @@ console.log(selected)
     setSelected([]);
   };
 
-  const handleClick = (event, { id  }) => {
+  const handleClick = (event, { id }) => {
     const entry = { id };
-    const selectedIndex = selected.findIndex(
-      (item) => item.id === entry.id
-    );
+    const selectedIndex = selected.findIndex((item) => item.id === entry.id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
@@ -377,7 +375,7 @@ console.log(selected)
       .then((res) => {
         setIsLoading(false);
         setChangeAmount(true);
-        console.log(res.data)
+        console.log(res.data);
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
@@ -555,7 +553,6 @@ console.log(selected)
                           />
                         </TableCell>
                         <TableCell
-                          className="print-none"
                           component="th"
                           id={labelId}
                           scope="row"

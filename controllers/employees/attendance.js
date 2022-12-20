@@ -35,7 +35,10 @@ const attend = {
               let nwabsentids = absentTable.emp_ids.concat(absent_ids);
 
               //update db
-              absentTable.update({ emp_ids: nwabsentids }, { where: date });
+              await Absent.update(
+                { emp_ids: nwabsentids },
+                { where: { date } }
+              );
 
               //return response
               return (obj = {
@@ -84,6 +87,93 @@ const attend = {
       if (error) throw error;
     }
   },
+  multiAbsent: async (req, res) => {
+    try {
+      const { ids, dates } = req.body;
+
+      //make sure ids are given
+      if (!(ids && dates)) return res.status(400).json("provide data");
+
+      // update each user by his penalty
+      let obj;
+      Promise.all(
+        ids.map(async (id) => {
+          let employee = await Employee.findOne({ where: { emp_id: id } });
+          // make sure employee exist
+          if (!employee) return res.status(400).json("لايوجد مستخدمين الان");
+
+          //map throw dates and chech if the schedule exist update it else create new one
+          return Promise.all(
+            dates.map(async (date) => {
+              //make sure no employee is recorded twice in an absent table
+              let absentTable = await Absent.findOne({ where: { date } });
+              if (absentTable) {
+                let result = absentTable.emp_ids.includes(employee.emp_id);
+
+                if (result === true) {
+                  return (obj = { status: 400, data: employee.emp_name });
+                } else {
+                  //update ids of the same schedule
+                  let absent_ids = [];
+
+                  absent_ids.push(employee.emp_id);
+                  let nwabsentids = absentTable.emp_ids.concat(absent_ids);
+                  console.log(nwabsentids);
+                  //update db
+                  await Absent.update(
+                    { emp_ids: nwabsentids },
+                    { where: { date } }
+                  );
+
+                  //return response
+                  return (obj = {
+                    status: 401,
+                    data: "تم اضافة الموظف للقائمة بنجاح",
+                  });
+                }
+              } else {
+                //push employee id to employee array in schedule schema and Create New Schedule
+                let newId = [];
+                newId.push(employee.emp_id);
+                //create new absent table
+                await Absent.create({
+                  date,
+                  emp_ids: newId,
+                });
+
+                //update employee
+                let newDates = employee.absent_date.concat(date);
+                employee.update(
+                  {
+                    absent_date: newDates,
+                    attendee_count_M: Sequelize.literal("attendee_count_M + 1"),
+                    attendee_count_Y: Sequelize.literal("attendee_count_Y + 1"),
+                    salary: employee.salary - employee.penalty,
+                  },
+                  { where: { emp_id: id } }
+                );
+
+                return (obj = { status: 200, data: "success" });
+              }
+            })
+          );
+        })
+      ).then((obj) => {
+        //response on error employ exist in the schedule
+        if (obj[0][0].status === 400) {
+          res
+            .status(obj[0][0].status)
+            .json(`${obj[0][0].data} موجود في قائمة الغياب الحالية`);
+        } else if (obj[0][0].status === 401) {
+          res.json(`${obj[0][0].data}`);
+        } else {
+          res.status(obj[0][0].status).json(obj[0][0].data);
+        }
+      });
+    } catch (error) {
+      if (error) throw error;
+    }
+  },
   nwMonth: async (req, res) => {
     try {
       //find all employees
@@ -120,15 +210,15 @@ const attend = {
       if (!date) return res.status(400).json("provide valid date");
 
       //find from absent table by date
-      let nwTable = await Absent.findOne({ where: { date } });
+      let nwTable = await Absent.findAll({});
       if (nwTable) {
-        //find employees by their names
-        let employee = await Employee.findAll({
-          where: { emp_id: nwTable.emp_ids },
-        });
+        // //find employees by their names
+        // let employee = await Employee.findAll({
+        //   where: { emp_id: nwTable.emp_ids },
+        // });
 
         //send successful respond
-        return res.json(employee);
+        return res.json(nwTable);
       } else {
         return res.status(400).json(`القائمة غير موجودة لهذا اليوم`);
       }
@@ -147,7 +237,6 @@ const attend = {
 
       //filter and save the table
       let newArr = AbsTable.emp_ids;
-      console.log(newArr[0]);
 
       //get the index and splice
       let index = newArr.indexOf(emp_id);
