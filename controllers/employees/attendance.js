@@ -210,7 +210,7 @@ const attend = {
       if (!date) return res.status(400).json("provide valid date");
 
       //find from absent table by date
-      let nwTable = await Absent.findAll({});
+      let nwTable = await Absent.findOne({ where: { date } });
       if (nwTable) {
         // //find employees by their names
         let employee = await Employee.findAll({
