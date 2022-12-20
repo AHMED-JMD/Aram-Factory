@@ -213,12 +213,12 @@ const attend = {
       let nwTable = await Absent.findAll({});
       if (nwTable) {
         // //find employees by their names
-        // let employee = await Employee.findAll({
-        //   where: { emp_id: nwTable.emp_ids },
-        // });
+        let employee = await Employee.findAll({
+          where: { emp_id: nwTable.emp_ids },
+        });
 
         //send successful respond
-        return res.json(nwTable);
+        return res.json(employee);
       } else {
         return res.status(400).json(`القائمة غير موجودة لهذا اليوم`);
       }
