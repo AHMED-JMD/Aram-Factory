@@ -20,21 +20,21 @@ const PresentRecords = () => {
     findByDate(date)
       .then((res) => {
         setIsLoading(false);
-        setErrMsg("")
-        setEmployees(res.data)
-        setIsSelected(true)
+        setErrMsg("");
+        setEmployees(res.data);
+        setIsSelected(true);
       })
       .catch((err) => {
-        setIsSelected(false)
+        setIsSelected(false);
         setIsLoading(false);
         setErrMsg(err.response.data);
-        setEmployees({})
+        setEmployees({});
       });
-    };
+  };
 
-    if (isLoading) {
-      return <Loader />;
-    }
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <section className="employees">
       <>
@@ -55,9 +55,9 @@ const PresentRecords = () => {
           <br />
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
         </div>
-        {isSelected &&
-        <PresentRecordsTable employees={employees} />
-}
+        {isSelected && (
+          <PresentRecordsTable employees={employees} date={date} />
+        )}
       </>
     </section>
   );

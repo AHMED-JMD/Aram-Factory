@@ -277,7 +277,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [changeAmount, setChangeAmount] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
   const [amount, setAmount] = React.useState();
-  console.log(selected);
+
   React.useEffect(() => {}, [data]);
 
   const handleRequestSort = (event, property) => {
