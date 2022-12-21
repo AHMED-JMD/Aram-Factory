@@ -42,9 +42,11 @@ const DeletOne = async (date, emp_id) => {
     if (error) throw error;
   }
 };
-const DeleteAll = async () => {
+const DeleteAll = async (date) => {
   try {
-    let response = await axiosClient.get("/employees/absence/delete");
+    let response = await axiosClient.post("/employees/absence/delete", {
+      date,
+    });
     return response;
   } catch (error) {
     if (error) throw error;

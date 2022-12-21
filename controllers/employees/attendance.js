@@ -200,7 +200,9 @@ const attend = {
     }
   },
   deleteAll: async (req, res) => {
-    let deleted = await Absent.destroy({ where: {}, truncate: true });
+    let { date } = req.body;
+
+    let deleted = await Absent.destroy({ where: { date } });
     res.json(deleted);
   },
   findByDate: async (req, res) => {
@@ -230,7 +232,7 @@ const attend = {
     try {
       let { date, emp_id } = req.body;
 
-      if (!emp_id) return res.status(400).json("enter all feilds");
+      if (!emp_id && !date) return res.status(400).json("enter all feilds");
 
       //find by date and filter schedule by emp_id
       let AbsTable = await Absent.findOne({ where: { date } });
@@ -241,8 +243,6 @@ const attend = {
       //get the index and splice
       let index = newArr.indexOf(emp_id);
       let x = newArr.splice(index, 1);
-
-      console.log(newArr, x);
 
       //save and send response
       await Absent.update(

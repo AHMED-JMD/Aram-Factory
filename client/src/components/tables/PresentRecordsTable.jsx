@@ -31,8 +31,9 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import moment from "moment";
-import { absent, nwMonth } from "../../api/attendance";
+import { DeleteAll, DeletOne } from "../../api/attendance";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 const style = {
   position: "absolute",
@@ -94,7 +95,7 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: "السكن",
-  }
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -217,11 +218,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({
-  employees: data,
-}) {
-
-
+export default function EnhancedTable({ employees: data, date: date }) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //-------------
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -230,11 +234,13 @@ export default function EnhancedTable({
   const [page, setPage] = React.useState(0);
   // eslint-disable-next-line
   const [dense, setDense] = React.useState(false);
+  const [isloading, setIsloading] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(false);
+  const [errMsg, setErrMsg] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   //naviagation here
   let navigate = useNavigate();
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -313,7 +319,6 @@ export default function EnhancedTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-
   //   const deleteItem = async () => {
   //     setDeleteLoading(true);
   //     await Promise.all(
@@ -331,8 +336,138 @@ export default function EnhancedTable({
   //   };
 
   //backend functions----------------------------
+
+  //delete from the schedule
+  const DeleteItem = () => {
+    setIsloading(true);
+
+    //call backend
+    DeletOne(date, idSelected)
+      .then((res) => {
+        setIsloading(false);
+        setErrMsg("");
+        setDeleted(true);
+      })
+      .catch((err) => {
+        setIsloading(false);
+        setDeleted(false);
+        setErrMsg(err.respone.data);
+      });
+  };
+  const DeleteSchedule = () => {
+    setIsloading(true);
+
+    //call backend
+    DeleteAll(date)
+      .then((res) => {
+        setIsloading(false);
+        setErrMsg("");
+        setDeleted(true);
+      })
+      .catch((err) => {
+        setIsloading(false);
+        setDeleted(false);
+        setErrMsg(err.respone.data);
+      });
+  };
   return (
     <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            حذف من قائمة الغياب
+          </Typography>
+          {isloading && <Loader />}
+          {deleted && (
+            <div className="alert alert-success">
+              تم حذف من قائمة الغياب بنجاح
+            </div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            هل انت متأكد من حذف:
+          </Typography>
+          {selected.map(({ emp_name }) => (
+            <Typography key={emp_name}>- {emp_name}</Typography>
+          ))}
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              onClick={() => DeleteItem()}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              style={{ margin: "0 10px" }}
+              onClick={handleClose}
+            >
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            حذف قائمة الغياب
+          </Typography>
+          {isloading && <Loader />}
+          {deleted && (
+            <div className="alert alert-success">تم حذف قائمة الغياب بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            <h5>هل انت متأكد من حذف جميع القائمة !!</h5>
+          </Typography>
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              onClick={() => DeleteSchedule()}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              style={{ margin: "0 10px" }}
+              onClick={handleClose2}
+            >
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <div>
+        <IconButton
+          aria-label="delete"
+          onClick={handleOpen}
+          disabled={selected.length === 0 ? true : false}
+          className="mx-1"
+        >
+          <DeleteIcon />
+        </IconButton>
+        <button className="btn btn-danger" onClick={handleOpen2}>
+          حذف قائمة الغياب
+        </button>
+      </div>
 
       <Box>
         <br />

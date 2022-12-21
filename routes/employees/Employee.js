@@ -40,7 +40,7 @@ router.post("/absence", attend.absent);
 router.post("/multi-absence", attend.multiAbsent);
 //start new month
 router.get("/new-month", attend.nwMonth);
-router.get("/absence/delete", attend.deleteAll);
+router.post("/absence/delete", attend.deleteAll);
 router.post("/absence/deleteOne", attend.deleteOne);
 router.post("/absence/findOne", attend.findByDate);
 
