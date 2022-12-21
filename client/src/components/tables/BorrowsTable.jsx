@@ -348,8 +348,8 @@ export default function EnhancedTable({ employeeData: data }) {
   //   setDense(event.target.checked);
   // };
 
-  const isSelected = (emp_id) =>
-    selected.findIndex((item) => item.emp_id === emp_id) !== -1;
+  const isSelected = (id) =>
+    selected.findIndex((item) => item.id === id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -478,7 +478,7 @@ export default function EnhancedTable({ employeeData: data }) {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="search"
+                    aria-label="بحث"
                     // onClick=""
                     edge="end"
                   >
@@ -530,7 +530,7 @@ export default function EnhancedTable({ employeeData: data }) {
                 {stableSort(data, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.emp_id);
+                    const isItemSelected = isSelected(row.id);
                     const labelId = `enhanced-table-checkbox-${index}`;
                     return (
                       <TableRow
@@ -539,7 +539,7 @@ export default function EnhancedTable({ employeeData: data }) {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.emp_id}
+                        key={row.id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
