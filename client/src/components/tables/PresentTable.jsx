@@ -19,7 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import MultipleDatesPicker from '@ambiot/material-ui-multiple-dates-picker';
+import MultipleDatesPicker from "@ambiot/material-ui-multiple-dates-picker";
 import {
   Avatar,
   Button,
@@ -33,7 +33,7 @@ import {
 import { Stack } from "@mui/system";
 import Loader from "../Loader";
 import moment from "moment";
-import { absent, nwMonth } from "../../api/attendance";
+import { absent, multiAbsent, nwMonth } from "../../api/attendance";
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -236,6 +236,14 @@ export default function EnhancedTable({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [open3, setOpen3] = React.useState(false);
+  const handleOpen3 = () => setOpen3(true);
+  const handleClose3 = () => setOpen3(false);
+
+  const [open4, setOpen4] = React.useState(false);
+  const handleOpen4 = () => setOpen4(true);
+  const handleClose4 = () => setOpen4(false);
+
   const [filteredData, setFilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
@@ -250,8 +258,7 @@ export default function EnhancedTable({
   const [absence, setAbsence] = React.useState(false);
   const [newM, setNewM] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
-  const [dates, setDates] = React.useState({});
-  console.log(dates)
+  const [dates, setDates] = React.useState([]);
 
   let date = moment(new Date()).format("YYYY/MM/DD");
   //naviagation here
@@ -377,7 +384,24 @@ export default function EnhancedTable({
         setAbsence(false);
         setErrMsg(err.response.data);
         setTimeout(() => window.location.reload(), 900);
+      });
+  };
+  const MultipleAbsent = () => {
+    setLoaded(true);
 
+    //call backend
+    multiAbsent(idSelected, dates)
+      .then((res) => {
+        setLoaded(false);
+        setAbsence(true);
+        console.log(res);
+        setTimeout(() => navigate("/present-schedule/records"), 900);
+      })
+      .catch((err) => {
+        setLoaded(false);
+        setAbsence(false);
+        setErrMsg(err.response.data);
+        setTimeout(() => window.location.reload(), 900);
       });
   };
   const handleNwMonth = () => {
@@ -396,7 +420,6 @@ export default function EnhancedTable({
         setErrMsg(err.response.data);
       });
   };
-
 
   if (isLoading || loaded) {
     return <Loader />;
@@ -444,6 +467,110 @@ export default function EnhancedTable({
         </Box>
       </Modal>
 
+      <Modal
+        open={open4}
+        onClose={handleClose4}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {newM && (
+            <div className="alert alert-success">
+              تم تفعيل بداية الشهر بنجاح
+            </div>
+          )}
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            تفعيل الشهر الجديد
+          </Typography>
+
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            هل انت متأكد من رغبتك في تفعيل بداية الشهر
+          </Typography>
+
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={() => handleNwMonth()}
+            >
+              نعم
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              style={{ margin: "0 10px" }}
+              onClick={handleClose4}
+            >
+              لا
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            الغياب المتعدد
+          </Typography>
+          {absence && (
+            <div className="alert alert-success">تم تسجيل الغياب بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            اسم الموظف
+          </Typography>
+          {selected.map(({ emp_name }) => (
+            <Typography key={emp_name}>- {emp_name}</Typography>
+          ))}
+
+          <div className="text-center mt-3 mb-3">
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={() => setOpen2(true)}
+            >
+              تواريخ الغياب
+            </Button>
+          </div>
+
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={() => MultipleAbsent()}
+            >
+              Yes
+            </Button>
+
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              style={{ margin: "0 10px" }}
+              onClick={handleClose3}
+            >
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <MultipleDatesPicker
+        open={open2}
+        selectedDates={[]}
+        onCancel={() => setOpen2(false)}
+        onSubmit={(dates) => {
+          setDates(dates);
+          setOpen2(false);
+        }}
+      />
+
       <Stack
         direction={{ xs: "column", md: "row" }}
         alignItems={{ xs: "start", md: "center" }}
@@ -466,11 +593,15 @@ export default function EnhancedTable({
           </FormControl>
         </div>
         <div>
+          <Button variant="contained" size="small" onClick={handleOpen3}>
+            غياب متعدد
+          </Button>
+
           <Button
             variant="contained"
             size="small"
             className="mx-2"
-            onClick={handleNwMonth}
+            onClick={handleOpen4}
           >
             شهر جديد
           </Button>
@@ -479,22 +610,8 @@ export default function EnhancedTable({
           </Button>
         </div>
       </Stack>
-      <div>
-      <Button variant="contained" onClick={() => setOpen2(!open2)}>
-        تواريخ الغياب
-      </Button>
-      <MultipleDatesPicker
-        open={open2}
-        selectedDates={[]}
-        onCancel={() => setOpen2(false)}
-        onSubmit={(dates) => {setDates(dates);
-                              setOpen2(false);}}
-      />
-    </div>
+
       <Box>
-        {newM && (
-          <div className="alert alert-success">تم تفعيل بداية الشهر بنجاح</div>
-        )}
         <br />
         <h5 className="">التاريخ: {date}</h5>
         <Paper sx={{ mb: 2 }}>

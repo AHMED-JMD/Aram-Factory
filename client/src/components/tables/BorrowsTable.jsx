@@ -41,7 +41,7 @@ import Loader from "../Loader";
 import { deleteEmployee } from "../../api/employee";
 import { useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import { returnAmount } from "../../api/borrow";
+import { deleteAll, returnAmount } from "../../api/borrow";
 
 // import Loader from "../Loader";
 
@@ -388,7 +388,7 @@ export default function EnhancedTable({ employeeData: data }) {
     setIsLoading(true);
     //call db
 
-    deleteEmployee(idSelected)
+    deleteAll(idSelected)
       .then((res) => {
         setIsLoading(false);
         setDeleted(true);
