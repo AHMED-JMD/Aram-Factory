@@ -270,7 +270,7 @@ const attend = {
         });
 
         //send successful respond
-        return res.json(nwTable);
+        return res.json(employee);
       } else {
         return res.status(400).json(`القائمة غير موجودة لهذا اليوم`);
       }
