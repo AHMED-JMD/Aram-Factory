@@ -47,7 +47,7 @@ router.post("/absence/findOne", attend.findByDate);
 //borrow from salary
 router.post("/borrow", Borrowed.post);
 router.get("/borrow", Borrowed.get);
-router.get("/borrow/deleteAll", Borrowed.deleteAll);
+router.post("/borrow/deleteAll", Borrowed.deleteAll);
 router.post("/borrow/return", Borrowed.return);
 
 //warn employes

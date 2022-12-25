@@ -58,10 +58,11 @@ const Borrowed = {
   deleteAll: async (req, res) => {
     try {
       let { ids } = req.body;
-
+      console.log(ids);
       //delete from db
       let deletedBorr = await Deduct.destroy({ where: { id: ids } });
 
+      console.log(deletedBorr);
       res.json(deletedBorr);
     } catch (err) {
       if (err) throw err;

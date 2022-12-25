@@ -385,12 +385,12 @@ export default function EnhancedTable({ employeeData: data }) {
         setAmount();
       });
   };
-  console.log(selected, amount)
   const deleteItem = () => {
     setIsLoading(true);
     //call db
+    console.log(selected);
 
-    deleteAll(idSelected)
+    deleteAll(selected[0].id)
       .then((res) => {
         setIsLoading(false);
         setDeleted(true);
@@ -401,6 +401,7 @@ export default function EnhancedTable({ employeeData: data }) {
         setIsLoading(false);
         setDeleted(false);
         setErrMsg(err.response.data);
+        setTimeout(() => window.location.reload(), 1000);
       });
   };
   if (isLoading) {
@@ -416,15 +417,15 @@ export default function EnhancedTable({ employeeData: data }) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h1">
-            حذف موظف
+            حذف السلفيات
           </Typography>
           {isLoading && <Loader />}
           {deleted && (
-            <div className="alert alert-success">تم حذف الموظف بنجاح</div>
+            <div className="alert alert-success">تم حذف السلفية بنجاح</div>
           )}
           {errMsg && <div className="alert alert-danger">{errMsg}</div>}
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
-            هل انت متأكد من حذف:
+            هل انت متأكد من حذف السلفية؟:
           </Typography>
           {/* {selected.map(({ emp_name }) => (
             <Typography key={emp_name}>- {emp_name}</Typography>
@@ -472,16 +473,12 @@ export default function EnhancedTable({ employeeData: data }) {
             <Typography key={emp_name}>- {emp_name}</Typography>
           ))} */}
           <TextField
-          placeholder="ادخل القيمة"
+            placeholder="ادخل القيمة"
             value={amount}
-            onChange={e=> setAmount(e.target.value)}
+            onChange={(e) => setAmount(e.target.value)}
           />
           <div className="mt-2" style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              disableElevation
-              onClick={editAmount}
-            >
+            <Button variant="contained" disableElevation onClick={editAmount}>
               نعم
             </Button>
             <Button
@@ -614,12 +611,16 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>{row.employee.emp_id}</TableCell>
                         <TableCell>{row.employee.jobTitle}</TableCell>
                         <TableCell>
-                         {row.amount}
+                          {row.amount}
                           <span className="mx-2">جنيه</span>
                         </TableCell>
                         <TableCell>{row.id}</TableCell>
-                        <TableCell onClick={(event)=> {event.stopPropagation();
-                                                        event.preventDefault();}}>
+                        <TableCell
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            event.preventDefault();
+                          }}
+                        >
                           <Button
                             disabled={isItemSelected ? false : true}
                             variant="contained"
