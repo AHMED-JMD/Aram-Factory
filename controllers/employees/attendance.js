@@ -94,7 +94,7 @@ const attend = {
       //make sure ids are given
       if (!(ids && dates)) return res.status(400).json("provide data");
 
-      // update each user by his penalty
+      // define response object and new ids
       let obj;
       let absent_ids = [];
 
@@ -107,7 +107,6 @@ const attend = {
           //map throw dates and check if the schedule exist update it else create new one
           return Promise.all(
             dates.map(async (date) => {
-              absent_ids = [];
               //make sure no employee is recorded twice in an absent table
               let absentTable = await Absent.findOne({ where: { date } });
 
@@ -120,6 +119,7 @@ const attend = {
                   //update ids of the same schedule
                   absent_ids.push(employee.emp_id);
                   let nwabsentids = absentTable.emp_ids.concat(absent_ids);
+                  //eleminate adding id twice for diffrent dates
                   let Unique_ids = [...new Set(nwabsentids)];
 
                   //update db
@@ -173,11 +173,9 @@ const attend = {
         })
       ).then((obj) => {
         //response on error employ exist in the schedule
-        // obj[0].map(res =>{ // })
+
         if (obj[0][0].status === 400) {
-          res
-            .status(400)
-            .json(`${obj[0][0].data} موجود في قائمة الغياب الحالية`);
+          res.status(400).json(`${obj[0][0].data} موجود في قائمة الغياب `);
         } else if (obj[0][0].status === 401) {
           res.json(`${obj[0][0].data}`);
         } else {
