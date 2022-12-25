@@ -580,6 +580,7 @@ export default function EnhancedTable({ employeeData: data }) {
                         <TableCell>{row.employee.jobTitle}</TableCell>
                         <TableCell className="d-flex align-items-center">
                           <TextField
+                            disabled={selected? false : true}
                             placeholder={row.amount}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
