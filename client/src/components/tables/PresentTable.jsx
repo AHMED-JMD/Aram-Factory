@@ -545,7 +545,7 @@ export default function EnhancedTable({
               disableElevation
               onClick={() => MultipleAbsent()}
             >
-              Yes
+              نعم
             </Button>
 
             <Button
@@ -555,7 +555,7 @@ export default function EnhancedTable({
               style={{ margin: "0 10px" }}
               onClick={handleClose3}
             >
-              No
+              لا
             </Button>
           </div>
         </Box>

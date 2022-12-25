@@ -375,15 +375,17 @@ export default function EnhancedTable({ employeeData: data }) {
       .then((res) => {
         setIsLoading(false);
         setChangeAmount(true);
-        console.log(res.data);
+        setAmount();
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch((err) => {
         setIsLoading(false);
         setChangeAmount(false);
         setErrMsg(err.response.data);
+        setAmount();
       });
   };
+  console.log(selected, amount)
   const deleteItem = () => {
     setIsLoading(true);
     //call db
@@ -424,25 +426,25 @@ export default function EnhancedTable({ employeeData: data }) {
           <Typography id="modal-modal-description" sx={{ mb: 1 }}>
             هل انت متأكد من حذف:
           </Typography>
-          {selected.map(({ emp_name }) => (
+          {/* {selected.map(({ emp_name }) => (
             <Typography key={emp_name}>- {emp_name}</Typography>
-          ))}
+          ))} */}
           <div className="mt-2" style={{ marginTop: "10px" }}>
             <Button
               variant="contained"
               disableElevation
-              color="error"
               onClick={() => deleteItem()}
             >
-              Yes
+              نعم
             </Button>
             <Button
               variant="contained"
               disableElevation
+              color="error"
               style={{ margin: "0 10px" }}
               onClick={handleClose}
             >
-              No
+              لا
             </Button>
           </div>
         </Box>
@@ -455,10 +457,43 @@ export default function EnhancedTable({ employeeData: data }) {
         aria-describedby="archive"
       >
         <Box sx={style}>
-          <Typography id="cut-title" variant="h6" component="h1">
-            تمت أرشفة الموظف بنجاح
+          <Typography id="modal-modal-title" variant="h6" component="h1">
+            تعديل قيمة سلفية
           </Typography>
-          <div className="mt-2" style={{ marginTop: "10px" }}></div>
+          {isLoading && <Loader />}
+          {changeAmount && (
+            <div className="alert alert-success">تم التعديل بنجاح</div>
+          )}
+          {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+          <Typography id="modal-modal-description" sx={{ mb: 1 }}>
+            أدخل القيمة المراد تعديلها:
+          </Typography>
+          {/* {selected.map(({ emp_name }) => (
+            <Typography key={emp_name}>- {emp_name}</Typography>
+          ))} */}
+          <TextField
+          placeholder="ادخل القيمة"
+            value={amount}
+            onChange={e=> setAmount(e.target.value)}
+          />
+          <div className="mt-2" style={{ marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={editAmount}
+            >
+              نعم
+            </Button>
+            <Button
+              variant="contained"
+              disableElevation
+              color="error"
+              style={{ margin: "0 10px" }}
+              onClick={handleClose}
+            >
+              لا
+            </Button>
+          </div>
         </Box>
       </Modal>
 
@@ -578,23 +613,19 @@ export default function EnhancedTable({ employeeData: data }) {
                         </TableCell>
                         <TableCell>{row.employee.emp_id}</TableCell>
                         <TableCell>{row.employee.jobTitle}</TableCell>
-                        <TableCell className="d-flex align-items-center">
-                          <TextField
-                            disabled={selected? false : true}
-                            placeholder={row.amount}
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                          />
+                        <TableCell>
+                         {row.amount}
                           <span className="mx-2">جنيه</span>
                         </TableCell>
                         <TableCell>{row.id}</TableCell>
-                        <TableCell>
+                        <TableCell onClick={(event)=> {event.stopPropagation();
+                                                        event.preventDefault();}}>
                           <Button
-                            disabled={amount ? false : true}
+                            disabled={isItemSelected ? false : true}
                             variant="contained"
-                            onClick={editAmount}
+                            onClick={handleOpen3}
                           >
-                            حفظ
+                            تعديل
                           </Button>
                         </TableCell>
                       </TableRow>
