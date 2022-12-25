@@ -390,7 +390,7 @@ export default function EnhancedTable({ employeeData: data }) {
     //call db
     console.log(selected);
 
-    deleteAll(selected[0].id)
+    deleteAll(selected)
       .then((res) => {
         setIsLoading(false);
         setDeleted(true);

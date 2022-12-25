@@ -481,7 +481,6 @@ export default function EnhancedTable({ employeeData: data }) {
         setWarned(false);
         setErrMsg(err.response.data);
         setTimeout(() => window.location.reload(), 1000);
-
       });
   };
 

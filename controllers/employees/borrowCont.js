@@ -9,6 +9,7 @@ const Borrowed = {
       let { emp_id, amount, date } = req.body;
 
       //find and update salary from db
+
       let status;
       Promise.all(
         emp_id.map(async (id) => {
@@ -58,9 +59,15 @@ const Borrowed = {
   deleteAll: async (req, res) => {
     try {
       let { ids } = req.body;
-      console.log(ids);
+
+      //change data to pure array
+      let arr_ids = [];
+      ids.map((id) => {
+        arr_ids.push(id.id);
+      });
+      console.log(arr_ids);
       //delete from db
-      let deletedBorr = await Deduct.destroy({ where: { id: ids } });
+      let deletedBorr = await Deduct.destroy({ where: { id: arr_ids } });
 
       console.log(deletedBorr);
       res.json(deletedBorr);
