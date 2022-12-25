@@ -11,7 +11,17 @@ const absent = async (ids, date) => {
     if (error) throw error;
   }
 };
-
+const multiAbsent = async (ids, dates) => {
+  try {
+    let response = await axiosClient.post("/employees/multi-absence", {
+      ids,
+      dates,
+    });
+    return response;
+  } catch (error) {
+    if (error) throw error;
+  }
+};
 const nwMonth = async () => {
   try {
     let response = await axiosClient.get("/employees/new-month");
@@ -20,7 +30,6 @@ const nwMonth = async () => {
     if (error) throw error;
   }
 };
-
 const findByDate = async (date) => {
   try {
     let response = await axiosClient.post("/employees/absence/findOne", {
@@ -53,4 +62,4 @@ const DeleteAll = async (date) => {
   }
 };
 
-export { absent, nwMonth, findByDate, DeletOne, DeleteAll };
+export { absent, multiAbsent, nwMonth, findByDate, DeletOne, DeleteAll };

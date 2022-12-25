@@ -347,6 +347,7 @@ export default function EnhancedTable({ employees: data, date: date }) {
         setIsloading(false);
         setErrMsg("");
         setDeleted(true);
+        setTimeout(() => window.location.reload(), 900);
       })
       .catch((err) => {
         setIsloading(false);
@@ -363,6 +364,7 @@ export default function EnhancedTable({ employees: data, date: date }) {
         setIsloading(false);
         setErrMsg("");
         setDeleted(true);
+        setTimeout(() => window.location.reload(), 900);
       })
       .catch((err) => {
         setIsloading(false);
