@@ -307,9 +307,14 @@ export default function EnhancedTable({ employeeData: data }) {
   // let navigate = useNavigate();
 
   React.useEffect(() => {
-    const dataFilter = data.filter((employee) =>
-      employee.emp_name.includes(searchTxt)
-    );
+    var hasNumber = /\d/; 
+    const dataFilter = data?.filter((employee) => {   
+    if(hasNumber.test(searchTxt)){
+      return String(employee.emp_id).includes(searchTxt);
+    } else{
+      return  employee.emp_name.includes(searchTxt);
+    } 
+  });
     setfilteredData(dataFilter);
   }, [data, searchTxt]);
 
@@ -481,7 +486,6 @@ export default function EnhancedTable({ employeeData: data }) {
         setWarned(false);
         setErrMsg(err.response.data);
         setTimeout(() => window.location.reload(), 1000);
-
       });
   };
 
