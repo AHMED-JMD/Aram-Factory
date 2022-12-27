@@ -365,9 +365,9 @@ const EmployeeProfile = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  name="salary"
+                  name="start_salary"
                   type="number"
-                  value={empData.salary}
+                  value={empData.start_salary}
                   onChange={handleChange}
                   require="true"
                   endadornment={
@@ -526,7 +526,12 @@ const EmployeeProfile = () => {
 
               {/* ------------------------------ */}
             </div>
-            <Typography variant="h5" className="page-break" component="h1" mb={2}>
+            <Typography
+              variant="h5"
+              className="page-break"
+              component="h1"
+              mb={2}
+            >
               المنح
             </Typography>
             <div className="col-lg-6 col-sm-12 mb-4">
