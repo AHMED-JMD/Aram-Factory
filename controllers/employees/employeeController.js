@@ -73,13 +73,11 @@ const employees = {
       if (!notes) notes = "";
 
       //make sure phoneNum and Ssn and emp_id is compelete
-      if (emp_id.length < 6)
-        return res.status(400).json("الرقم التعريفي لا يجب ان يقل عن 6 ارقام");
+      if (emp_id.length != 6)
+        return res.status(400).json("الرقم التعريفي  يجب ان يكون 6 ارقام");
 
-      if (Ssn.length < 11)
-        return res
-          .status(400)
-          .json("الرقم وطني الصحيح يجب ان لا بقل عن 11 رقم");
+      if (Ssn.length != 11)
+        return res.status(400).json("الرقم وطني الصحيح يجب ان يكون 11 رقم");
 
       if (phoneNum.length < 10)
         return res.status(400).json("الرجاء ادخال رقم هاتف صحيح");
@@ -199,13 +197,15 @@ const employees = {
         Ssn,
         jobTitle,
         salary,
+        start_salary,
+        fixed_salary,
         penalty,
         phoneNum,
         start_date,
         address,
         notes,
       } = req.body;
-      console.log(req.body);
+
       //make sure all data is provided
       if (
         !(
@@ -238,23 +238,62 @@ const employees = {
         (phoneNum = xssFilter.inHTMLData(phoneNum));
 
       //update employee now
-      const newEmployee = await Employee.update(
-        {
-          emp_name,
-          Ssn,
-          jobTitle,
-          salary,
-          start_salary: salary,
-          penalty,
-          phoneNum,
-          start_date,
-          address,
-          notes,
-        },
-        { where: { emp_id } }
-      );
 
-      res.json("updated employee successfullt");
+      //change the current salary of the employee according to the new salary
+      let employee = await Employee.findOne({ where: { emp_id } });
+      if (start_salary > employee.start_salary) {
+        //absolute diffrence
+        let absolute = Math.abs(start_salary - employee.start_salary);
+        let nw_diffr = parseInt(absolute);
+        let nw_sal = parseInt(salary);
+        let nw_fxSal = parseInt(fixed_salary);
+
+        await Employee.update(
+          {
+            emp_name,
+            Ssn,
+            jobTitle,
+            start_salary,
+            salary: nw_sal + nw_diffr,
+            fixed_salary: nw_fxSal + nw_diffr,
+            penalty,
+            phoneNum,
+            start_date,
+            address,
+            notes,
+          },
+          { where: { emp_id } }
+        );
+
+        //response
+        res.json("updated employee successfullt");
+      } else {
+        //absolute diffrence
+        let absolute = Math.abs(start_salary - employee.start_salary);
+        let nw_diffr = parseInt(absolute);
+        let nw_sal = parseInt(salary);
+        let nw_fxSal = parseInt(fixed_salary);
+
+        await Employee.update(
+          {
+            emp_name,
+            Ssn,
+            jobTitle,
+            start_salary,
+            salary: nw_sal - nw_diffr,
+            fixed_salary: nw_fxSal - nw_diffr,
+            penalty,
+            phoneNum,
+            start_date,
+            address,
+            notes,
+          },
+          { where: { emp_id } }
+        );
+
+        //response
+        res.json("updated employee successfullt");
+      }
     } catch (error) {
       if (error) throw error;
       console.log(error);
