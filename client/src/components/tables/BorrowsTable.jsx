@@ -262,7 +262,8 @@ export default function EnhancedTable({ employeeData: data }) {
   const [open3, setOpen3] = React.useState(false);
   const handleOpen3 = () => setOpen3(true);
   const handleClose3 = () => setOpen3(false);
-
+  
+  const [filteredData, setFilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -278,7 +279,13 @@ export default function EnhancedTable({ employeeData: data }) {
   const [errMsg, setErrMsg] = React.useState("");
   const [amount, setAmount] = React.useState();
 
-  React.useEffect(() => {}, [data]);
+  React.useEffect(() => {
+    var hasNumber = /\d/; 
+    const dataFilter = data.filter((employee) => 
+    String(employee.employeeEmpId).includes(searchTxt)
+    );
+  setFilteredData(dataFilter);
+  }, [data, searchTxt]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -288,7 +295,7 @@ export default function EnhancedTable({ employeeData: data }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.name);
+      const newSelecteds = filteredData.map((n) => n.name);
       setSelected(newSelecteds);
     }
     setSelected([]);
@@ -353,7 +360,7 @@ export default function EnhancedTable({ employeeData: data }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length) : 0;
 
   const search = (text) => {
     setSearchTxt(text);
@@ -506,19 +513,8 @@ export default function EnhancedTable({ employeeData: data }) {
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              // onChange=""
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="بحث"
-                    // onClick=""
-                    edge="end"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="search"
+              onChange={e=> setSearchTxt(e.target.value)}
+              label="بحث"
             />
           </FormControl>
         </div>
@@ -554,12 +550,12 @@ export default function EnhancedTable({ employeeData: data }) {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={data.length}
+                rowCount={filteredData.length}
               />
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(data, getComparator(order, orderBy))
+                {stableSort(filteredData, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.id);
@@ -647,7 +643,7 @@ export default function EnhancedTable({ employeeData: data }) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={data.length}
+            count={filteredData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -291,9 +291,14 @@ export default function EnhancedTable({
   let date = moment(new Date()).format("YYYY-MM-DD");
 
   React.useEffect(() => {
-    const dataFilter = newEmployee.filter((employee) =>
-      employee.emp_name.includes(searchTxt)
-    );
+    var hasNumber = /\d/; 
+    const dataFilter = newEmployee?.filter((employee) => {   
+    if(hasNumber.test(searchTxt)){
+      return String(employee.emp_id).includes(searchTxt);
+    } else{
+      return  employee.emp_name.includes(searchTxt);
+    } 
+  });
     setfilteredData(dataFilter);
   }, [newEmployee, searchTxt]);
 
