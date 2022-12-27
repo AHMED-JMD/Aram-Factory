@@ -17,6 +17,7 @@ const PresentRecords = () => {
     setIsLoading(true);
 
     //call backend
+    console.log(date);
     findByDate(date)
       .then((res) => {
         setIsLoading(false);

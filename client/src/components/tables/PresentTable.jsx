@@ -260,19 +260,19 @@ export default function EnhancedTable({
   const [errMsg, setErrMsg] = React.useState("");
   const [dates, setDates] = React.useState([]);
 
-  let date = moment(new Date()).format("YYYY/MM/DD");
+  let date = moment(new Date()).format("YYYY-MM-DD");
   //naviagation here
   let navigate = useNavigate();
 
   React.useEffect(() => {
-    var hasNumber = /\d/; 
-    const dataFilter = data?.filter((employee) => {   
-    if(hasNumber.test(searchTxt)){
-      return String(employee.emp_id).includes(searchTxt);
-    } else{
-      return  employee.emp_name.includes(searchTxt);
-    } 
-  });
+    var hasNumber = /\d/;
+    const dataFilter = data?.filter((employee) => {
+      if (hasNumber.test(searchTxt)) {
+        return String(employee.emp_id).includes(searchTxt);
+      } else {
+        return employee.emp_name.includes(searchTxt);
+      }
+    });
     setFilteredData(dataFilter);
   }, [data, searchTxt]);
 

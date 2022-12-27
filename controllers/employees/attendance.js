@@ -10,7 +10,7 @@ const attend = {
   absent: async (req, res) => {
     try {
       const { ids, date } = req.body;
-
+      console.log(date);
       //make sure ids are given
       if (!(ids && date)) return res.status(400).json("provide data");
 
@@ -256,6 +256,7 @@ const attend = {
   findByDate: async (req, res) => {
     try {
       let { date } = req.body;
+      console.log(date)
       //make sure date is there
       if (!date) return res.status(400).json("provide valid date");
 
