@@ -33,6 +33,8 @@ import moment from "moment";
 import Loader from "../Loader";
 import { add } from "../../api/salaries";
 import { useReactToPrint } from "react-to-print";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const style = {
   position: "absolute",
@@ -290,15 +292,20 @@ export default function EnhancedTable({
 
   let date = moment(new Date()).format("YYYY-MM-DD");
 
+  //initialize AOS
   React.useEffect(() => {
-    var hasNumber = /\d/; 
-    const dataFilter = newEmployee?.filter((employee) => {   
-    if(hasNumber.test(searchTxt)){
-      return String(employee.emp_id).includes(searchTxt);
-    } else{
-      return  employee.emp_name.includes(searchTxt);
-    } 
-  });
+    AOS.init();
+  }, []);
+
+  React.useEffect(() => {
+    var hasNumber = /\d/;
+    const dataFilter = newEmployee?.filter((employee) => {
+      if (hasNumber.test(searchTxt)) {
+        return String(employee.emp_id).includes(searchTxt);
+      } else {
+        return employee.emp_name.includes(searchTxt);
+      }
+    });
     setfilteredData(dataFilter);
   }, [newEmployee, searchTxt]);
 
@@ -484,7 +491,14 @@ export default function EnhancedTable({
           </Button>
         </div>
       </Stack>
-      <Box ref={componentRef} className="print-direction">
+      <Box
+        data-aos="fade-zoom-in"
+        data-aos-easing="ease-in-back"
+        data-aos-delay="300"
+        data-aos-offset="0"
+        ref={componentRef}
+        className="print-direction"
+      >
         <div className="mt-5 text-center before-print print-yes">
           <h3>بسم الله الرحمن الرحيم</h3>
           <h5>كشف مرتبات الموظفين</h5>

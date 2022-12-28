@@ -43,6 +43,8 @@ import { borrow } from "../../api/borrow";
 import { warning } from "../../api/warning";
 import { add } from "../../api/archive";
 import { useReactToPrint } from "react-to-print";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const style = {
   position: "absolute",
@@ -306,15 +308,20 @@ export default function EnhancedTable({ employeeData: data }) {
   //navigation variable
   // let navigate = useNavigate();
 
+  //initialize AOS
   React.useEffect(() => {
-    var hasNumber = /\d/; 
-    const dataFilter = data?.filter((employee) => {   
-    if(hasNumber.test(searchTxt)){
-      return String(employee.emp_id).includes(searchTxt);
-    } else{
-      return  employee.emp_name.includes(searchTxt);
-    } 
-  });
+    AOS.init();
+  }, []);
+
+  React.useEffect(() => {
+    var hasNumber = /\d/;
+    const dataFilter = data?.filter((employee) => {
+      if (hasNumber.test(searchTxt)) {
+        return String(employee.emp_id).includes(searchTxt);
+      } else {
+        return employee.emp_name.includes(searchTxt);
+      }
+    });
     setfilteredData(dataFilter);
   }, [data, searchTxt]);
 
@@ -717,7 +724,13 @@ export default function EnhancedTable({ employeeData: data }) {
           </Button>
         </div>
       </Stack>
-      <Box ref={componentRef} className="print-direction">
+      <Box
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+        ref={componentRef}
+        className="print-direction"
+      >
         <div className="mt-3 text-center before-print print-yes">
           <h5>بيانات الموظفين</h5>
         </div>

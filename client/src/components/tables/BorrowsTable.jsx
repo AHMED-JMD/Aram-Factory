@@ -42,6 +42,8 @@ import { deleteEmployee } from "../../api/employee";
 import { useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { deleteAll, returnAmount } from "../../api/borrow";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // import Loader from "../Loader";
 
@@ -262,7 +264,7 @@ export default function EnhancedTable({ employeeData: data }) {
   const [open3, setOpen3] = React.useState(false);
   const handleOpen3 = () => setOpen3(true);
   const handleClose3 = () => setOpen3(false);
-  
+
   const [filteredData, setFilteredData] = React.useState([]);
   const [searchTxt, setSearchTxt] = React.useState("");
   const [order, setOrder] = React.useState("asc");
@@ -279,12 +281,17 @@ export default function EnhancedTable({ employeeData: data }) {
   const [errMsg, setErrMsg] = React.useState("");
   const [amount, setAmount] = React.useState();
 
+  //initialize AOS
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   React.useEffect(() => {
-    var hasNumber = /\d/; 
-    const dataFilter = data.filter((employee) => 
-    String(employee.employeeEmpId).includes(searchTxt)
+    var hasNumber = /\d/;
+    const dataFilter = data.filter((employee) =>
+      String(employee.employeeEmpId).includes(searchTxt)
     );
-  setFilteredData(dataFilter);
+    setFilteredData(dataFilter);
   }, [data, searchTxt]);
 
   const handleRequestSort = (event, property) => {
@@ -360,7 +367,9 @@ export default function EnhancedTable({ employeeData: data }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - filteredData.users.length)
+      : 0;
 
   const search = (text) => {
     setSearchTxt(text);
@@ -513,7 +522,7 @@ export default function EnhancedTable({ employeeData: data }) {
             <InputLabel htmlFor="outlined-adornment-password">بحث</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              onChange={e=> setSearchTxt(e.target.value)}
+              onChange={(e) => setSearchTxt(e.target.value)}
               label="بحث"
             />
           </FormControl>
@@ -532,7 +541,13 @@ export default function EnhancedTable({ employeeData: data }) {
           </IconButton>
         </div>
       </Stack>
-      <Box ref={componentRef} className="print-direction">
+      <Box
+        data-aos="zoom-in"
+        // data-aos-offset="300"
+        // data-aos-easing="ease-in-sine"
+        ref={componentRef}
+        className="print-direction"
+      >
         <div className="mt-3 text-center before-print print-yes">
           <h5> السلفيات</h5>
         </div>
