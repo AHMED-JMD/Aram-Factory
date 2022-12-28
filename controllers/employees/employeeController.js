@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const Employee = db.models.Employee;
 const Grants = db.models.Grants;
+const Deduct = db.models.Deduct;
 
 const multer = require("multer");
 
@@ -392,8 +393,9 @@ const employees = {
             }
           }
         );
-        //delete from database both employee and his grants
+        //delete from database both employee and his grants and borrows
         Grants.destroy({ where: { employeeEmpId: id } });
+        Deduct.destroy({ where: { employeeEmpId: id } });
         Employee.destroy({ where: { emp_id: id } });
       });
       res.send("deleted records successfully");
