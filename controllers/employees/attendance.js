@@ -6,6 +6,7 @@ const moment = require("moment");
 
 const Employee = db.models.Employee;
 const Absent = db.models.Absent;
+const Grants = db.models.Grants;
 
 const attend = {
   absent: async (req, res) => {
@@ -205,13 +206,24 @@ const attend = {
   nwMonth: async (req, res) => {
     try {
       //find all employees
-      let employees = await Employee.findAll();
+      let employees = await Employee.findAll({ include: Grants });
 
       //map and update each employee
       employees.map((employee) => {
+        let fx_sal =
+          employee.start_salary +
+          employee.grant.extra +
+          employee.grant.grant17 +
+          employee.grant.grant19 +
+          employee.grant.grant20 +
+          employee.grant.grant22 +
+          employee.grant.grantGM -
+          employee.grant.insurance;
+
         employee.update(
           {
-            salary: employee.fixed_salary,
+            salary: fx_sal,
+            fixed_salary: fx_sal,
             warnings: 0,
             attendee_count_M: 0,
             attendee_count_Y: 0,
