@@ -17,7 +17,13 @@ const checkout = {
       //find all employees net salaries and names
       let emp_names = [];
       let net_salaries = [];
-      let newEmployee = await Employee.findAll({ include: Grants });
+
+      //find active employees
+      let newEmployee = await Employee.findAll({
+        include: Grants,
+        where: { isArchieved: false, isWarned: false },
+      });
+
       //map throw data
       newEmployee.map((employee) => {
         let salary =

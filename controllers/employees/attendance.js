@@ -2,9 +2,11 @@ const db = require("../../models/index");
 const xssFilter = require("xss-filters");
 const { Sequelize, where } = require("sequelize");
 const { response } = require("express");
+const moment = require("moment");
 
 const Employee = db.models.Employee;
 const Absent = db.models.Absent;
+const Grants = db.models.Grants;
 
 const attend = {
   absent: async (req, res) => {
@@ -107,6 +109,8 @@ const attend = {
           //map throw dates and check if the schedule exist update it else create new one
           return Promise.all(
             dates.map(async (date) => {
+              let nw_date = moment(date).format("YYYY-MM-DD");
+
               //make sure no employee is recorded twice in an absent table
               let absentTable = await Absent.findOne({ where: { date } });
 
@@ -129,7 +133,7 @@ const attend = {
                   );
 
                   //update employee
-                  let newDates = employee.absent_date.concat(date);
+                  let newDates = employee.absent_date.concat(nw_date);
                   employee.update(
                     {
                       absent_date: newDates,
@@ -155,7 +159,7 @@ const attend = {
                 absent_ids.push(employee.emp_id);
 
                 //update employee
-                let newDates = employee.absent_date.concat(date);
+                let newDates = employee.absent_date.concat(nw_date);
                 employee.update(
                   {
                     absent_date: newDates,
@@ -183,9 +187,10 @@ const attend = {
           let Unique_ids = [...new Set(absent_ids)];
           //create new absent table for each new date
           dates.map(async (date) => {
+            let nw_date = moment(date).format("YYYY-MM-DD");
             //database here
             await Absent.create({
-              date,
+              date: nw_date,
               emp_ids: Unique_ids,
             });
             console.log("database created");
@@ -201,13 +206,24 @@ const attend = {
   nwMonth: async (req, res) => {
     try {
       //find all employees
-      let employees = await Employee.findAll();
+      let employees = await Employee.findAll({ include: Grants });
 
       //map and update each employee
       employees.map((employee) => {
+        let fx_sal =
+          employee.start_salary +
+          employee.grant.extra +
+          employee.grant.grant17 +
+          employee.grant.grant19 +
+          employee.grant.grant20 +
+          employee.grant.grant22 +
+          employee.grant.grantGM -
+          employee.grant.insurance;
+
         employee.update(
           {
-            salary: employee.fixed_salary,
+            salary: fx_sal,
+            fixed_salary: fx_sal,
             warnings: 0,
             attendee_count_M: 0,
             attendee_count_Y: 0,
@@ -235,7 +251,10 @@ const attend = {
     });
     //update employees one by one
     employees.map(async (employee) => {
-      let newDates = employee.absent_date.concat(date);
+      //delete date from absent dates
+      let newDates = employee.absent_date;
+      let index2 = newDates.indexOf(date);
+      let y = newDates.splice(index2, 1);
 
       await Employee.update(
         {
@@ -261,7 +280,9 @@ const attend = {
       if (!date) return res.status(400).json("provide valid date");
 
       //find from absent table by date
-      let nwTable = await Absent.findOne({ where: { date } });
+      let nw_date = moment(date).format("YYYY-MM-DD");
+
+      let nwTable = await Absent.findOne({ where: { date: nw_date } });
       if (nwTable) {
         // find employees by their names
         let employee = await Employee.findAll({
