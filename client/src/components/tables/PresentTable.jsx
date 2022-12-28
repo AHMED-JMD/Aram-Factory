@@ -35,6 +35,8 @@ import Loader from "../Loader";
 import moment from "moment";
 import { absent, multiAbsent, nwMonth } from "../../api/attendance";
 import { useNavigate } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const style = {
   position: "absolute",
@@ -263,6 +265,11 @@ export default function EnhancedTable({
   let date = moment(new Date()).format("YYYY-MM-DD");
   //naviagation here
   let navigate = useNavigate();
+
+  //initialize AOS
+  React.useEffect(() => {
+    AOS.init();
+  }, []);
 
   React.useEffect(() => {
     var hasNumber = /\d/;
@@ -619,7 +626,12 @@ export default function EnhancedTable({
       <Box>
         <br />
         <h5 className="">التاريخ: {date}</h5>
-        <Paper sx={{ mb: 2 }}>
+        <Paper
+          data-aos="fade-left"
+          data-aos-offset="300"
+          data-aos-easing="ease-in-sine"
+          sx={{ mb: 2 }}
+        >
           {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
             <Table
