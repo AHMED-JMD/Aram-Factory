@@ -57,7 +57,6 @@ section {
 }
 .Home{
   overflow-x: hidden !important;
-  margin-right: 0 !important;
 }
 .hom-hdr{
   display: flex;
@@ -96,13 +95,9 @@ section {
   width: 400px;
   height: 300px;
 }
-.hom-fotr{
-  background-color: rgba(235, 231, 231, 0.763);
-  height: 70px;
-  padding-top: 20px;
-}
+
 .hom-fotr p{
-  font-size: larger;
+  background-color: rgba(235, 231, 231, 0.763);
 }
 .Login {
   height: 100vh;

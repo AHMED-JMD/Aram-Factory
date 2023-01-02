@@ -9,7 +9,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 const HomePage = () => {
   //initialize AOS
   React.useEffect(() => {
-    AOS.init();
+    AOS.init({once: true});
   }, []);
 
   return (
@@ -17,9 +17,8 @@ const HomePage = () => {
       <div data-aos="zoom-out" data-aos-duration="2000" className="hom-hdr">
         {" "}
         <div className="text-center hdr-bg">
-          <h1 className="text-center hdr-txt">مصنع إرم للمنتجات الغذائية</h1>
-
           <img src="/images/erm-logo.png" width="70" alt="logo" />
+          <h1 className="text-center hdr-txt">مصنع إرم للمنتجات الغذائية</h1>
         </div>
       </div>
 
@@ -55,9 +54,9 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="hom-fotr text-center">
-        <p>
-          صمم هذا البرنامج في العام 2023 و موعودون إنشاء الله بالتطوير نحو
+      <div className="hom-fotr text-center p-0 m-0">
+        <p className="py-2 m-0">
+          صمم هذا البرنامج في العام 2023 و موعودون إن شاء الله بالتطوير نحو
           الأفضل.{" "}
         </p>
       </div>
