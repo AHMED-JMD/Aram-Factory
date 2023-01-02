@@ -12,10 +12,11 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Toolbar from "@mui/material/Toolbar";
 import { IronTwoTone } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Sidebar = (props) => {
   const drawerWidth = 240;
@@ -23,9 +24,14 @@ const Sidebar = (props) => {
 
   const list = [
     {
+      text: "الرئيسية",
+      icon: <HomeIcon />,
+      to: "/",
+    },
+    {
       text: "الموظفين",
       icon: <PeopleIcon />,
-      to: "/",
+      to: "/employees",
     },
     {
       text: "كشف المرتبات",
@@ -41,12 +47,12 @@ const Sidebar = (props) => {
       text: "السلفيات",
       icon: <AttachMoneyIcon />,
       to: "/borrows",
-    }
+    },
   ];
 
   let activeStyle = {
     color: "#1976d2",
-  }
+  };
 
   const drawer = (
     <div>
@@ -54,10 +60,8 @@ const Sidebar = (props) => {
       <List>
         {list.map((item, index) => (
           <NavLink
-            className='list-link'
-            style={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }
+            className="list-link"
+            style={({ isActive }) => (isActive ? activeStyle : undefined)}
             to={item.to}
             key={item.text}
           >
