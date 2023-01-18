@@ -5,6 +5,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { findByDate } from "../api/attendance";
+import moment from "moment";
 
 const PresentRecords = () => {
   const [employees, setEmployees] = useState([]);
@@ -16,6 +17,8 @@ const PresentRecords = () => {
   const AbsentTable = (date) => {
     setIsLoading(true);
 
+    let nw_date = moment(date).format("YYYY-MM-DD");
+    console.log(nw_date);
     //call backend
     console.log(date);
     findByDate(date)

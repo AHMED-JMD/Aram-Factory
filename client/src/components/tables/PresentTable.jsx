@@ -263,6 +263,7 @@ export default function EnhancedTable({
   const [dates, setDates] = React.useState([]);
 
   let date = moment(new Date()).format("YYYY-MM-DD");
+
   //naviagation here
   let navigate = useNavigate();
 
@@ -389,7 +390,7 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setAbsence(true);
-        setTimeout(() => navigate("/"), 500);
+        setTimeout(() => window.location.reload(), 500);
       })
       .catch((err) => {
         setLoaded(false);
@@ -401,8 +402,16 @@ export default function EnhancedTable({
   const MultipleAbsent = () => {
     setLoaded(true);
 
+    //format current date
+    let mod_dates = [];
+    dates.map((date) => {
+      let nw_date = moment(date).format("YYYY-MM-DD");
+      mod_dates.push(nw_date);
+    });
+    console.log(mod_dates);
+
     //call backend
-    multiAbsent(idSelected, dates)
+    multiAbsent(idSelected, mod_dates)
       .then((res) => {
         setLoaded(false);
         setAbsence(true);
