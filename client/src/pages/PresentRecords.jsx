@@ -20,8 +20,7 @@ const PresentRecords = () => {
     let nw_date = moment(date).format("YYYY-MM-DD");
     console.log(nw_date);
     //call backend
-    console.log(date);
-    findByDate(date)
+    findByDate(nw_date)
       .then((res) => {
         setIsLoading(false);
         setErrMsg("");
