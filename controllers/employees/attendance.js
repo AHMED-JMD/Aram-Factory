@@ -109,8 +109,6 @@ const attend = {
           //map throw dates and check if the schedule exist update it else create new one
           return Promise.all(
             dates.map(async (date) => {
-              let nw_date = moment(date).format("YYYY-MM-DD");
-
               //make sure no employee is recorded twice in an absent table
               let absentTable = await Absent.findOne({ where: { date } });
 
@@ -133,7 +131,7 @@ const attend = {
                   );
 
                   //update employee
-                  let newDates = employee.absent_date.concat(nw_date);
+                  let newDates = employee.absent_date.concat(date);
                   employee.update(
                     {
                       absent_date: newDates,
@@ -159,7 +157,7 @@ const attend = {
                 absent_ids.push(employee.emp_id);
 
                 //update employee
-                let newDates = employee.absent_date.concat(nw_date);
+                let newDates = employee.absent_date.concat(date);
                 employee.update(
                   {
                     absent_date: newDates,
@@ -187,10 +185,9 @@ const attend = {
           let Unique_ids = [...new Set(absent_ids)];
           //create new absent table for each new date
           dates.map(async (date) => {
-            let nw_date = moment(date).format("YYYY-MM-DD");
             //database here
             await Absent.create({
-              date: nw_date,
+              date: date,
               emp_ids: Unique_ids,
             });
             console.log("database created");
@@ -279,9 +276,8 @@ const attend = {
       if (!date) return res.status(400).json("provide valid date");
 
       //find from absent table by date
-      let nw_date = moment(date).format("YYYY-MM-DD");
 
-      let nwTable = await Absent.findOne({ where: { date: nw_date } });
+      let nwTable = await Absent.findOne({ where: { date: date } });
       if (nwTable) {
         // find employees by their names
         let employee = await Employee.findAll({
