@@ -390,7 +390,7 @@ export default function EnhancedTable({
       .then((res) => {
         setLoaded(false);
         setAbsence(true);
-        setTimeout(() => navigate("/"), 500);
+        setTimeout(() => window.location.reload(), 500);
       })
       .catch((err) => {
         setLoaded(false);
