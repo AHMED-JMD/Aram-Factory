@@ -9,4 +9,5 @@ HR system for food factory
 #Requirments:
 
 -nodejs environment installed
+
 -connection to mysql database
