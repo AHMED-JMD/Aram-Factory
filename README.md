@@ -7,6 +7,7 @@ HR system for food factory
 
 -npm run dev
 
+
 #Requirments:
 
 -nodejs environment installed
